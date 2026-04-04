@@ -21,7 +21,8 @@
       "sameUser": "Pick two different users to ship."
     },
     "serverlog": {
-      "invalidChannel": "Choose a text or announcement channel in this server."
+      "invalidChannel": "Choose a text or announcement channel in this server.",
+      "noPermission": "You need **Manage Server** to configure logging."
     }
   },
   "commands": {
@@ -129,10 +130,21 @@
       "disable": {
         "success": "Server logging has been disabled for this server."
       },
+      "panel": {
+        "selectChannel": "Choose log channel",
+        "selectCategories": "Categories (multi-select)",
+        "disableButton": "Disable logging",
+        "options": {
+          "voice": "Voice activity",
+          "members": "Joins, leaves & server profile",
+          "moderation": "Moderation (audit)",
+          "messages": "Message deletes"
+        }
+      },
       "status": {
         "title": "Server logging",
         "description": "Log channel: {{channel}}",
-        "disabled": "Server logging is not configured. Use `/serverlog set` with a channel.",
+        "disabled": "Server logging is not configured. Use `/serverlog`.",
         "on": "On",
         "off": "Off",
         "fields": {
@@ -164,6 +176,15 @@
         "memberLeave": {
           "title": "Member left",
           "description": "**{{user}}** (`{{id}}`) left the server."
+        },
+        "memberUpdate": {
+          "title": "Member updated",
+          "description": "**{{user}}** (`{{id}}`)\n\n{{details}}",
+          "noNickname": "(no server nickname)",
+          "nickname": "**Nickname** — {{before}} → {{after}}",
+          "rolesAdded": "**Roles added** — {{list}}",
+          "rolesRemoved": "**Roles removed** — {{list}}",
+          "guildAvatar": "**Server profile avatar** updated"
         },
         "modKick": {
           "title": "Member kicked",

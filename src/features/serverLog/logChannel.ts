@@ -16,17 +16,6 @@ export function clearLogPermissionWarningForGuild(guildId: string): void {
 	warnedGuilds.delete(guildId)
 }
 
-export async function resolveLogTextChannel(
-	client: Client,
-	guildId: string
-): Promise<GuildTextBasedChannel | null> {
-	const settings = await getGuildLogSettings(guildId)
-	if (!settings?.enabled || !settings.channelId) {
-		return null
-	}
-	return fetchLogTextChannel(client, guildId, settings.channelId)
-}
-
 async function fetchLogTextChannel(
 	client: Client,
 	guildId: string,

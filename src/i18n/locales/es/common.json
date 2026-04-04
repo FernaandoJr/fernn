@@ -21,7 +21,8 @@
       "sameUser": "Elige dos usuarios distintos para el ship."
     },
     "serverlog": {
-      "invalidChannel": "Elige un canal de texto o de anuncios de este servidor."
+      "invalidChannel": "Elige un canal de texto o de anuncios de este servidor.",
+      "noPermission": "Necesitas **Gestionar servidor** para configurar los registros."
     }
   },
   "commands": {
@@ -129,10 +130,21 @@
       "disable": {
         "success": "El registro del servidor se desactivo en este servidor."
       },
+      "panel": {
+        "selectChannel": "Elegir canal de registros",
+        "selectCategories": "Categorias (seleccion multiple)",
+        "disableButton": "Desactivar registros",
+        "options": {
+          "voice": "Actividad de voz",
+          "members": "Entradas, salidas y perfil en el servidor",
+          "moderation": "Moderacion (auditoria)",
+          "messages": "Mensajes borrados"
+        }
+      },
       "status": {
         "title": "Registro del servidor",
         "description": "Canal de registros: {{channel}}",
-        "disabled": "El registro no esta configurado. Usa `/serverlog set` con un canal.",
+        "disabled": "El registro no esta configurado. Usa `/serverlog`.",
         "on": "Si",
         "off": "No",
         "fields": {
@@ -164,6 +176,15 @@
         "memberLeave": {
           "title": "Miembro salio",
           "description": "**{{user}}** (`{{id}}`) salio del servidor."
+        },
+        "memberUpdate": {
+          "title": "Miembro actualizado",
+          "description": "**{{user}}** (`{{id}}`)\n\n{{details}}",
+          "noNickname": "(sin apodo en el servidor)",
+          "nickname": "**Apodo** — {{before}} → {{after}}",
+          "rolesAdded": "**Cargos agregados** — {{list}}",
+          "rolesRemoved": "**Cargos quitados** — {{list}}",
+          "guildAvatar": "**Avatar del perfil del servidor** actualizado"
         },
         "modKick": {
           "title": "Miembro expulsado",

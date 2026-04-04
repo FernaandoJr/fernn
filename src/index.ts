@@ -4,9 +4,16 @@ import { Client, Events, GatewayIntentBits } from "discord.js"
 import { commandMap } from "./commands/index.ts"
 import { config } from "./config.ts"
 import { connectDatabase } from "./database/connect.ts"
+import {
+	handleServerLogPanelInteraction,
+	SERVERLOG_PANEL_PREFIX,
+} from "./features/serverLog/panel.ts"
 import { registerServerLogListeners } from "./features/serverLog/register.ts"
 import { getTranslator, initializeI18n } from "./i18n/index.ts"
-import { logChatCommandExecuted, logChatCommandFailed } from "./utils/interactionLog.ts"
+import {
+	logChatCommandExecuted,
+	logChatCommandFailed,
+} from "./utils/interactionLog.ts"
 
 const client = new Client({
 	intents: [
@@ -20,11 +27,25 @@ const client = new Client({
 
 client.once(Events.ClientReady, (readyClient) => {
 	console.log(
-		`${chalk.cyan("Logged in as")} ${chalk.white(readyClient.user.tag)}`,
+		`${chalk.cyan("Logged in as")} ${chalk.white(readyClient.user.tag)}`
 	)
 })
 
 client.on(Events.InteractionCreate, async (interaction) => {
+	if (
+		(interaction.isStringSelectMenu() ||
+			interaction.isChannelSelectMenu() ||
+			interaction.isButton()) &&
+		interaction.customId?.startsWith(SERVERLOG_PANEL_PREFIX)
+	) {
+		try {
+			await handleServerLogPanelInteraction(interaction)
+		} catch (error) {
+			console.error(error)
+		}
+		return
+	}
+
 	if (!interaction.isChatInputCommand()) {
 		return
 	}

@@ -2,6 +2,7 @@ import {
 	AuditLogEvent,
 	type Client,
 	Events,
+	type Guild,
 	type GuildAuditLogsEntry,
 	type VoiceState,
 } from "discord.js"
@@ -10,7 +11,44 @@ import { getGuildLogSettings } from "../../database/models/GuildLogSettings.ts"
 import { getTranslator } from "../../i18n/index.ts"
 import { createDefaultEmbed } from "../../utils/defaultEmbed.ts"
 import { sendGuildLogEmbed } from "./logChannel.ts"
-import { shouldSkipLeaveDueToRecentModeration } from "./memberLeaveDedupe.ts"
+
+const LEAVE_AUDIT_WINDOW_MS = 10_000
+
+/**
+ * Kicks/bans are logged from `guildAuditLogEntryCreate`. `guildMemberRemove`
+ * also fires; when moderation logging is on we skip "member left" if a recent
+ * kick/ban audit exists for that user.
+ */
+async function shouldSkipLeaveDueToRecentModeration(
+	guild: Guild,
+	userId: string
+): Promise<boolean> {
+	try {
+		const logs = await guild.fetchAuditLogs({ limit: 15 })
+		const now = Date.now()
+		for (const [, entry] of logs.entries) {
+			if (
+				(entry.action === AuditLogEvent.MemberKick ||
+					entry.action === AuditLogEvent.MemberBanAdd) &&
+				entry.targetId === userId &&
+				now - entry.createdTimestamp < LEAVE_AUDIT_WINDOW_MS
+			) {
+				return true
+			}
+		}
+	} catch {
+		return false
+	}
+	return false
+}
+
+function auditTargetName(entry: GuildAuditLogsEntry): string {
+	const target = entry.target
+	if (target && "tag" in target && typeof target.tag === "string") {
+		return target.tag
+	}
+	return entry.targetId ?? "?"
+}
 
 function logLocaleFromVoiceState(state: VoiceState): string | null {
 	return state.guild.preferredLocale
@@ -137,17 +175,85 @@ export function registerServerLogListeners(client: Client): void {
 		)
 	})
 
+	client.on(Events.GuildMemberUpdate, async (oldMember, newMember) => {
+		const guildId = newMember.guild.id
+		const settings = await getGuildLogSettings(guildId)
+		if (!settings?.enabled || !settings.events.members) {
+			return
+		}
+
+		const everyoneId = newMember.guild.id
+		const added = newMember.roles.cache.filter(
+			(r) => r.id !== everyoneId && !oldMember.roles.cache.has(r.id)
+		)
+		const removed = oldMember.roles.cache.filter(
+			(r) => r.id !== everyoneId && !newMember.roles.cache.has(r.id)
+		)
+
+		const nickChanged = oldMember.nickname !== newMember.nickname
+		const guildAvatarChanged = oldMember.avatar !== newMember.avatar
+
+		if (
+			!nickChanged &&
+			added.size === 0 &&
+			removed.size === 0 &&
+			!guildAvatarChanged
+		) {
+			return
+		}
+
+		const t = getTranslator(newMember.guild.preferredLocale)
+		const lines: string[] = []
+
+		if (nickChanged) {
+			const noneLabel = t("commands.serverlog.logs.memberUpdate.noNickname")
+			lines.push(
+				t("commands.serverlog.logs.memberUpdate.nickname", {
+					before: oldMember.nickname ?? noneLabel,
+					after: newMember.nickname ?? noneLabel,
+				})
+			)
+		}
+
+		if (added.size > 0) {
+			lines.push(
+				t("commands.serverlog.logs.memberUpdate.rolesAdded", {
+					list: added.map((r) => r.name).join(", "),
+				})
+			)
+		}
+		if (removed.size > 0) {
+			lines.push(
+				t("commands.serverlog.logs.memberUpdate.rolesRemoved", {
+					list: removed.map((r) => r.name).join(", "),
+				})
+			)
+		}
+
+		if (guildAvatarChanged) {
+			lines.push(t("commands.serverlog.logs.memberUpdate.guildAvatar"))
+		}
+
+		await sendGuildLogEmbed(
+			client,
+			guildId,
+			"members",
+			createDefaultEmbed({
+				title: t("commands.serverlog.logs.memberUpdate.title"),
+				description: t("commands.serverlog.logs.memberUpdate.description", {
+					user: newMember.user.tag,
+					id: newMember.id,
+					details: lines.join("\n\n"),
+				}),
+			})
+		)
+	})
+
 	client.on(Events.GuildAuditLogEntryCreate, async (entry, guild) => {
 		const guildId = guild.id
 		const t = getTranslator(guild.preferredLocale)
 
 		if (entry.action === AuditLogEvent.MemberKick) {
-			const target = entry.target
-			const exec = entry.executor
-			const name =
-				target && "tag" in target && target.tag
-					? target.tag
-					: entry.targetId ?? "?"
 			await sendGuildLogEmbed(
 				client,
 				guildId,
@@ -155,8 +261,8 @@ export function registerServerLogListeners(client: Client): void {
 				createDefaultEmbed({
 					title: t("commands.serverlog.logs.modKick.title"),
 					description: t("commands.serverlog.logs.modKick.description", {
-						target: name,
-						moderator: exec?.tag ?? "?",
+						target: auditTargetName(entry),
+						moderator: entry.executor?.tag ?? "?",
 						reason: entry.reason ?? t("commands.serverlog.logs.noReason"),
 					}),
 				})
@@ -165,12 +271,6 @@ export function registerServerLogListeners(client: Client): void {
 		}
 
 		if (entry.action === AuditLogEvent.MemberBanAdd) {
-			const target = entry.target
-			const exec = entry.executor
-			const name =
-				target && "tag" in target && target.tag
-					? target.tag
-					: entry.targetId ?? "?"
 			await sendGuildLogEmbed(
 				client,
 				guildId,
@@ -178,8 +278,8 @@ export function registerServerLogListeners(client: Client): void {
 				createDefaultEmbed({
 					title: t("commands.serverlog.logs.modBan.title"),
 					description: t("commands.serverlog.logs.modBan.description", {
-						target: name,
-						moderator: exec?.tag ?? "?",
+						target: auditTargetName(entry),
+						moderator: entry.executor?.tag ?? "?",
 						reason: entry.reason ?? t("commands.serverlog.logs.noReason"),
 					}),
 				})
@@ -188,12 +288,6 @@ export function registerServerLogListeners(client: Client): void {
 		}
 
 		if (entry.action === AuditLogEvent.MemberBanRemove) {
-			const target = entry.target
-			const exec = entry.executor
-			const name =
-				target && "tag" in target && target.tag
-					? target.tag
-					: entry.targetId ?? "?"
 			await sendGuildLogEmbed(
 				client,
 				guildId,
@@ -201,8 +295,8 @@ export function registerServerLogListeners(client: Client): void {
 				createDefaultEmbed({
 					title: t("commands.serverlog.logs.modUnban.title"),
 					description: t("commands.serverlog.logs.modUnban.description", {
-						target: name,
-						moderator: exec?.tag ?? "?",
+						target: auditTargetName(entry),
+						moderator: entry.executor?.tag ?? "?",
 						reason: entry.reason ?? t("commands.serverlog.logs.noReason"),
 					}),
 				})
@@ -211,12 +305,8 @@ export function registerServerLogListeners(client: Client): void {
 		}
 
 		if (isTimeoutMemberUpdate(entry)) {
-			const target = entry.target
 			const exec = entry.executor
-			const name =
-				target && "tag" in target && target.tag
-					? target.tag
-					: entry.targetId ?? "?"
+			const name = auditTargetName(entry)
 			let until = ""
 			for (const change of entry.changes) {
 				if (change.key === "communication_disabled_until") {

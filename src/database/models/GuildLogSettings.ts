@@ -86,11 +86,25 @@ export async function getGuildLogSettings(
 	}
 }
 
+export async function setGuildEventFlags(
+	guildId: string,
+	events: GuildLogEventFlags
+): Promise<void> {
+	await GuildLogSettingsModel.findOneAndUpdate(
+		{ guildId },
+		{ $set: { events, enabled: true } },
+		{ upsert: true }
+	).exec()
+}
+
 export async function setGuildLogChannel(
 	guildId: string,
 	channelId: string
 ): Promise<GuildLogSettingsDoc> {
-	const events = defaultEvents()
+	const existing = await getGuildLogSettings(guildId)
+	const events = existing
+		? mergeDefaultEvents(existing.events)
+		: defaultEvents()
 	const updated = await GuildLogSettingsModel.findOneAndUpdate(
 		{ guildId },
 		{

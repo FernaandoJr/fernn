@@ -1,0 +1,13 @@
+---
+description: Name the i18next fixed translator `t` and call `t("key")` — never `translate`.
+globs: src/**/*.ts
+alwaysApply: false
+---
+
+# i18n — use `t` from `getTranslator`
+
+- Always assign: `const t = getTranslator(locale)` (or `interaction.locale`, `guild.preferredLocale`, etc.).
+- Use **`t("namespace.key")`** for lookups. Do **not** use a variable named `translate` for the translator.
+- For helpers that accept the fixed translator, type the parameter as `ReturnType<typeof getTranslator>` or a shared `Translator` alias, and still name the parameter **`t`** unless a nested scope already has `t` (then use a clear alias only in that inner scope).
+
+This matches [`src/i18n/index.ts`](src/i18n/index.ts) (`getFixedT` / i18next) and existing commands.

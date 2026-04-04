@@ -52,7 +52,7 @@ sequenceDiagram
 ```
 
 - **Intents** (in [`src/index.ts`](../src/index.ts)): `Guilds`, `GuildVoiceStates`, `GuildMembers`, `GuildModeration`, `GuildMessages` — required for `/serverlog` (voice, member join/leave, audit log moderation, message deletes). Enable the same **privileged intents** in the [Discord Developer Portal](https://discord.com/developers/applications) (Bot → Privileged Gateway Intents) or the gateway will reject them.
-- **Server logging**: Configure with `/serverlog set` in a guild; the bot posts embeds to that channel only. MongoDB stores **configuration** (log channel id + category toggles) via [`GuildLogSettings`](../src/database/models/GuildLogSettings.ts) — **not** a history of log events (those exist only as Discord messages).
+- **Server logging**: Run `/serverlog` in a guild to open the configuration panel (channel select, category multi-select, disable). The bot posts embeds to that channel only. **Members** logs include join/leave, **nickname / role / server-avatar** changes (`GuildMemberUpdate`), and (when enabled) moderation audit events. MongoDB stores **configuration** (log channel id + category toggles) via [`GuildLogSettings`](../src/database/models/GuildLogSettings.ts) — **not** a history of log events (those exist only as Discord messages).
 - **Errors**: Unhandled errors in `execute` are caught in [`src/index.ts`](../src/index.ts); the user sees a translated ephemeral `errors.commandExecutionFailed`.
 
 ---
@@ -93,7 +93,7 @@ fernn/
       models/
         GuildLogSettings.ts
     features/
-      serverLog/           # Gateway listeners + log channel helper
+      serverLog/           # register.ts (listeners), panel.ts (UI), logChannel.ts (send)
     types/
       command.ts           # SlashCommand interface
     commands/
@@ -132,7 +132,7 @@ fernn/
 - **Command modules**: Export a single command object named `*Command` (e.g. `pingCommand`, `userInfoCommand`) from each command folder’s `index.ts`.
 - **Imports**: Use explicit `.ts` extensions in import paths (project style).
 - **Slash names**: Set with `SlashCommandBuilder` / `.setName("lowercase")` — these are the Discord slash identifiers and `commandMap` keys.
-- **User-facing strings**: Prefer **i18n** via `getTranslator(interaction.locale)` and keys under `errors.*` and `commands.*` in each locale’s `common.json` (see [`src/i18n/locales/en/common.json`](../src/i18n/locales/en/common.json)).
+- **User-facing strings**: Prefer **i18n** — `const t = getTranslator(interaction.locale)` then `t("…")` — and keys under `errors.*` and `commands.*` in each locale’s `common.json` (see [`src/i18n/locales/en/common.json`](../src/i18n/locales/en/common.json)). Do not name the translator `translate`; use **`t`** (see [`.cursor/rules/i18n-t-naming.mdc`](../.cursor/rules/i18n-t-naming.mdc)).
 - **Command-specific helpers**: Optional `utils/` under a command directory; file names are mostly **camelCase** `.ts`; static JSON assets may use **kebab-case** (e.g. `user-badge-flags.json`).
 
 ---
@@ -146,6 +146,7 @@ fernn/
 ## Agent / editor context (Cursor)
 
 - **discord.js**: Follow [`.cursor/rules/discord-js-official-docs.mdc`](../.cursor/rules/discord-js-official-docs.mdc) and [`.cursor/skills/discord-js-docs/SKILL.md`](../.cursor/skills/discord-js-docs/SKILL.md) (official docs first; match repo `discord.js` version).
+- **i18n naming**: Use `const t = getTranslator(…)` and `t("key")` — [`.cursor/rules/i18n-t-naming.mdc`](../.cursor/rules/i18n-t-naming.mdc).
 - **Bun**: Prefer Bun over Node/npm/pnpm for install/run — [`.cursor/rules/use-bun-instead-of-node-vite-npm-pnpm.mdc`](../.cursor/rules/use-bun-instead-of-node-vite-npm-pnpm.mdc).
 
 ---

@@ -1,0 +1,14 @@
+---
+description: Use official discord.js and Discord docs before other sources when working on this bot.
+globs: src/**/*.ts, package.json
+alwaysApply: false
+---
+
+# discord.js — official sources first
+
+Before implementing or changing Discord bot behavior, read and follow the project skill:
+
+- `.cursor/skills/discord-js-docs/SKILL.md`
+- Load `.cursor/skills/discord-js-docs/references/official-sources.md` when you need canonical URLs or search patterns.
+
+Match `discord.js` and `@discordjs/*` versions from this repo’s `package.json`. Prefer https://discord.js.org/ (API), https://discordjs.guide/ (patterns), https://github.com/discordjs (source and related packages), and https://discord.com/developers/docs/ for platform rules. Use targeted `site:discord.js.org` / `site:discordjs.guide` / `site:github.com/discordjs` searches before generic web search; verify any non-official answer against current docs.

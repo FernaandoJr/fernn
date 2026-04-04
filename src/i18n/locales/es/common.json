@@ -1,7 +1,19 @@
 {
   "errors": {
     "commandUnavailable": "Este comando no esta disponible.",
-    "commandExecutionFailed": "Algo salio mal al ejecutar ese comando."
+    "commandExecutionFailed": "Algo salio mal al ejecutar ese comando.",
+    "moderation": {
+      "guildOnly": "Este comando solo se puede usar en un servidor.",
+      "memberNotInGuild": "Ese usuario no esta en este servidor.",
+      "cannotModerateSelf": "No puedes usar esto en ti mismo.",
+      "cannotModerateOwner": "No puedes moderar al dueno del servidor.",
+      "cannotModerateBot": "No puedes moderar a este bot.",
+      "targetNotBannable": "No puedo banear a este usuario. Revisa la jerarquia de roles y mis permisos.",
+      "targetNotKickable": "No puedo expulsar a este miembro. Revisa la jerarquia de roles y mis permisos.",
+      "targetNotModeratable": "No puedo silenciar por tiempo a este miembro. Revisa la jerarquia de roles y mis permisos.",
+      "clearNotTextChannel": "Este comando solo funciona en canales de texto del servidor.",
+      "clearFailed": "No se pudieron borrar mensajes en este canal."
+    }
   },
   "commands": {
     "hello": {
@@ -13,6 +25,40 @@
       "fields": {
         "apiLatency": "Latencia de la API",
         "command": "Comando"
+      }
+    },
+    "ban": {
+      "title": "Usuario baneado",
+      "description": "{{target}} fue baneado de este servidor.",
+      "fields": {
+        "reason": "Motivo",
+        "moderator": "Moderador"
+      }
+    },
+    "kick": {
+      "title": "Miembro expulsado",
+      "description": "{{target}} fue expulsado de este servidor.",
+      "fields": {
+        "reason": "Motivo",
+        "moderator": "Moderador"
+      }
+    },
+    "mute": {
+      "title": "Miembro silenciado (timeout)",
+      "description": "Se aplico timeout a {{target}}.",
+      "noReasonProvided": "Sin motivo.",
+      "durationValue": "{{seconds}} s",
+      "fields": {
+        "duration": "Duracion",
+        "reason": "Motivo",
+        "moderator": "Moderador"
+      }
+    },
+    "clear": {
+      "title": "Mensajes borrados",
+      "description": "Se borraron {{count}} mensaje(s) en {{channel}}.",
+      "fields": {
+        "moderator": "Moderador"
       }
     }
   }

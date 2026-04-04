@@ -1,7 +1,19 @@
 {
   "errors": {
     "commandUnavailable": "This command is not available.",
-    "commandExecutionFailed": "Something went wrong while running that command."
+    "commandExecutionFailed": "Something went wrong while running that command.",
+    "moderation": {
+      "guildOnly": "This command can only be used in a server.",
+      "memberNotInGuild": "That user is not in this server.",
+      "cannotModerateSelf": "You cannot use this on yourself.",
+      "cannotModerateOwner": "You cannot moderate the server owner.",
+      "cannotModerateBot": "You cannot moderate this bot.",
+      "targetNotBannable": "I cannot ban this user. Check role hierarchy and my permissions.",
+      "targetNotKickable": "I cannot kick this member. Check role hierarchy and my permissions.",
+      "targetNotModeratable": "I cannot timeout this member. Check role hierarchy and my permissions.",
+      "clearNotTextChannel": "This command only works in server text channels.",
+      "clearFailed": "Could not delete messages in this channel."
+    }
   },
   "commands": {
     "hello": {
@@ -13,6 +25,40 @@
       "fields": {
         "apiLatency": "API Latency",
         "command": "Command"
+      }
+    },
+    "ban": {
+      "title": "User banned",
+      "description": "{{target}} was banned from this server.",
+      "fields": {
+        "reason": "Reason",
+        "moderator": "Moderator"
+      }
+    },
+    "kick": {
+      "title": "Member kicked",
+      "description": "{{target}} was kicked from this server.",
+      "fields": {
+        "reason": "Reason",
+        "moderator": "Moderator"
+      }
+    },
+    "mute": {
+      "title": "Member timed out",
+      "description": "{{target}} has been timed out.",
+      "noReasonProvided": "No reason provided.",
+      "durationValue": "{{seconds}} s",
+      "fields": {
+        "duration": "Duration",
+        "reason": "Reason",
+        "moderator": "Moderator"
+      }
+    },
+    "clear": {
+      "title": "Messages cleared",
+      "description": "Deleted {{count}} message(s) in {{channel}}.",
+      "fields": {
+        "moderator": "Moderator"
       }
     }
   }

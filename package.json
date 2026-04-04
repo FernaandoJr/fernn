@@ -1,0 +1,19 @@
+{
+  "name": "fernn",
+  "private": true,
+  "type": "module",
+  "module": "src/index.ts",
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "dev": "bun run --watch src/index.ts",
+    "deploy:commands": "bun run src/deploy-commands.ts",
+    "typecheck": "bunx tsc --noEmit"
+  },
+  "dependencies": {
+    "discord.js": "^14.26.2"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5"
+  }
+}

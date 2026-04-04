@@ -16,6 +16,9 @@
     },
     "userInfo": {
       "notMember": "That user is not in this server."
+    },
+    "ship": {
+      "sameUser": "Pick two different users to ship."
     }
   },
   "commands": {
@@ -113,6 +116,70 @@
         "boost": "Boost status",
         "verification": "Verification level",
         "explicitFilter": "Explicit media filter"
+      }
+    },
+    "ship": {
+      "title": "Ship",
+      "description": "{{pair}}",
+      "pairSeparator": "×",
+      "fallbackVerdict": "It's complicated.",
+      "fields": {
+        "score": "Compatibility",
+        "verdict": "Verdict"
+      },
+      "tiers": {
+        "veryLow": {
+          "messages": [
+            "Ice cold. Maybe try a group chat first.",
+            "The stars are not aligned.",
+            "Friendship mode — romance not detected.",
+            "This ship might need a life raft.",
+            "Different universes, same Discord.",
+            "The compatibility meter filed for overtime.",
+            "Cute as friends. As a ship? Debatable.",
+            "If this were a movie, you'd still be in act one — of someone else's story.",
+            "Low signal. Try turning friendship off and on again."
+          ]
+        },
+        "low": {
+          "messages": [
+            "Slow burn — very slow.",
+            "There's something there, maybe.",
+            "Chemistry pending further patches.",
+            "Not impossible, just unlikely today.",
+            "A flicker, not a flame.",
+            "Roommates in the same server, soulmates in another timeline.",
+            "Could grow on you — emphasis on could.",
+            "The vibe is 'we'll see' with extra ellipsis.",
+            "Better than a coin flip. Not by much."
+          ]
+        },
+        "mid": {
+          "messages": [
+            "Solid maybe energy.",
+            "Worth a fanfic chapter.",
+            "The group chat would ship it.",
+            "Enough spark to notice.",
+            "Comfortably ambiguous — in a fun way.",
+            "Plot armor not included, but the banter carries.",
+            "Halfway between meme and manifesto.",
+            "Not loud, but the ship name is already in beta.",
+            "The kind of tension that survives a typo in chat."
+          ]
+        },
+        "high": {
+          "messages": [
+            "Canon energy.",
+            "The timeline converges.",
+            "Main-pair material.",
+            "Even the algorithm is rooting for this.",
+            "Screenshot this and frame it.",
+            "If chemistry were Wi‑Fi, you'd be full bars.",
+            "The server ships it. The stars agree. The bot is just formalizing it.",
+            "Endgame arc loading.",
+            "Someone write the AU — the numbers already did."
+          ]
+        }
       }
     }
   }

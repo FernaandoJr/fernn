@@ -16,6 +16,9 @@
     },
     "userInfo": {
       "notMember": "Esse usuário não está neste servidor."
+    },
+    "ship": {
+      "sameUser": "Escolha dois usuários diferentes para o ship."
     }
   },
   "commands": {
@@ -113,6 +116,70 @@
         "boost": "Status de boosts",
         "verification": "Nível de verificação",
         "explicitFilter": "Filtro de mídia explícita"
+      }
+    },
+    "ship": {
+      "title": "Ship",
+      "description": "{{pair}}",
+      "pairSeparator": "×",
+      "fallbackVerdict": "É complicado.",
+      "fields": {
+        "score": "Compatibilidade",
+        "verdict": "Veredito"
+      },
+      "tiers": {
+        "veryLow": {
+          "messages": [
+            "Gelado. Talvez comece num grupo primeiro.",
+            "As estrelas não estão alinhadas.",
+            "Modo amizade — romance não detectado.",
+            "Esse ship pode precisar de bote salva-vidas.",
+            "Universos diferentes, mesmo Discord.",
+            "O medidor de compatibilidade pediu hora extra.",
+            "Ótimos como amigos. Como ship? Discutível.",
+            "Se fosse filme, vocês ainda estariam no ato um — de outra história.",
+            "Sinal fraco. Tenta desligar e ligar a amizade."
+          ]
+        },
+        "low": {
+          "messages": [
+            "Fogo lento — bem lento.",
+            "Tem alguma coisa, talvez.",
+            "Química aguardando atualização.",
+            "Não é impossível, só improvável hoje.",
+            "Um lampejo, não labareda.",
+            "Colegas de servidor, almas gêmeas noutra linha do tempo.",
+            "Pode pegar — ênfase no pode.",
+            "O clima é 'vamos ver' com reticências.",
+            "Melhor que cara ou coroa. Por pouco."
+          ]
+        },
+        "mid": {
+          "messages": [
+            "Energia de talvez sólida.",
+            "Vale um capítulo de fanfic.",
+            "O grupo shippa.",
+            "Fagulha suficiente pra notar.",
+            "Ambíguo com estilo — no bom sentido.",
+            "Sem plot armor, mas o humor segura.",
+            "No meio do caminho entre meme e manifesto.",
+            "Sem alarde, mas o nome do ship já tá em beta.",
+            "Tensão que sobrevive a um typo no chat."
+          ]
+        },
+        "high": {
+          "messages": [
+            "Energia de casal principal.",
+            "A linha do tempo converge.",
+            "Material de endgame.",
+            "Até o algoritmo torce por isso.",
+            "Printa e emoldura.",
+            "Se química fosse Wi‑Fi, tava tudo cheio.",
+            "O servidor shippa. As estrelas batem. O bot só oficializa.",
+            "Arco final carregando.",
+            "Alguém escreve o AU — os números já votaram."
+          ]
+        }
       }
     }
   }

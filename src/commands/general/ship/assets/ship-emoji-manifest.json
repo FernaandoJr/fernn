@@ -1,0 +1,48 @@
+{
+  "fallback": "broken-heart.svg",
+  "bands": {
+    "disaster": [
+      "broken-heart.svg",
+      "face-vomiting.svg",
+      "middle-finger.svg",
+      "pouting-face.svg",
+      "yawning-face.svg"
+    ],
+    "poor": [
+      "zipper-mouth-face.svg",
+      "neutral-face.svg",
+      "face-with-diagonal-mouth.svg",
+      "melting-face.svg",
+      "face-with-thermometer.svg"
+    ],
+    "weak": [
+      "face-with-symbols-on-mouth.svg",
+      "mending-heart.svg",
+      "face-with-peeking-eye.svg",
+      "flushed-face.svg"
+    ],
+    "okay": [
+      "biting-lip.svg",
+      "smiling-face-with-horns.svg",
+      "red-heart.svg",
+      "heart-suit.svg"
+    ],
+    "warm": [
+      "growing-heart.svg",
+      "heart-with-arrow.svg",
+      "face-blowing-a-kiss.svg",
+      "revolving-hearts.svg"
+    ],
+    "strong": [
+      "heart-with-ribbon.svg",
+      "smiling-face-with-heart-eyes.svg",
+      "smiling-face-with-hearts.svg",
+      "smiling-cat-with-heart-eyes.svg"
+    ],
+    "perfect": [
+      "sparkling-heart.svg",
+      "heart-on-fire.svg",
+      "hundred-points.svg"
+    ]
+  }
+}

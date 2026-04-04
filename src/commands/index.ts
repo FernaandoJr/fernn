@@ -1,4 +1,5 @@
 import { pingCommand } from "./general/ping/index.ts"
+import { shipCommand } from "./general/ship/index.ts"
 import { uptimeCommand } from "./general/uptime/index.ts"
 import { banCommand } from "./moderation/ban/index.ts"
 import { clearCommand } from "./moderation/clear/index.ts"
@@ -11,6 +12,7 @@ import type { SlashCommand } from "../types/command.ts"
 
 export const commands: SlashCommand[] = [
 	pingCommand,
+	shipCommand,
 	uptimeCommand,
 	banCommand,
 	kickCommand,

@@ -4,7 +4,6 @@ import {
 	Events,
 	type Guild,
 	type GuildAuditLogsEntry,
-	type VoiceState,
 } from "discord.js"
 
 import { getGuildLogSettings } from "../../database/models/GuildLogSettings.ts"
@@ -50,10 +49,6 @@ function auditTargetName(entry: GuildAuditLogsEntry): string {
 	return entry.targetId ?? "?"
 }
 
-function logLocaleFromVoiceState(state: VoiceState): string | null {
-	return state.guild.preferredLocale
-}
-
 function isTimeoutMemberUpdate(entry: GuildAuditLogsEntry): boolean {
 	if (entry.action !== AuditLogEvent.MemberUpdate) {
 		return false
@@ -61,11 +56,36 @@ function isTimeoutMemberUpdate(entry: GuildAuditLogsEntry): boolean {
 	return entry.changes.some((c) => c.key === "communication_disabled_until")
 }
 
+async function sendModerationAuditEmbed(
+	client: Client,
+	guildId: string,
+	t: ReturnType<typeof getTranslator>,
+	entry: GuildAuditLogsEntry,
+	kind: "kick" | "ban" | "unban"
+): Promise<void> {
+	const key =
+		kind === "kick" ? "modKick" : kind === "ban" ? "modBan" : "modUnban"
+	const base = `commands.serverlog.logs.${key}`
+	await sendGuildLogEmbed(
+		client,
+		guildId,
+		"moderation",
+		createDefaultEmbed({
+			title: t(`${base}.title`),
+			description: t(`${base}.description`, {
+				target: auditTargetName(entry),
+				moderator: entry.executor?.tag ?? "?",
+				reason: entry.reason ?? t("commands.serverlog.logs.noReason"),
+			}),
+		})
+	)
+}
+
 export function registerServerLogListeners(client: Client): void {
 	client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
 		const guild = newState.guild
 		const guildId = guild.id
-		const t = getTranslator(logLocaleFromVoiceState(newState))
+		const t = getTranslator(newState.guild.preferredLocale)
 
 		const oldId = oldState.channelId
 		const newId = newState.channelId
@@ -171,7 +191,8 @@ export function registerServerLogListeners(client: Client): void {
 					user: member.user.tag,
 					id: member.user.id,
 				}),
-			})
+			}),
+			settings
 		)
 	})
 
@@ -245,7 +266,8 @@ export function registerServerLogListeners(client: Client): void {
 					id: newMember.id,
 					details: lines.join("\n\n"),
 				}),
-			})
+			}),
+			settings
 		)
 	})
 
@@ -254,53 +276,17 @@ export function registerServerLogListeners(client: Client): void {
 		const t = getTranslator(guild.preferredLocale)
 
 		if (entry.action === AuditLogEvent.MemberKick) {
-			await sendGuildLogEmbed(
-				client,
-				guildId,
-				"moderation",
-				createDefaultEmbed({
-					title: t("commands.serverlog.logs.modKick.title"),
-					description: t("commands.serverlog.logs.modKick.description", {
-						target: auditTargetName(entry),
-						moderator: entry.executor?.tag ?? "?",
-						reason: entry.reason ?? t("commands.serverlog.logs.noReason"),
-					}),
-				})
-			)
+			await sendModerationAuditEmbed(client, guildId, t, entry, "kick")
 			return
 		}
 
 		if (entry.action === AuditLogEvent.MemberBanAdd) {
-			await sendGuildLogEmbed(
-				client,
-				guildId,
-				"moderation",
-				createDefaultEmbed({
-					title: t("commands.serverlog.logs.modBan.title"),
-					description: t("commands.serverlog.logs.modBan.description", {
-						target: auditTargetName(entry),
-						moderator: entry.executor?.tag ?? "?",
-						reason: entry.reason ?? t("commands.serverlog.logs.noReason"),
-					}),
-				})
-			)
+			await sendModerationAuditEmbed(client, guildId, t, entry, "ban")
 			return
 		}
 
 		if (entry.action === AuditLogEvent.MemberBanRemove) {
-			await sendGuildLogEmbed(
-				client,
-				guildId,
-				"moderation",
-				createDefaultEmbed({
-					title: t("commands.serverlog.logs.modUnban.title"),
-					description: t("commands.serverlog.logs.modUnban.description", {
-						target: auditTargetName(entry),
-						moderator: entry.executor?.tag ?? "?",
-						reason: entry.reason ?? t("commands.serverlog.logs.noReason"),
-					}),
-				})
-			)
+			await sendModerationAuditEmbed(client, guildId, t, entry, "unban")
 			return
 		}
 

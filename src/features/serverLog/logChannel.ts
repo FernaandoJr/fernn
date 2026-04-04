@@ -7,6 +7,7 @@ import {
 
 import {
 	type GuildLogEventFlags,
+	type GuildLogSettingsDoc,
 	getGuildLogSettings,
 } from "../../database/models/GuildLogSettings.ts"
 
@@ -62,9 +63,10 @@ export async function sendGuildLogEmbed(
 	client: Client,
 	guildId: string,
 	category: keyof GuildLogEventFlags,
-	embed: EmbedBuilder
+	embed: EmbedBuilder,
+	cachedSettings?: GuildLogSettingsDoc | null
 ): Promise<void> {
-	const settings = await getGuildLogSettings(guildId)
+	const settings = cachedSettings ?? (await getGuildLogSettings(guildId))
 	if (!settings?.enabled || !settings.channelId || !settings.events[category]) {
 		return
 	}

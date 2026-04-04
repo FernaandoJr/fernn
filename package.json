@@ -5,6 +5,7 @@
   "module": "src/index.ts",
   "scripts": {
     "start": "bun run src/index.ts",
+    "start:all": "bun run deploy:commands && bun run start",
     "dev": "bun run --watch src/index.ts",
     "deploy:commands": "bun run src/deploy-commands.ts",
     "typecheck": "bunx tsc --noEmit"

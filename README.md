@@ -34,6 +34,7 @@ If `DISCORD_GUILD_ID` is omitted, command deployment falls back to global regist
 
 ```bash
 bun run start
+bun run start:all
 bun run dev
 bun run deploy:commands
 bun run typecheck
@@ -54,6 +55,12 @@ bun run start
 ```
 
 3. Use `/hello` in Discord.
+
+Or run deploy + bot startup together:
+
+```bash
+bun run start:all
+```
 
 ## Docker
 

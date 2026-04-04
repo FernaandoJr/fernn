@@ -1,0 +1,69 @@
+{
+	"badges": [
+		{
+			"flag": "Staff",
+			"emojiId": "1490086684962852894",
+			"emojiName": "discordstaff"
+		},
+		{
+			"flag": "Partner",
+			"emojiId": "1490086754525384905",
+			"emojiName": "discordpartner"
+		},
+		{
+			"flag": "Hypesquad",
+			"emojiId": "1490086842450837606",
+			"emojiName": "hypesquadevents"
+		},
+		{
+			"flag": "HypeSquadOnlineHouse1",
+			"emojiId": "1490091798213951639",
+			"emojiName": "hypesquadbravery"
+		},
+		{
+			"flag": "HypeSquadOnlineHouse2",
+			"emojiId": "1490091800193400994",
+			"emojiName": "hypesquadbrilliance"
+		},
+		{
+			"flag": "HypeSquadOnlineHouse3",
+			"emojiId": "1490091796598886481",
+			"emojiName": "hypesquadbalance"
+		},
+		{
+			"flag": "PremiumEarlySupporter",
+			"emojiId": "1490086897916317858",
+			"emojiName": "earlysupporter"
+		},
+		{
+			"flag": "BugHunterLevel1",
+			"emojiId": "1490086941843132556",
+			"emojiName": "bughunter1"
+		},
+		{
+			"flag": "BugHunterLevel2",
+			"emojiId": "1490086943147557028",
+			"emojiName": "bughunter2"
+		},
+		{
+			"flag": "VerifiedDeveloper",
+			"emojiId": "1490088495933296650",
+			"emojiName": "verifiedbotdeveloper"
+		},
+		{
+			"flag": "VerifiedBot",
+			"emojiId": "1490087885901136006",
+			"emojiName": "verifiedbot"
+		},
+		{
+			"flag": "CertifiedModerator",
+			"emojiId": "1490088346200965130",
+			"emojiName": "certifiedmoderator"
+		},
+		{
+			"flag": "BotHTTPInteractions",
+			"emojiId": "1490088865074122862",
+			"emojiName": "supportscommands"
+		}
+	]
+}

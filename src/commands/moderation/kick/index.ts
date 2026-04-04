@@ -4,14 +4,14 @@ import {
 	SlashCommandBuilder,
 } from "discord.js"
 
-import { getTranslator } from "../../i18n/index.ts"
-import type { SlashCommand } from "../../types/command.ts"
-import { createDefaultEmbed } from "../../utils/defaultEmbed.ts"
+import { getTranslator } from "../../../i18n/index.ts"
+import type { SlashCommand } from "../../../types/command.ts"
+import { createDefaultEmbed } from "../../../utils/defaultEmbed.ts"
 import {
 	ensureModerationTarget,
 	replyIfNotInGuild,
 	resolveMember,
-} from "./guards.ts"
+} from "../guards.ts"
 
 export const kickCommand: SlashCommand = {
 	data: new SlashCommandBuilder()

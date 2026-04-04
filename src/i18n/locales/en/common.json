@@ -13,18 +13,25 @@
       "targetNotModeratable": "I cannot timeout this member. Check role hierarchy and my permissions.",
       "clearNotTextChannel": "This command only works in server text channels.",
       "clearFailed": "Could not delete messages in this channel."
+    },
+    "userInfo": {
+      "notMember": "That user is not in this server."
     }
   },
   "commands": {
-    "hello": {
-      "reply": "Hello world!"
-    },
     "ping": {
       "title": "Pong!",
       "description": "The bot is online and responding.",
       "fields": {
         "apiLatency": "API Latency",
         "command": "Command"
+      }
+    },
+    "uptime": {
+      "title": "Uptime",
+      "description": "How long this bot process has been running (since last restart).",
+      "fields": {
+        "process": "Process uptime"
       }
     },
     "ban": {
@@ -59,6 +66,53 @@
       "description": "Deleted {{count}} message(s) in {{channel}}.",
       "fields": {
         "moderator": "Moderator"
+      }
+    },
+    "userInfo": {
+      "noBadges": "None",
+      "noNickname": "None",
+      "noRoles": "None",
+      "unknown": "Unknown",
+      "rolesMore": "{{count}} more",
+      "fields": {
+        "badges": "Badges",
+        "nickname": "Nickname",
+        "id": "ID",
+        "joined": "Joined server",
+        "created": "Account created",
+        "roles": "Roles ({{count}})"
+      }
+    },
+    "serverInfo": {
+      "channelSummary": "Text {{text}}, voice {{voice}}, categories {{category}}, forums {{forum}}, stages {{stage}}, announcements {{announcement}}, media {{media}}",
+      "boostSummary": "{{count}} boosts — {{tier}}",
+      "verification": {
+        "none": "None",
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High",
+        "veryHigh": "Very high"
+      },
+      "explicitFilter": {
+        "disabled": "Disabled",
+        "membersWithoutRoles": "Scan members without roles",
+        "allMembers": "Scan all members"
+      },
+      "premiumTier": {
+        "none": "No tier",
+        "tier1": "Tier 1",
+        "tier2": "Tier 2",
+        "tier3": "Tier 3"
+      },
+      "fields": {
+        "id": "Server ID",
+        "owner": "Owner",
+        "created": "Created",
+        "members": "Members",
+        "channels": "Channels",
+        "boost": "Boost status",
+        "verification": "Verification level",
+        "explicitFilter": "Explicit media filter"
       }
     }
   }

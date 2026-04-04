@@ -54,7 +54,7 @@ bun run deploy:commands
 bun run start
 ```
 
-3. Use `/hello` in Discord.
+3. Use `/ping` in Discord.
 
 Or run deploy + bot startup together:
 

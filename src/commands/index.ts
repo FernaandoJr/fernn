@@ -1,19 +1,23 @@
-import { helloCommand } from "./general/hello.ts"
-import { pingCommand } from "./general/ping.ts"
-import { banCommand } from "./moderation/ban.ts"
-import { clearCommand } from "./moderation/clear.ts"
-import { kickCommand } from "./moderation/kick.ts"
-import { muteCommand } from "./moderation/mute.ts"
+import { pingCommand } from "./general/ping/index.ts"
+import { uptimeCommand } from "./general/uptime/index.ts"
+import { banCommand } from "./moderation/ban/index.ts"
+import { clearCommand } from "./moderation/clear/index.ts"
+import { kickCommand } from "./moderation/kick/index.ts"
+import { muteCommand } from "./moderation/mute/index.ts"
+import { serverInfoCommand } from "./utility/serverInfo/index.ts"
+import { userInfoCommand } from "./utility/userInfo/index.ts"
 
 import type { SlashCommand } from "../types/command.ts"
 
 export const commands: SlashCommand[] = [
-	helloCommand,
 	pingCommand,
+	uptimeCommand,
 	banCommand,
 	kickCommand,
 	muteCommand,
 	clearCommand,
+	userInfoCommand,
+	serverInfoCommand,
 ]
 
 export const commandMap = new Map(

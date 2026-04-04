@@ -13,18 +13,25 @@
       "targetNotModeratable": "Não consigo aplicar timeout neste membro. Verifique a hierarquia de cargos e minhas permissões.",
       "clearNotTextChannel": "Este comando só funciona em canais de texto do servidor.",
       "clearFailed": "Não foi possível apagar mensagens neste canal."
+    },
+    "userInfo": {
+      "notMember": "Esse usuário não está neste servidor."
     }
   },
   "commands": {
-    "hello": {
-      "reply": "Olá mundo!"
-    },
     "ping": {
       "title": "Pong!",
       "description": "O bot está online e respondendo.",
       "fields": {
         "apiLatency": "Latência da API",
         "command": "Comando"
+      }
+    },
+    "uptime": {
+      "title": "Tempo ativo",
+      "description": "Há quanto tempo este processo do bot está em execução (desde o último reinício).",
+      "fields": {
+        "process": "Tempo de processo"
       }
     },
     "ban": {
@@ -59,6 +66,53 @@
       "description": "Apagadas {{count}} mensagem(ns) em {{channel}}.",
       "fields": {
         "moderator": "Moderador"
+      }
+    },
+    "userInfo": {
+      "noBadges": "Nenhum",
+      "noNickname": "Nenhum",
+      "noRoles": "Nenhum",
+      "unknown": "Desconhecido",
+      "rolesMore": "mais {{count}}",
+      "fields": {
+        "badges": "Emblemas",
+        "nickname": "Apelido",
+        "id": "ID",
+        "joined": "Entrada no servidor",
+        "created": "Conta criada",
+        "roles": "Cargos ({{count}})"
+      }
+    },
+    "serverInfo": {
+      "channelSummary": "Texto {{text}}, voz {{voice}}, categorias {{category}}, fóruns {{forum}}, palco {{stage}}, anúncios {{announcement}}, mídia {{media}}",
+      "boostSummary": "{{count}} boosts — {{tier}}",
+      "verification": {
+        "none": "Nenhuma",
+        "low": "Baixa",
+        "medium": "Média",
+        "high": "Alta",
+        "veryHigh": "Muito alta"
+      },
+      "explicitFilter": {
+        "disabled": "Desativado",
+        "membersWithoutRoles": "Escanear membros sem cargos",
+        "allMembers": "Escanear todos os membros"
+      },
+      "premiumTier": {
+        "none": "Sem nível",
+        "tier1": "Nível 1",
+        "tier2": "Nível 2",
+        "tier3": "Nível 3"
+      },
+      "fields": {
+        "id": "ID do servidor",
+        "owner": "Dono",
+        "created": "Criado",
+        "members": "Membros",
+        "channels": "Canais",
+        "boost": "Status de boosts",
+        "verification": "Nível de verificação",
+        "explicitFilter": "Filtro de mídia explícita"
       }
     }
   }

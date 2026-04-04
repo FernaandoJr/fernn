@@ -6,10 +6,10 @@ import {
 	type GuildTextBasedChannel,
 } from "discord.js"
 
-import { getTranslator } from "../../i18n/index.ts"
-import type { SlashCommand } from "../../types/command.ts"
-import { createDefaultEmbed } from "../../utils/defaultEmbed.ts"
-import { replyIfNotInGuild } from "./guards.ts"
+import { getTranslator } from "../../../i18n/index.ts"
+import type { SlashCommand } from "../../../types/command.ts"
+import { createDefaultEmbed } from "../../../utils/defaultEmbed.ts"
+import { replyIfNotInGuild } from "../guards.ts"
 
 function isGuildTextBulkDeletable(
 	channel: ChatInputCommandInteraction["channel"]

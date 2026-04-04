@@ -1,5 +1,6 @@
 import { SlashCommandBuilder } from "discord.js";
 
+import { getTranslator } from "../../i18n/index.ts";
 import type { SlashCommand } from "../../types/command.ts";
 
 export const helloCommand: SlashCommand = {
@@ -7,6 +8,8 @@ export const helloCommand: SlashCommand = {
     .setName("hello")
     .setDescription("Say hello world."),
   async execute(interaction) {
-    await interaction.reply("Hello world!");
+    const t = getTranslator(interaction.locale);
+
+    await interaction.reply(t("commands.hello.reply"));
   },
 };

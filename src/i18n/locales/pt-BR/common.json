@@ -1,0 +1,19 @@
+{
+  "errors": {
+    "commandUnavailable": "Este comando não está disponível.",
+    "commandExecutionFailed": "Algo deu errado ao executar esse comando."
+  },
+  "commands": {
+    "hello": {
+      "reply": "Olá mundo!"
+    },
+    "ping": {
+      "title": "Pong!",
+      "description": "O bot está online e respondendo.",
+      "fields": {
+        "apiLatency": "Latência da API",
+        "command": "Comando"
+      }
+    }
+  }
+}

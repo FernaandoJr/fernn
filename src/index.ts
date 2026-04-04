@@ -2,6 +2,7 @@ import { Client, Events, GatewayIntentBits } from "discord.js";
 
 import { config } from "./config.ts";
 import { commandMap } from "./commands/index.ts";
+import { getTranslator, initializeI18n } from "./i18n/index.ts";
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds],
@@ -16,11 +17,12 @@ client.on(Events.InteractionCreate, async (interaction) => {
     return;
   }
 
+  const t = getTranslator(interaction.locale);
   const command = commandMap.get(interaction.commandName);
 
   if (!command) {
     await interaction.reply({
-      content: "This command is not available.",
+      content: t("errors.commandUnavailable"),
       ephemeral: true,
     });
     return;
@@ -32,7 +34,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
     console.error(`Failed to execute /${interaction.commandName}`, error);
 
     const reply = {
-      content: "Something went wrong while running that command.",
+      content: t("errors.commandExecutionFailed"),
       ephemeral: true,
     };
 
@@ -45,4 +47,5 @@ client.on(Events.InteractionCreate, async (interaction) => {
   }
 });
 
+await initializeI18n();
 await client.login(config.token);

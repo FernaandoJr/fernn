@@ -11,7 +11,8 @@
     "typecheck": "bunx tsc --noEmit"
   },
   "dependencies": {
-    "discord.js": "^14.26.2"
+    "discord.js": "^14.26.2",
+    "i18next": "^26.0.3"
   },
   "devDependencies": {
     "@types/bun": "latest",

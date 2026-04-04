@@ -1,5 +1,6 @@
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
+import { getTranslator } from "../../i18n/index.ts";
 import type { SlashCommand } from "../../types/command.ts";
 
 export const pingCommand: SlashCommand = {
@@ -7,17 +8,18 @@ export const pingCommand: SlashCommand = {
     .setName("ping")
     .setDescription("Check whether the bot is responding."),
   async execute(interaction) {
+    const t = getTranslator(interaction.locale);
     const embed = new EmbedBuilder()
-      .setTitle("Pong!")
-      .setDescription("The bot is online and responding.")
+      .setTitle(t("commands.ping.title"))
+      .setDescription(t("commands.ping.description"))
       .addFields(
         {
-          name: "API Latency",
+          name: t("commands.ping.fields.apiLatency"),
           value: `${Math.round(interaction.client.ws.ping)} ms`,
           inline: true,
         },
         {
-          name: "Command",
+          name: t("commands.ping.fields.command"),
           value: `/${interaction.commandName}`,
           inline: true,
         },

@@ -19,6 +19,9 @@
     },
     "ship": {
       "sameUser": "Escolha dois usuários diferentes para o ship."
+    },
+    "serverlog": {
+      "invalidChannel": "Escolha um canal de texto ou de anuncios deste servidor."
     }
   },
   "commands": {
@@ -116,6 +119,76 @@
         "boost": "Status de boosts",
         "verification": "Nível de verificação",
         "explicitFilter": "Filtro de mídia explícita"
+      }
+    },
+    "serverlog": {
+      "set": {
+        "title": "Canal de logs definido",
+        "description": "Os logs do servidor serao enviados para {{channel}}. Todas as categorias ficam ativas por padrao."
+      },
+      "disable": {
+        "success": "O registro de eventos do servidor foi desativado."
+      },
+      "status": {
+        "title": "Logs do servidor",
+        "description": "Canal de logs: {{channel}}",
+        "disabled": "Nenhum log configurado. Use `/serverlog set` com um canal.",
+        "on": "Sim",
+        "off": "Nao",
+        "fields": {
+          "voice": "Voz",
+          "members": "Membros",
+          "moderation": "Moderacao",
+          "messages": "Mensagens"
+        }
+      },
+      "logs": {
+        "noReason": "Sem motivo",
+        "unknownAuthor": "Autor desconhecido",
+        "voiceJoin": {
+          "title": "Voz — entrou",
+          "description": "**{{user}}** entrou em {{channel}}."
+        },
+        "voiceLeave": {
+          "title": "Voz — saiu",
+          "description": "**{{user}}** saiu de {{channel}}."
+        },
+        "voiceMove": {
+          "title": "Voz — mudou",
+          "description": "**{{user}}** foi de {{from}} para {{to}}."
+        },
+        "memberJoin": {
+          "title": "Membro entrou",
+          "description": "**{{user}}** (`{{id}}`) entrou no servidor."
+        },
+        "memberLeave": {
+          "title": "Membro saiu",
+          "description": "**{{user}}** (`{{id}}`) saiu do servidor."
+        },
+        "modKick": {
+          "title": "Membro expulso",
+          "description": "**{{target}}** foi expulso por **{{moderator}}**.\n{{reason}}"
+        },
+        "modBan": {
+          "title": "Membro banido",
+          "description": "**{{target}}** foi banido por **{{moderator}}**.\n{{reason}}"
+        },
+        "modUnban": {
+          "title": "Banimento removido",
+          "description": "**{{target}}** foi desbanido por **{{moderator}}**.\n{{reason}}"
+        },
+        "modTimeout": {
+          "title": "Timeout atualizado",
+          "description": "**{{target}}** — timeout ate **{{until}}** por **{{moderator}}**.\n{{reason}}"
+        },
+        "messageDelete": {
+          "title": "Mensagem apagada",
+          "description": "Canal: {{channel}}\nAutor: {{author}}\nID da mensagem: {{id}}"
+        },
+        "messageBulk": {
+          "title": "Mensagens apagadas em massa",
+          "description": "**{{count}}** mensagem(ns) removidas em {{channel}}."
+        }
       }
     },
     "ship": {

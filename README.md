@@ -26,9 +26,12 @@ cp .env.example .env
 
 - `DISCORD_TOKEN`
 - `DISCORD_CLIENT_ID`
+- `MONGODB_URI` (MongoDB connection string; local or [Atlas](https://www.mongodb.com/cloud/atlas))
 - `DISCORD_GUILD_ID` for fast guild-scoped development deployments
 
 If `DISCORD_GUILD_ID` is omitted, command deployment falls back to global registration.
+
+4. **Server logging** (`/serverlog`): In the [Discord Developer Portal](https://discord.com/developers/applications) → your app → **Bot**, enable **Privileged Gateway Intents** that match the features you need (at minimum **Server Members Intent** for join/leave, and ensure intents align with the bot code — see [`docs/PROJECT_OVERVIEW.md`](docs/PROJECT_OVERVIEW.md)). Misconfigured intents cause a *disallowed intents* gateway error.
 
 ## Scripts
 

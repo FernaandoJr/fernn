@@ -1,10 +1,16 @@
-import type { SlashCommandOptionsOnlyBuilder } from "@discordjs/builders";
 import type {
-  ChatInputCommandInteraction,
-  SlashCommandBuilder,
+	SlashCommandOptionsOnlyBuilder,
+	SlashCommandSubcommandsOnlyBuilder,
+} from "@discordjs/builders";
+import type {
+	ChatInputCommandInteraction,
+	SlashCommandBuilder,
 } from "discord.js";
 
 export interface SlashCommand {
-  data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder;
-  execute(interaction: ChatInputCommandInteraction): Promise<void>;
+	data:
+		| SlashCommandBuilder
+		| SlashCommandOptionsOnlyBuilder
+		| SlashCommandSubcommandsOnlyBuilder;
+	execute(interaction: ChatInputCommandInteraction): Promise<void>;
 }

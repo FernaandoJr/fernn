@@ -19,6 +19,9 @@
     },
     "ship": {
       "sameUser": "Pick two different users to ship."
+    },
+    "serverlog": {
+      "invalidChannel": "Choose a text or announcement channel in this server."
     }
   },
   "commands": {
@@ -116,6 +119,76 @@
         "boost": "Boost status",
         "verification": "Verification level",
         "explicitFilter": "Explicit media filter"
+      }
+    },
+    "serverlog": {
+      "set": {
+        "title": "Logging channel set",
+        "description": "Server logs will be sent to {{channel}}. All event categories are enabled by default."
+      },
+      "disable": {
+        "success": "Server logging has been disabled for this server."
+      },
+      "status": {
+        "title": "Server logging",
+        "description": "Log channel: {{channel}}",
+        "disabled": "Server logging is not configured. Use `/serverlog set` with a channel.",
+        "on": "On",
+        "off": "Off",
+        "fields": {
+          "voice": "Voice",
+          "members": "Members",
+          "moderation": "Moderation",
+          "messages": "Messages"
+        }
+      },
+      "logs": {
+        "noReason": "No reason provided",
+        "unknownAuthor": "Unknown author",
+        "voiceJoin": {
+          "title": "Voice — joined",
+          "description": "**{{user}}** joined {{channel}}."
+        },
+        "voiceLeave": {
+          "title": "Voice — left",
+          "description": "**{{user}}** left {{channel}}."
+        },
+        "voiceMove": {
+          "title": "Voice — moved",
+          "description": "**{{user}}** moved from {{from}} to {{to}}."
+        },
+        "memberJoin": {
+          "title": "Member joined",
+          "description": "**{{user}}** (`{{id}}`) joined the server."
+        },
+        "memberLeave": {
+          "title": "Member left",
+          "description": "**{{user}}** (`{{id}}`) left the server."
+        },
+        "modKick": {
+          "title": "Member kicked",
+          "description": "**{{target}}** was kicked by **{{moderator}}**.\n{{reason}}"
+        },
+        "modBan": {
+          "title": "Member banned",
+          "description": "**{{target}}** was banned by **{{moderator}}**.\n{{reason}}"
+        },
+        "modUnban": {
+          "title": "Ban removed",
+          "description": "**{{target}}** was unbanned by **{{moderator}}**.\n{{reason}}"
+        },
+        "modTimeout": {
+          "title": "Timeout updated",
+          "description": "**{{target}}** — timeout until **{{until}}** by **{{moderator}}**.\n{{reason}}"
+        },
+        "messageDelete": {
+          "title": "Message deleted",
+          "description": "Channel: {{channel}}\nAuthor: {{author}}\nMessage ID: {{id}}"
+        },
+        "messageBulk": {
+          "title": "Messages bulk deleted",
+          "description": "**{{count}}** message(s) removed in {{channel}}."
+        }
       }
     },
     "ship": {

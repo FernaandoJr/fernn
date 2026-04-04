@@ -13,6 +13,7 @@ For local setup (install, env vars, scripts, Docker), see the [README](../README
 | Language | TypeScript (`strict`, `moduleResolution: "bundler"`, `allowImportingTsExtensions`, `verbatimModuleSyntax`, `noEmit` — see [`tsconfig.json`](../tsconfig.json)) |
 | Runtime / PM | [Bun](https://bun.sh/) — ESM (`"type": "module"` in [`package.json`](../package.json)) |
 | Discord API | [discord.js](https://discord.js.org/) ^14 (REST v10 for command registration) |
+| Database | [MongoDB](https://www.mongodb.com/) via [mongoose](https://mongoosejs.com/) (per-guild log channel settings) |
 | i18n | [i18next](https://www.i18next.com/) |
 | CLI styling | [chalk](https://github.com/chalk/chalk) |
 
@@ -25,7 +26,7 @@ Main npm scripts: `start`, `start:all` (deploy commands then start), `dev`, `dep
 | File | Role |
 |------|------|
 | [`index.ts`](../index.ts) (repo root) | Re-exports `./src/index.ts` — keeps Docker and tooling entry stable. |
-| [`src/index.ts`](../src/index.ts) | Bot process: `Client`, `InteractionCreate`, i18n init, `client.login`. |
+| [`src/index.ts`](../src/index.ts) | Bot process: `Client`, MongoDB connect, server log listeners, `InteractionCreate`, i18n init, `client.login`. |
 | [`src/deploy-commands.ts`](../src/deploy-commands.ts) | Registers slash commands with Discord (guild vs global — see config). |
 
 ---
@@ -50,7 +51,8 @@ sequenceDiagram
   end
 ```
 
-- **Intents** (in [`src/index.ts`](../src/index.ts)): `GatewayIntentBits.Guilds` only. Add more intents in that file if you need messages, members, voice, etc.
+- **Intents** (in [`src/index.ts`](../src/index.ts)): `Guilds`, `GuildVoiceStates`, `GuildMembers`, `GuildModeration`, `GuildMessages` — required for `/serverlog` (voice, member join/leave, audit log moderation, message deletes). Enable the same **privileged intents** in the [Discord Developer Portal](https://discord.com/developers/applications) (Bot → Privileged Gateway Intents) or the gateway will reject them.
+- **Server logging**: Configure with `/serverlog set` in a guild; the bot posts embeds to that channel only. MongoDB stores **configuration** (log channel id + category toggles) via [`GuildLogSettings`](../src/database/models/GuildLogSettings.ts) — **not** a history of log events (those exist only as Discord messages).
 - **Errors**: Unhandled errors in `execute` are caught in [`src/index.ts`](../src/index.ts); the user sees a translated ephemeral `errors.commandExecutionFailed`.
 
 ---
@@ -64,6 +66,7 @@ sequenceDiagram
 | `DISCORD_TOKEN` | yes | Bot token for login and REST. |
 | `DISCORD_CLIENT_ID` | yes | Application ID for command routes. |
 | `DISCORD_GUILD_ID` | no | If set, commands deploy to **that guild** only (fast iteration). If unset, deploy is **global** (`deployGlobally: !guildId`). |
+| `MONGODB_URI` | yes | MongoDB connection string (e.g. local or [Atlas](https://www.mongodb.com/cloud/atlas)); used for guild log channel configuration. |
 
 Template: [`.env.example`](../.env.example). Bun loads `.env` automatically (no `dotenv` package).
 
@@ -85,6 +88,12 @@ fernn/
     index.ts               # Bot bootstrap
     deploy-commands.ts       # Slash command registration script
     config.ts              # Env + deploy scope
+    database/
+      connect.ts           # mongoose.connect
+      models/
+        GuildLogSettings.ts
+    features/
+      serverLog/           # Gateway listeners + log channel helper
     types/
       command.ts           # SlashCommand interface
     commands/
@@ -94,7 +103,7 @@ fernn/
         guards.ts          # Shared guild/moderation helpers
         ban/, kick/, mute/, clear/
       utility/
-        serverInfo/, userInfo/   # userInfo may include utils/ subfolder
+        serverInfo/, serverlog/, userInfo/   # userInfo may include utils/ subfolder
     i18n/
       index.ts
       locales/

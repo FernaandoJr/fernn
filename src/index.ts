@@ -14,6 +14,7 @@ import {
 	logChatCommandExecuted,
 	logChatCommandFailed,
 } from "./utils/interactionLog.ts"
+import { startPresenceCycle } from "./utils/startPresenceCycle.ts"
 
 const client = new Client({
 	intents: [
@@ -29,6 +30,7 @@ client.once(Events.ClientReady, (readyClient) => {
 	console.log(
 		`${chalk.cyan("Logged in as")} ${chalk.white(readyClient.user.tag)}`
 	)
+	startPresenceCycle(readyClient)
 })
 
 client.on(Events.InteractionCreate, async (interaction) => {

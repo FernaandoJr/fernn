@@ -11,6 +11,7 @@
       "targetNotBannable": "No puedo banear a este usuario. Revisa la jerarquia de roles y mis permisos.",
       "targetNotKickable": "No puedo expulsar a este miembro. Revisa la jerarquia de roles y mis permisos.",
       "targetNotModeratable": "No puedo silenciar por tiempo a este miembro. Revisa la jerarquia de roles y mis permisos.",
+      "targetNotNicknamable": "No puedo cambiar el apodo de este miembro. Revisa la jerarquia de roles y mis permisos.",
       "clearNotTextChannel": "Este comando solo funciona en canales de texto del servidor.",
       "clearFailed": "No se pudieron borrar mensajes en este canal."
     },
@@ -64,6 +65,18 @@
       "durationValue": "{{seconds}} s",
       "fields": {
         "duration": "Duracion",
+        "reason": "Motivo",
+        "moderator": "Moderador"
+      }
+    },
+    "nickname": {
+      "title": "Apodo actualizado",
+      "description": "Se actualizo el apodo del servidor de {{target}}.",
+      "noNickname": "Ninguno",
+      "noReasonProvided": "Sin motivo.",
+      "fields": {
+        "before": "Antes",
+        "after": "Despues",
         "reason": "Motivo",
         "moderator": "Moderador"
       }

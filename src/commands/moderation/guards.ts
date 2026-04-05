@@ -46,11 +46,11 @@ export async function ensureModerationTarget(
 	interaction: ChatInputCommandInteraction,
 	targetUser: User,
 	targetMember: GuildMember | null,
-	action: "ban" | "kick" | "mute"
+	action: "ban" | "kick" | "mute" | "nickname"
 ): Promise<boolean> {
 	const t = getTranslator(interaction.locale)
 
-	if (targetUser.id === interaction.user.id) {
+	if (action !== "nickname" && targetUser.id === interaction.user.id) {
 		await interaction.reply({
 			content: t("errors.moderation.cannotModerateSelf"),
 			ephemeral: true,
@@ -58,7 +58,7 @@ export async function ensureModerationTarget(
 		return false
 	}
 
-	if (targetUser.id === interaction.client.user.id) {
+	if (action !== "nickname" && targetUser.id === interaction.client.user.id) {
 		await interaction.reply({
 			content: t("errors.moderation.cannotModerateBot"),
 			ephemeral: true,
@@ -106,6 +106,14 @@ export async function ensureModerationTarget(
 	if (action === "ban" && targetMember && !targetMember.bannable) {
 		await interaction.reply({
 			content: t("errors.moderation.targetNotBannable"),
+			ephemeral: true,
+		})
+		return false
+	}
+
+	if (action === "nickname" && targetMember && !targetMember.manageable) {
+		await interaction.reply({
+			content: t("errors.moderation.targetNotNicknamable"),
 			ephemeral: true,
 		})
 		return false

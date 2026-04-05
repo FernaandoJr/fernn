@@ -11,6 +11,7 @@
       "targetNotBannable": "I cannot ban this user. Check role hierarchy and my permissions.",
       "targetNotKickable": "I cannot kick this member. Check role hierarchy and my permissions.",
       "targetNotModeratable": "I cannot timeout this member. Check role hierarchy and my permissions.",
+      "targetNotNicknamable": "I cannot change this member's nickname. Check role hierarchy and my permissions.",
       "clearNotTextChannel": "This command only works in server text channels.",
       "clearFailed": "Could not delete messages in this channel."
     },
@@ -64,6 +65,18 @@
       "durationValue": "{{seconds}} s",
       "fields": {
         "duration": "Duration",
+        "reason": "Reason",
+        "moderator": "Moderator"
+      }
+    },
+    "nickname": {
+      "title": "Nickname updated",
+      "description": "{{target}}'s server nickname was updated.",
+      "noNickname": "None",
+      "noReasonProvided": "No reason provided.",
+      "fields": {
+        "before": "Before",
+        "after": "After",
         "reason": "Reason",
         "moderator": "Moderator"
       }

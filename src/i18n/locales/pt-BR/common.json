@@ -11,6 +11,7 @@
       "targetNotBannable": "Não consigo banir este usuário. Verifique a hierarquia de cargos e minhas permissões.",
       "targetNotKickable": "Não consigo expulsar este membro. Verifique a hierarquia de cargos e minhas permissões.",
       "targetNotModeratable": "Não consigo aplicar timeout neste membro. Verifique a hierarquia de cargos e minhas permissões.",
+      "targetNotNicknamable": "Não consigo alterar o apelido deste membro. Verifique a hierarquia de cargos e minhas permissões.",
       "clearNotTextChannel": "Este comando só funciona em canais de texto do servidor.",
       "clearFailed": "Não foi possível apagar mensagens neste canal."
     },
@@ -64,6 +65,18 @@
       "durationValue": "{{seconds}} s",
       "fields": {
         "duration": "Duração",
+        "reason": "Motivo",
+        "moderator": "Moderador"
+      }
+    },
+    "nickname": {
+      "title": "Apelido atualizado",
+      "description": "O apelido no servidor de {{target}} foi atualizado.",
+      "noNickname": "Nenhum",
+      "noReasonProvided": "Sem motivo.",
+      "fields": {
+        "before": "Antes",
+        "after": "Depois",
         "reason": "Motivo",
         "moderator": "Moderador"
       }

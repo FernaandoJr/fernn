@@ -6,6 +6,7 @@ import { clearCommand } from "./moderation/clear/index.ts"
 import { kickCommand } from "./moderation/kick/index.ts"
 import { muteCommand } from "./moderation/mute/index.ts"
 import { nicknameCommand } from "./moderation/nickname/index.ts"
+import { serverIconCommand } from "./utility/serverIcon/index.ts"
 import { serverInfoCommand } from "./utility/serverInfo/index.ts"
 import { serverLogCommand } from "./utility/serverlog/index.ts"
 import { userInfoCommand } from "./utility/userInfo/index.ts"
@@ -24,6 +25,7 @@ export const commands: SlashCommand[] = [
 	userInfoCommand,
 	serverInfoCommand,
 	serverLogCommand,
+	serverIconCommand,
 ]
 
 export const commandMap = new Map(

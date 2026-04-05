@@ -24,6 +24,17 @@
     "serverlog": {
       "invalidChannel": "Escolha um canal de texto ou de anuncios deste servidor.",
       "noPermission": "Voce precisa de **Gerenciar servidor** para configurar os logs."
+    },
+    "servericon": {
+      "guildOnly": "Este comando só pode ser usado em um servidor.",
+      "storageUnavailable": "Não foi possível acessar o armazenamento de imagens. Tente de novo.",
+      "invalidImage": "Não foi possível processar esse arquivo. Use PNG, JPEG, WebP ou GIF.",
+      "imageTooLarge": "Esse arquivo é grande demais.",
+      "maxImages": "Este servidor atingiu o máximo de imagens salvas.",
+      "invalidId": "Esse id de imagem não é válido.",
+      "notFound": "Nenhuma imagem com esse id foi encontrada.",
+      "botCannotManageGuild": "Preciso de **Gerenciar servidor** para alterar o ícone do servidor.",
+      "noPanelPermission": "Você precisa de **Gerenciar servidor** para usar este painel."
     }
   },
   "commands": {
@@ -86,6 +97,28 @@
       "description": "Apagadas {{count}} mensagem(ns) em {{channel}}.",
       "fields": {
         "moderator": "Moderador"
+      }
+    },
+    "servericon": {
+      "panel": {
+        "title": "Biblioteca de ícone do servidor",
+        "noLabel": "Sem rótulo",
+        "selectInterval": "Intervalo de rotação (minutos)",
+        "intervalMinutes": "{{minutes}} min",
+        "buttonToggleWhenOff": "Ativar rotação",
+        "buttonToggleWhenOn": "Desativar rotação",
+        "removePlaceholder": "Remover uma imagem…",
+        "buttonRefresh": "Atualizar",
+        "embed": {
+          "rotationOn": "Rotação: **ligada**",
+          "rotationOff": "Rotação: **desligada**",
+          "intervalLine": "**Intervalo:** {{minutes}} min",
+          "libraryLine": "**Imagens salvas:** {{count}} / {{max}}",
+          "imagesSection": "**Imagens**",
+          "imageLine": "{{label}} — <@{{userId}}>",
+          "noImages": "_Nenhuma ainda._",
+          "hint": "Anexe uma imagem ao usar `/server-icon` para adicioná-la à biblioteca."
+        }
       }
     },
     "userInfo": {

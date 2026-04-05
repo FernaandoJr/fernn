@@ -24,6 +24,17 @@
     "serverlog": {
       "invalidChannel": "Choose a text or announcement channel in this server.",
       "noPermission": "You need **Manage Server** to configure logging."
+    },
+    "servericon": {
+      "guildOnly": "This command can only be used in a server.",
+      "storageUnavailable": "Could not reach image storage. Try again later.",
+      "invalidImage": "Could not process that file. Use a PNG, JPEG, WebP, or GIF.",
+      "imageTooLarge": "That file is too large.",
+      "maxImages": "This server has reached the maximum number of saved images.",
+      "invalidId": "That is not a valid image id.",
+      "notFound": "No image with that id was found.",
+      "botCannotManageGuild": "I need **Manage Server** to change the server icon.",
+      "noPanelPermission": "You need **Manage Server** to use this panel."
     }
   },
   "commands": {
@@ -86,6 +97,28 @@
       "description": "Deleted {{count}} message(s) in {{channel}}.",
       "fields": {
         "moderator": "Moderator"
+      }
+    },
+    "servericon": {
+      "panel": {
+        "title": "Server icon library",
+        "noLabel": "No label",
+        "selectInterval": "Rotation interval (minutes)",
+        "intervalMinutes": "{{minutes}} min",
+        "buttonToggleWhenOff": "Turn rotation on",
+        "buttonToggleWhenOn": "Turn rotation off",
+        "removePlaceholder": "Remove an image…",
+        "buttonRefresh": "Refresh",
+        "embed": {
+          "rotationOn": "Rotation: **on**",
+          "rotationOff": "Rotation: **off**",
+          "intervalLine": "**Interval:** {{minutes}} min",
+          "libraryLine": "**Saved images:** {{count}} / {{max}}",
+          "imagesSection": "**Images**",
+          "imageLine": "{{label}} — <@{{userId}}>",
+          "noImages": "_None yet._",
+          "hint": "Attach an image when running `/server-icon` to add it to the library."
+        }
       }
     },
     "userInfo": {

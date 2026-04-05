@@ -24,6 +24,17 @@
     "serverlog": {
       "invalidChannel": "Elige un canal de texto o de anuncios de este servidor.",
       "noPermission": "Necesitas **Gestionar servidor** para configurar los registros."
+    },
+    "servericon": {
+      "guildOnly": "Este comando solo se puede usar en un servidor.",
+      "storageUnavailable": "No se pudo acceder al almacenamiento de imagenes. Intenta de nuevo.",
+      "invalidImage": "No se pudo procesar ese archivo. Usa PNG, JPEG, WebP o GIF.",
+      "imageTooLarge": "Ese archivo es demasiado grande.",
+      "maxImages": "Este servidor alcanzo el maximo de imagenes guardadas.",
+      "invalidId": "Ese id de imagen no es valido.",
+      "notFound": "No hay ninguna imagen con ese id.",
+      "botCannotManageGuild": "Necesito **Gestionar servidor** para cambiar el icono del servidor.",
+      "noPanelPermission": "Necesitas **Gestionar servidor** para usar este panel."
     }
   },
   "commands": {
@@ -86,6 +97,28 @@
       "description": "Se borraron {{count}} mensaje(s) en {{channel}}.",
       "fields": {
         "moderator": "Moderador"
+      }
+    },
+    "servericon": {
+      "panel": {
+        "title": "Biblioteca de icono del servidor",
+        "noLabel": "Sin etiqueta",
+        "selectInterval": "Intervalo de rotacion (minutos)",
+        "intervalMinutes": "{{minutes}} min",
+        "buttonToggleWhenOff": "Activar rotacion",
+        "buttonToggleWhenOn": "Desactivar rotacion",
+        "removePlaceholder": "Quitar una imagen…",
+        "buttonRefresh": "Actualizar",
+        "embed": {
+          "rotationOn": "Rotacion: **activada**",
+          "rotationOff": "Rotacion: **desactivada**",
+          "intervalLine": "**Intervalo:** {{minutes}} min",
+          "libraryLine": "**Imagenes guardadas:** {{count}} / {{max}}",
+          "imagesSection": "**Imagenes**",
+          "imageLine": "{{label}} — <@{{userId}}>",
+          "noImages": "_Ninguna por ahora._",
+          "hint": "Adjunta una imagen al usar `/server-icon` para anadirla a la biblioteca."
+        }
       }
     },
     "userInfo": {

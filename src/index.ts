@@ -5,6 +5,10 @@ import { commandMap } from "./commands/index.ts"
 import { config } from "./config.ts"
 import { connectDatabase } from "./database/connect.ts"
 import {
+	handleServerIconPanelInteraction,
+	SERVERICON_PANEL_PREFIX,
+} from "./features/serverIcon/panel.ts"
+import {
 	handleServerLogPanelInteraction,
 	SERVERLOG_PANEL_PREFIX,
 } from "./features/serverLog/panel.ts"
@@ -14,6 +18,7 @@ import {
 	logChatCommandExecuted,
 	logChatCommandFailed,
 } from "./utils/interactionLog.ts"
+import { startServerIconRotationScheduler } from "./features/serverIcon/scheduler.ts"
 import { startPresenceCycle } from "./utils/startPresenceCycle.ts"
 
 const client = new Client({
@@ -31,6 +36,7 @@ client.once(Events.ClientReady, (readyClient) => {
 		`${chalk.cyan("Logged in as")} ${chalk.white(readyClient.user.tag)}`
 	)
 	startPresenceCycle(readyClient)
+	startServerIconRotationScheduler(readyClient)
 })
 
 client.on(Events.InteractionCreate, async (interaction) => {
@@ -42,6 +48,18 @@ client.on(Events.InteractionCreate, async (interaction) => {
 	) {
 		try {
 			await handleServerLogPanelInteraction(interaction)
+		} catch (error) {
+			console.error(error)
+		}
+		return
+	}
+
+	if (
+		(interaction.isStringSelectMenu() || interaction.isButton()) &&
+		interaction.customId?.startsWith(SERVERICON_PANEL_PREFIX)
+	) {
+		try {
+			await handleServerIconPanelInteraction(interaction)
 		} catch (error) {
 			console.error(error)
 		}

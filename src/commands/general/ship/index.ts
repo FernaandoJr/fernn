@@ -5,17 +5,18 @@ import {
 	userMention,
 } from "discord.js"
 
+import { colors } from "../../../constants/colors.ts"
 import { getTranslator } from "../../../i18n/index.ts"
 import type { SlashCommand } from "../../../types/command.ts"
 import { createDefaultEmbed } from "../../../utils/defaultEmbed.ts"
 import { replyIfNotInGuild } from "../../moderation/guards.ts"
+import { renderShipBanner } from "./utils/renderShipBanner.ts"
 import {
 	shipMessageIndex,
 	shipPercentFromPairKey,
 	shipTierForPercent,
 	sortedPairKey,
 } from "./utils/shipPair.ts"
-import { renderShipBanner } from "./utils/renderShipBanner.ts"
 
 function isStringArray(value: unknown): value is string[] {
 	return Array.isArray(value) && value.every((x) => typeof x === "string")
@@ -25,20 +26,20 @@ export const shipCommand: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("ship")
 		.setDescription(
-			"Compatibility calculator — deterministic score for two users.",
+			"Compatibility calculator — deterministic score for two users."
 		)
 		.setContexts(InteractionContextType.Guild)
 		.addUserOption((option) =>
 			option
 				.setName("user1")
 				.setDescription("First user")
-				.setRequired(true),
+				.setRequired(true)
 		)
 		.addUserOption((option) =>
 			option
 				.setName("user2")
 				.setDescription("Second user")
-				.setRequired(true),
+				.setRequired(true)
 		),
 	async execute(interaction) {
 		const t = getTranslator(interaction.locale)
@@ -67,12 +68,14 @@ export const shipCommand: SlashCommand = {
 		})
 		const messages = isStringArray(messagesRaw) ? messagesRaw : []
 		const idx = shipMessageIndex(pairKey, tierKey, messages.length)
-		const verdict =
-			messages[idx] ?? t("commands.ship.fallbackVerdict")
+		const verdict = messages[idx] ?? t("commands.ship.fallbackVerdict")
 
-		const pairLabel = `${userMention(user1.id)} ${t("commands.ship.pairSeparator")} ${userMention(user2.id)}`
+		const pairLabel = `${userMention(user1.id)} ${t(
+			"commands.ship.pairSeparator"
+		)} ${userMention(user2.id)}`
 
 		const embed = createDefaultEmbed({
+			color: colors.primary,
 			title: t("commands.ship.title"),
 			description: t("commands.ship.description", { pair: pairLabel }),
 		}).addFields(
@@ -85,7 +88,7 @@ export const shipCommand: SlashCommand = {
 				name: t("commands.ship.fields.verdict"),
 				value: verdict,
 				inline: false,
-			},
+			}
 		)
 
 		let files: AttachmentBuilder[] | undefined
@@ -98,6 +101,9 @@ export const shipCommand: SlashCommand = {
 			// Banner is optional; embed still works without avatar composite.
 		}
 
-		await interaction.reply({ embeds: [embed], ...(files ? { files } : {}) })
+		await interaction.reply({
+			embeds: [embed],
+			...(files ? { files } : {}),
+		})
 	},
 }

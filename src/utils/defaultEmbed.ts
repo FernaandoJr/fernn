@@ -1,6 +1,8 @@
 import { EmbedBuilder, type ColorResolvable } from "discord.js"
 
-export const DEFAULT_EMBED_COLOR = 0x5865f2 as const
+import { colors } from "../constants/colors.ts"
+
+export const DEFAULT_EMBED_COLOR = colors.primary
 
 export type DefaultEmbedOptions = {
 	title?: string
@@ -8,7 +10,9 @@ export type DefaultEmbedOptions = {
 	color?: ColorResolvable
 }
 
-export function createDefaultEmbed(options?: DefaultEmbedOptions): EmbedBuilder {
+export function createDefaultEmbed(
+	options?: DefaultEmbedOptions
+): EmbedBuilder {
 	const embed = new EmbedBuilder()
 		.setColor(options?.color ?? DEFAULT_EMBED_COLOR)
 		.setTimestamp()
@@ -21,4 +25,11 @@ export function createDefaultEmbed(options?: DefaultEmbedOptions): EmbedBuilder 
 	}
 
 	return embed
+}
+
+export function createLogEmbed(options?: DefaultEmbedOptions): EmbedBuilder {
+	return createDefaultEmbed({
+		...options,
+		color: options?.color ?? colors.info,
+	})
 }

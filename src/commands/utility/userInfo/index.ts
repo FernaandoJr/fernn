@@ -7,6 +7,7 @@ import {
 	userMention,
 } from "discord.js"
 
+import { colors } from "../../../constants/colors.ts"
 import { getTranslator } from "../../../i18n/index.ts"
 import type { SlashCommand } from "../../../types/command.ts"
 import { createDefaultEmbed } from "../../../utils/defaultEmbed.ts"
@@ -95,6 +96,7 @@ export const userInfoCommand: SlashCommand = {
 			member.displayName ?? user.globalName ?? user.username
 
 		const embed = createDefaultEmbed({
+			color: colors.info,
 			description: userMention(user.id),
 		})
 			.setAuthor({

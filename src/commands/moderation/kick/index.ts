@@ -4,6 +4,7 @@ import {
 	SlashCommandBuilder,
 } from "discord.js"
 
+import { colors } from "../../../constants/colors.ts"
 import { getTranslator } from "../../../i18n/index.ts"
 import type { SlashCommand } from "../../../types/command.ts"
 import { createDefaultEmbed } from "../../../utils/defaultEmbed.ts"
@@ -61,6 +62,7 @@ export const kickCommand: SlashCommand = {
 		await targetMember!.kick(reason)
 
 		const embed = createDefaultEmbed({
+			color: colors.success,
 			title: t("commands.kick.title"),
 			description: t("commands.kick.description", { target: targetUser.tag }),
 		}).addFields(

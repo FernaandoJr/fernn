@@ -11,6 +11,7 @@ import {
 	type Guild,
 } from "discord.js"
 
+import { colors } from "../../../constants/colors.ts"
 import { getTranslator } from "../../../i18n/index.ts"
 import type { SlashCommand } from "../../../types/command.ts"
 import { createDefaultEmbed } from "../../../utils/defaultEmbed.ts"
@@ -153,6 +154,7 @@ export const serverInfoCommand: SlashCommand = {
 		})
 
 		const embed = createDefaultEmbed({
+			color: colors.info,
 			title: guild.name,
 			description: guild.description ?? undefined,
 		})

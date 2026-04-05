@@ -8,7 +8,7 @@ import {
 
 import { getGuildLogSettings } from "../../database/models/GuildLogSettings.ts"
 import { getTranslator } from "../../i18n/index.ts"
-import { createDefaultEmbed } from "../../utils/defaultEmbed.ts"
+import { createLogEmbed } from "../../utils/defaultEmbed.ts"
 import { sendGuildLogEmbed } from "./logChannel.ts"
 
 const LEAVE_AUDIT_WINDOW_MS = 10_000
@@ -70,7 +70,7 @@ async function sendModerationAuditEmbed(
 		client,
 		guildId,
 		"moderation",
-		createDefaultEmbed({
+		createLogEmbed({
 			title: t(`${base}.title`),
 			description: t(`${base}.description`, {
 				target: auditTargetName(entry),
@@ -100,7 +100,7 @@ export function registerServerLogListeners(client: Client): void {
 				client,
 				guildId,
 				"voice",
-				createDefaultEmbed({
+				createLogEmbed({
 					title: t("commands.serverlog.logs.voiceJoin.title"),
 					description: t("commands.serverlog.logs.voiceJoin.description", {
 						user: member.user.tag,
@@ -117,7 +117,7 @@ export function registerServerLogListeners(client: Client): void {
 				client,
 				guildId,
 				"voice",
-				createDefaultEmbed({
+				createLogEmbed({
 					title: t("commands.serverlog.logs.voiceLeave.title"),
 					description: t("commands.serverlog.logs.voiceLeave.description", {
 						user: member.user.tag,
@@ -135,7 +135,7 @@ export function registerServerLogListeners(client: Client): void {
 				client,
 				guildId,
 				"voice",
-				createDefaultEmbed({
+				createLogEmbed({
 					title: t("commands.serverlog.logs.voiceMove.title"),
 					description: t("commands.serverlog.logs.voiceMove.description", {
 						user: member.user.tag,
@@ -154,7 +154,7 @@ export function registerServerLogListeners(client: Client): void {
 			client,
 			guildId,
 			"members",
-			createDefaultEmbed({
+			createLogEmbed({
 				title: t("commands.serverlog.logs.memberJoin.title"),
 				description: t("commands.serverlog.logs.memberJoin.description", {
 					user: member.user.tag,
@@ -185,7 +185,7 @@ export function registerServerLogListeners(client: Client): void {
 			client,
 			guildId,
 			"members",
-			createDefaultEmbed({
+			createLogEmbed({
 				title: t("commands.serverlog.logs.memberLeave.title"),
 				description: t("commands.serverlog.logs.memberLeave.description", {
 					user: member.user.tag,
@@ -259,7 +259,7 @@ export function registerServerLogListeners(client: Client): void {
 			client,
 			guildId,
 			"members",
-			createDefaultEmbed({
+			createLogEmbed({
 				title: t("commands.serverlog.logs.memberUpdate.title"),
 				description: t("commands.serverlog.logs.memberUpdate.description", {
 					user: newMember.user.tag,
@@ -304,7 +304,7 @@ export function registerServerLogListeners(client: Client): void {
 				client,
 				guildId,
 				"moderation",
-				createDefaultEmbed({
+				createLogEmbed({
 					title: t("commands.serverlog.logs.modTimeout.title"),
 					description: t("commands.serverlog.logs.modTimeout.description", {
 						target: name,
@@ -331,7 +331,7 @@ export function registerServerLogListeners(client: Client): void {
 			client,
 			guildId,
 			"messages",
-			createDefaultEmbed({
+			createLogEmbed({
 				title: t("commands.serverlog.logs.messageDelete.title"),
 				description: t("commands.serverlog.logs.messageDelete.description", {
 					channel: message.channel.isTextBased()
@@ -355,7 +355,7 @@ export function registerServerLogListeners(client: Client): void {
 			client,
 			guildId,
 			"messages",
-			createDefaultEmbed({
+			createLogEmbed({
 				title: t("commands.serverlog.logs.messageBulk.title"),
 				description: t("commands.serverlog.logs.messageBulk.description", {
 					count: messages.size,

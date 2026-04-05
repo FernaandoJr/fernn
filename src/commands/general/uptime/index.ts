@@ -1,5 +1,6 @@
 import { SlashCommandBuilder } from "discord.js"
 
+import { colors } from "../../../constants/colors.ts"
 import { getTranslator } from "../../../i18n/index.ts"
 import type { SlashCommand } from "../../../types/command.ts"
 import { createDefaultEmbed } from "../../../utils/defaultEmbed.ts"
@@ -29,6 +30,7 @@ export const uptimeCommand: SlashCommand = {
 		const uptimeSec = process.uptime()
 
 		const embed = createDefaultEmbed({
+			color: colors.info,
 			title: t("commands.uptime.title"),
 			description: t("commands.uptime.description"),
 		}).addFields({

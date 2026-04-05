@@ -190,7 +190,7 @@
       "status": {
         "title": "Registro del servidor",
         "description": "Canal de registros: {{channel}}",
-        "disabled": "El registro no esta configurado. Usa `/serverlog`.",
+        "disabled": "El registro no esta configurado. Usa `/server-log`.",
         "on": "Si",
         "off": "No",
         "fields": {
@@ -230,7 +230,7 @@
           "nickname": "**Apodo** — {{before}} → {{after}}",
           "rolesAdded": "**Cargos agregados** — {{list}}",
           "rolesRemoved": "**Cargos quitados** — {{list}}",
-          "guildAvatar": "**Avatar del perfil del servidor** actualizado"
+          "serverProfileAvatar": "**Avatar del perfil del servidor** actualizado"
         },
         "modKick": {
           "title": "Miembro expulsado",

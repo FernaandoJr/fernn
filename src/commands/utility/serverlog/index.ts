@@ -11,7 +11,7 @@ import { replyIfNotInGuild } from "../../moderation/guards.ts"
 
 export const serverLogCommand: SlashCommand = {
 	data: new SlashCommandBuilder()
-		.setName("serverlog")
+		.setName("server-log")
 		.setDescription(
 			"Open the log channel and category settings (channel select, multi-select, disable)."
 		)

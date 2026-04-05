@@ -190,7 +190,7 @@
       "status": {
         "title": "Logs do servidor",
         "description": "Canal de logs: {{channel}}",
-        "disabled": "Nenhum log configurado. Use `/serverlog`.",
+        "disabled": "Nenhum log configurado. Use `/server-log`.",
         "on": "Sim",
         "off": "Nao",
         "fields": {
@@ -230,7 +230,7 @@
           "nickname": "**Apelido** — {{before}} → {{after}}",
           "rolesAdded": "**Cargos adicionados** — {{list}}",
           "rolesRemoved": "**Cargos removidos** — {{list}}",
-          "guildAvatar": "**Avatar do perfil no servidor** atualizado"
+          "serverProfileAvatar": "**Avatar do perfil no servidor** atualizado"
         },
         "modKick": {
           "title": "Membro expulso",

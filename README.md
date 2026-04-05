@@ -31,7 +31,7 @@ cp .env.example .env
 
 If `DISCORD_GUILD_ID` is omitted, command deployment falls back to global registration.
 
-4. **Server logging** (`/serverlog`): In the [Discord Developer Portal](https://discord.com/developers/applications) → your app → **Bot**, enable **Privileged Gateway Intents** that match the features you need (at minimum **Server Members Intent** for join/leave, and ensure intents align with the bot code — see [`docs/PROJECT_OVERVIEW.md`](docs/PROJECT_OVERVIEW.md)). Misconfigured intents cause a *disallowed intents* gateway error.
+4. **Server logging** (`/server-log`): In the [Discord Developer Portal](https://discord.com/developers/applications) → your app → **Bot**, enable **Privileged Gateway Intents** that match the features you need (at minimum **Server Members Intent** for join/leave, and ensure intents align with the bot code — see [`docs/PROJECT_OVERVIEW.md`](docs/PROJECT_OVERVIEW.md)). Misconfigured intents cause a *disallowed intents* gateway error.
 
 ## Scripts
 

@@ -190,7 +190,7 @@
       "status": {
         "title": "Server logging",
         "description": "Log channel: {{channel}}",
-        "disabled": "Server logging is not configured. Use `/serverlog`.",
+        "disabled": "Server logging is not configured. Use `/server-log`.",
         "on": "On",
         "off": "Off",
         "fields": {
@@ -230,7 +230,7 @@
           "nickname": "**Nickname** — {{before}} → {{after}}",
           "rolesAdded": "**Roles added** — {{list}}",
           "rolesRemoved": "**Roles removed** — {{list}}",
-          "guildAvatar": "**Server profile avatar** updated"
+          "serverProfileAvatar": "**Server profile avatar** updated"
         },
         "modKick": {
           "title": "Member kicked",

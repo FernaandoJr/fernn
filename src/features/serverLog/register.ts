@@ -6,10 +6,10 @@ import {
 	type GuildAuditLogsEntry,
 } from "discord.js"
 
-import { getGuildLogSettings } from "../../database/models/GuildLogSettings.ts"
+import { getServerLogSettings } from "../../database/models/ServerLogSettings.ts"
 import { getTranslator } from "../../i18n/index.ts"
 import { createLogEmbed } from "../../utils/defaultEmbed.ts"
-import { sendGuildLogEmbed } from "./logChannel.ts"
+import { sendServerLogEmbed } from "./logChannel.ts"
 
 const LEAVE_AUDIT_WINDOW_MS = 10_000
 
@@ -66,7 +66,7 @@ async function sendModerationAuditEmbed(
 	const key =
 		kind === "kick" ? "modKick" : kind === "ban" ? "modBan" : "modUnban"
 	const base = `commands.serverlog.logs.${key}`
-	await sendGuildLogEmbed(
+	await sendServerLogEmbed(
 		client,
 		guildId,
 		"moderation",
@@ -96,7 +96,7 @@ export function registerServerLogListeners(client: Client): void {
 
 		if (!oldId && newId) {
 			const channel = newState.channel
-			await sendGuildLogEmbed(
+			await sendServerLogEmbed(
 				client,
 				guildId,
 				"voice",
@@ -113,7 +113,7 @@ export function registerServerLogListeners(client: Client): void {
 
 		if (oldId && !newId) {
 			const channel = oldState.channel
-			await sendGuildLogEmbed(
+			await sendServerLogEmbed(
 				client,
 				guildId,
 				"voice",
@@ -131,7 +131,7 @@ export function registerServerLogListeners(client: Client): void {
 		if (oldId && newId && oldId !== newId) {
 			const oldCh = oldState.channel
 			const newCh = newState.channel
-			await sendGuildLogEmbed(
+			await sendServerLogEmbed(
 				client,
 				guildId,
 				"voice",
@@ -150,7 +150,7 @@ export function registerServerLogListeners(client: Client): void {
 	client.on(Events.GuildMemberAdd, async (member) => {
 		const guildId = member.guild.id
 		const t = getTranslator(member.guild.preferredLocale)
-		await sendGuildLogEmbed(
+		await sendServerLogEmbed(
 			client,
 			guildId,
 			"members",
@@ -167,7 +167,7 @@ export function registerServerLogListeners(client: Client): void {
 	client.on(Events.GuildMemberRemove, async (member) => {
 		const guild = member.guild
 		const guildId = guild.id
-		const settings = await getGuildLogSettings(guildId)
+		const settings = await getServerLogSettings(guildId)
 		if (!settings?.enabled || !settings.events.members) {
 			return
 		}
@@ -181,7 +181,7 @@ export function registerServerLogListeners(client: Client): void {
 			}
 		}
 		const t = getTranslator(guild.preferredLocale)
-		await sendGuildLogEmbed(
+		await sendServerLogEmbed(
 			client,
 			guildId,
 			"members",
@@ -198,7 +198,7 @@ export function registerServerLogListeners(client: Client): void {
 
 	client.on(Events.GuildMemberUpdate, async (oldMember, newMember) => {
 		const guildId = newMember.guild.id
-		const settings = await getGuildLogSettings(guildId)
+		const settings = await getServerLogSettings(guildId)
 		if (!settings?.enabled || !settings.events.members) {
 			return
 		}
@@ -212,13 +212,13 @@ export function registerServerLogListeners(client: Client): void {
 		)
 
 		const nickChanged = oldMember.nickname !== newMember.nickname
-		const guildAvatarChanged = oldMember.avatar !== newMember.avatar
+		const serverProfileAvatarChanged = oldMember.avatar !== newMember.avatar
 
 		if (
 			!nickChanged &&
 			added.size === 0 &&
 			removed.size === 0 &&
-			!guildAvatarChanged
+			!serverProfileAvatarChanged
 		) {
 			return
 		}
@@ -251,11 +251,13 @@ export function registerServerLogListeners(client: Client): void {
 			)
 		}
 
-		if (guildAvatarChanged) {
-			lines.push(t("commands.serverlog.logs.memberUpdate.guildAvatar"))
+		if (serverProfileAvatarChanged) {
+			lines.push(
+				t("commands.serverlog.logs.memberUpdate.serverProfileAvatar")
+			)
 		}
 
-		await sendGuildLogEmbed(
+		await sendServerLogEmbed(
 			client,
 			guildId,
 			"members",
@@ -300,7 +302,7 @@ export function registerServerLogListeners(client: Client): void {
 					until = nv ? new Date(nv).toISOString() : ""
 				}
 			}
-			await sendGuildLogEmbed(
+			await sendServerLogEmbed(
 				client,
 				guildId,
 				"moderation",
@@ -327,7 +329,7 @@ export function registerServerLogListeners(client: Client): void {
 		const author = message.author
 			? `${message.author.tag} (${message.author.id})`
 			: t("commands.serverlog.logs.unknownAuthor")
-		await sendGuildLogEmbed(
+		await sendServerLogEmbed(
 			client,
 			guildId,
 			"messages",
@@ -351,7 +353,7 @@ export function registerServerLogListeners(client: Client): void {
 		const guild = channel.guild
 		const guildId = guild.id
 		const t = getTranslator(guild.preferredLocale)
-		await sendGuildLogEmbed(
+		await sendServerLogEmbed(
 			client,
 			guildId,
 			"messages",

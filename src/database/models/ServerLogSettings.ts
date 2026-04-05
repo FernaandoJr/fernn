@@ -1,38 +1,38 @@
 import mongoose, { type Document, Schema } from "mongoose"
 
 /**
- * MongoDB stores only per-guild configuration: which channel receives logs and which
+ * MongoDB stores only per-server configuration: which channel receives logs and which
  * categories are enabled. Individual log events are not written to the database;
  * they are sent as messages to the configured Discord channel only.
  */
-export type GuildLogEventFlags = {
+export type ServerLogEventFlags = {
 	voice: boolean
 	members: boolean
 	moderation: boolean
 	messages: boolean
 }
 
-export type GuildLogSettingsDoc = {
+export type ServerLogSettingsDoc = {
 	guildId: string
 	channelId: string | null
 	enabled: boolean
-	events: GuildLogEventFlags
+	events: ServerLogEventFlags
 }
 
-type GuildLogSettingsDocument = GuildLogSettingsDoc &
+type ServerLogSettingsDocument = ServerLogSettingsDoc &
 	Document & {
 		createdAt?: Date
 		updatedAt?: Date
 	}
 
-const defaultEvents = (): GuildLogEventFlags => ({
+const defaultEvents = (): ServerLogEventFlags => ({
 	voice: true,
 	members: true,
 	moderation: true,
 	messages: true,
 })
 
-const GuildLogSettingsSchema = new Schema(
+const ServerLogSettingsSchema = new Schema(
 	{
 		guildId: { type: String, required: true, unique: true, index: true },
 		channelId: { type: String, default: null },
@@ -44,21 +44,21 @@ const GuildLogSettingsSchema = new Schema(
 			messages: { type: Boolean, default: true },
 		},
 	},
-	{ timestamps: true }
+	{ timestamps: true, collection: "serverlogsettings" }
 )
 
-export const GuildLogSettingsModel =
-	(mongoose.models.GuildLogSettings as
-		| mongoose.Model<GuildLogSettingsDocument>
+export const ServerLogSettingsModel =
+	(mongoose.models.ServerLogSettings as
+		| mongoose.Model<ServerLogSettingsDocument>
 		| undefined) ??
-	mongoose.model<GuildLogSettingsDocument>(
-		"GuildLogSettings",
-		GuildLogSettingsSchema
+	mongoose.model<ServerLogSettingsDocument>(
+		"ServerLogSettings",
+		ServerLogSettingsSchema
 	)
 
 export function mergeDefaultEvents(
-	events: Partial<GuildLogEventFlags> | undefined
-): GuildLogEventFlags {
+	events: Partial<ServerLogEventFlags> | undefined
+): ServerLogEventFlags {
 	const d = defaultEvents()
 	if (!events) {
 		return d
@@ -71,10 +71,10 @@ export function mergeDefaultEvents(
 	}
 }
 
-export async function getGuildLogSettings(
+export async function getServerLogSettings(
 	guildId: string
-): Promise<GuildLogSettingsDoc | null> {
-	const doc = await GuildLogSettingsModel.findOne({ guildId }).lean().exec()
+): Promise<ServerLogSettingsDoc | null> {
+	const doc = await ServerLogSettingsModel.findOne({ guildId }).lean().exec()
 	if (!doc) {
 		return null
 	}
@@ -86,26 +86,26 @@ export async function getGuildLogSettings(
 	}
 }
 
-export async function setGuildEventFlags(
+export async function setServerEventFlags(
 	guildId: string,
-	events: GuildLogEventFlags
+	events: ServerLogEventFlags
 ): Promise<void> {
-	await GuildLogSettingsModel.findOneAndUpdate(
+	await ServerLogSettingsModel.findOneAndUpdate(
 		{ guildId },
 		{ $set: { events, enabled: true } },
 		{ upsert: true }
 	).exec()
 }
 
-export async function setGuildLogChannel(
+export async function setServerLogChannel(
 	guildId: string,
 	channelId: string
-): Promise<GuildLogSettingsDoc> {
-	const existing = await getGuildLogSettings(guildId)
+): Promise<ServerLogSettingsDoc> {
+	const existing = await getServerLogSettings(guildId)
 	const events = existing
 		? mergeDefaultEvents(existing.events)
 		: defaultEvents()
-	const updated = await GuildLogSettingsModel.findOneAndUpdate(
+	const updated = await ServerLogSettingsModel.findOneAndUpdate(
 		{ guildId },
 		{
 			$set: {
@@ -127,8 +127,8 @@ export async function setGuildLogChannel(
 	}
 }
 
-export async function disableGuildLogging(guildId: string): Promise<void> {
-	await GuildLogSettingsModel.updateOne(
+export async function disableServerLogging(guildId: string): Promise<void> {
+	await ServerLogSettingsModel.updateOne(
 		{ guildId },
 		{ $set: { channelId: null, enabled: false } }
 	).exec()

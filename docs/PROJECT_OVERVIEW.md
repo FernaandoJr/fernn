@@ -13,7 +13,7 @@ For local setup (install, env vars, scripts, Docker), see the [README](../README
 | Language | TypeScript (`strict`, `moduleResolution: "bundler"`, `allowImportingTsExtensions`, `verbatimModuleSyntax`, `noEmit` — see [`tsconfig.json`](../tsconfig.json)) |
 | Runtime / PM | [Bun](https://bun.sh/) — ESM (`"type": "module"` in [`package.json`](../package.json)) |
 | Discord API | [discord.js](https://discord.js.org/) ^14 (REST v10 for command registration) |
-| Database | [MongoDB](https://www.mongodb.com/) via [mongoose](https://mongoosejs.com/) (per-guild log channel settings) |
+| Database | [MongoDB](https://www.mongodb.com/) via [mongoose](https://mongoosejs.com/) (per-server log channel settings) |
 | i18n | [i18next](https://www.i18next.com/) |
 | CLI styling | [chalk](https://github.com/chalk/chalk) |
 
@@ -51,8 +51,8 @@ sequenceDiagram
   end
 ```
 
-- **Intents** (in [`src/index.ts`](../src/index.ts)): `Guilds`, `GuildVoiceStates`, `GuildMembers`, `GuildModeration`, `GuildMessages` — required for `/serverlog` (voice, member join/leave, audit log moderation, message deletes). Enable the same **privileged intents** in the [Discord Developer Portal](https://discord.com/developers/applications) (Bot → Privileged Gateway Intents) or the gateway will reject them.
-- **Server logging**: Run `/serverlog` in a guild to open the configuration panel (channel select, category multi-select, disable). The bot posts embeds to that channel only. **Members** logs include join/leave, **nickname / role / server-avatar** changes (`GuildMemberUpdate`), and (when enabled) moderation audit events. MongoDB stores **configuration** (log channel id + category toggles) via [`GuildLogSettings`](../src/database/models/GuildLogSettings.ts) — **not** a history of log events (those exist only as Discord messages).
+- **Intents** (in [`src/index.ts`](../src/index.ts)): `Guilds`, `GuildVoiceStates`, `GuildMembers`, `GuildModeration`, `GuildMessages` — required for `/server-log` (voice, member join/leave, audit log moderation, message deletes). Enable the same **privileged intents** in the [Discord Developer Portal](https://discord.com/developers/applications) (Bot → Privileged Gateway Intents) or the gateway will reject them.
+- **Server logging**: Run `/server-log` in a server to open the configuration panel (channel select, category multi-select, disable). The bot posts embeds to that channel only. **Members** logs include join/leave, **nickname / role / server profile avatar** changes (`GuildMemberUpdate`), and (when enabled) moderation audit events. MongoDB stores **configuration** (log channel id + category toggles) via [`ServerLogSettings`](../src/database/models/ServerLogSettings.ts) — **not** a history of log events (those exist only as Discord messages).
 - **Errors**: Unhandled errors in `execute` are caught in [`src/index.ts`](../src/index.ts); the user sees a translated ephemeral `errors.commandExecutionFailed`.
 
 ---
@@ -66,7 +66,7 @@ sequenceDiagram
 | `DISCORD_TOKEN` | yes | Bot token for login and REST. |
 | `DISCORD_CLIENT_ID` | yes | Application ID for command routes. |
 | `DISCORD_GUILD_ID` | no | If set, commands deploy to **that guild** only (fast iteration). If unset, deploy is **global** (`deployGlobally: !guildId`). |
-| `MONGODB_URI` | yes | MongoDB connection string (e.g. local or [Atlas](https://www.mongodb.com/cloud/atlas)); used for guild log channel configuration. |
+| `MONGODB_URI` | yes | MongoDB connection string (e.g. local or [Atlas](https://www.mongodb.com/cloud/atlas)); used for server log channel configuration. |
 
 Template: [`.env.example`](../.env.example). Bun loads `.env` automatically (no `dotenv` package).
 
@@ -91,7 +91,7 @@ fernn/
     database/
       connect.ts           # mongoose.connect
       models/
-        GuildLogSettings.ts
+        ServerLogSettings.ts
     features/
       serverLog/           # register.ts (listeners), panel.ts (UI), logChannel.ts (send)
     types/

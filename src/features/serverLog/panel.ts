@@ -12,13 +12,13 @@ import {
 } from "discord.js"
 
 import {
-	disableGuildLogging,
-	getGuildLogSettings,
+	disableServerLogging,
+	getServerLogSettings,
 	mergeDefaultEvents,
-	setGuildEventFlags,
-	setGuildLogChannel,
-	type GuildLogEventFlags,
-} from "../../database/models/GuildLogSettings.ts"
+	setServerEventFlags,
+	setServerLogChannel,
+	type ServerLogEventFlags,
+} from "../../database/models/ServerLogSettings.ts"
 import { getTranslator } from "../../i18n/index.ts"
 import { clearLogPermissionWarningForGuild } from "./logChannel.ts"
 
@@ -42,7 +42,7 @@ export async function buildServerLogPanel(
 	guild: Guild,
 	t: Translator
 ): Promise<Pick<InteractionReplyOptions, "components" | "embeds">> {
-	const settings = await getGuildLogSettings(guild.id)
+	const settings = await getServerLogSettings(guild.id)
 	const ev = mergeDefaultEvents(settings?.events)
 
 	const channelSelect = new ChannelSelectMenuBuilder()
@@ -94,7 +94,7 @@ export async function buildServerLogPanel(
 	}
 }
 
-function flagsFromValues(values: readonly string[]): GuildLogEventFlags {
+function flagsFromValues(values: readonly string[]): ServerLogEventFlags {
 	const s = new Set(values)
 	return {
 		voice: s.has("voice"),
@@ -135,7 +135,7 @@ export async function handleServerLogPanelInteraction(
 			interaction.isButton() &&
 			interaction.customId === `${SERVERLOG_PANEL_PREFIX}disable`
 		) {
-			await disableGuildLogging(guild.id)
+			await disableServerLogging(guild.id)
 			await interaction.update({
 				content: t("commands.serverlog.disable.success"),
 				embeds: [],
@@ -152,7 +152,7 @@ export async function handleServerLogPanelInteraction(
 			if (!id) {
 				return
 			}
-			await setGuildLogChannel(guild.id, id)
+			await setServerLogChannel(guild.id, id)
 			clearLogPermissionWarningForGuild(guild.id)
 			await interaction.update(await buildServerLogPanel(guild, t))
 			return
@@ -162,7 +162,7 @@ export async function handleServerLogPanelInteraction(
 			interaction.isStringSelectMenu() &&
 			interaction.customId === `${SERVERLOG_PANEL_PREFIX}categories`
 		) {
-			await setGuildEventFlags(
+			await setServerEventFlags(
 				guild.id,
 				flagsFromValues(interaction.values)
 			)

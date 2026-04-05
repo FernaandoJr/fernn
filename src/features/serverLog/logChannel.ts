@@ -6,10 +6,10 @@ import {
 } from "discord.js"
 
 import {
-	type GuildLogEventFlags,
-	type GuildLogSettingsDoc,
-	getGuildLogSettings,
-} from "../../database/models/GuildLogSettings.ts"
+	type ServerLogEventFlags,
+	type ServerLogSettingsDoc,
+	getServerLogSettings,
+} from "../../database/models/ServerLogSettings.ts"
 
 const warnedGuilds = new Set<string>()
 
@@ -50,7 +50,7 @@ async function fetchLogTextChannel(
 		if (!warnedGuilds.has(guildId)) {
 			warnedGuilds.add(guildId)
 			console.warn(
-				`[serverlog] Missing permissions in log channel for guild ${guildId} (${channelId}).`
+				`[server-log] Missing permissions in log channel for guild ${guildId} (${channelId}).`
 			)
 		}
 		return null
@@ -59,14 +59,14 @@ async function fetchLogTextChannel(
 	return raw
 }
 
-export async function sendGuildLogEmbed(
+export async function sendServerLogEmbed(
 	client: Client,
 	guildId: string,
-	category: keyof GuildLogEventFlags,
+	category: keyof ServerLogEventFlags,
 	embed: EmbedBuilder,
-	cachedSettings?: GuildLogSettingsDoc | null
+	cachedSettings?: ServerLogSettingsDoc | null
 ): Promise<void> {
-	const settings = cachedSettings ?? (await getGuildLogSettings(guildId))
+	const settings = cachedSettings ?? (await getServerLogSettings(guildId))
 	if (!settings?.enabled || !settings.channelId || !settings.events[category]) {
 		return
 	}

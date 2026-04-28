@@ -27,7 +27,7 @@ Main npm scripts: `start`, `start:all` (deploy commands then start), `dev`, `dep
 |------|------|
 | [`index.ts`](../index.ts) (repo root) | Re-exports `./src/index.ts` — keeps Docker and tooling entry stable. |
 | [`src/index.ts`](../src/index.ts) | Bot process: `Client`, MongoDB connect, server log listeners, `InteractionCreate`, i18n init, `client.login`. |
-| [`src/deploy-commands.ts`](../src/deploy-commands.ts) | Registers slash commands with Discord (guild vs global — see config). |
+| [`src/deploy-commands.ts`](../src/deploy-commands.ts) | If `DISCORD_GUILD_ID` is set, clears **guild** commands there first, then registers per `ENVIRONMENT` (P = global, G = that guild). |
 
 ---
 
@@ -65,7 +65,8 @@ sequenceDiagram
 |----------|----------|--------|
 | `DISCORD_TOKEN` | yes | Bot token for login and REST. |
 | `DISCORD_CLIENT_ID` | yes | Application ID for command routes. |
-| `DISCORD_GUILD_ID` | no | If set, commands deploy to **that guild** only (fast iteration). If unset, deploy is **global** (`deployGlobally: !guildId`). |
+| `ENVIRONMENT` | yes | `P` → slash commands deploy **globally**. `G` → deploy to **`DISCORD_GUILD_ID` only** (guild id required). |
+| `DISCORD_GUILD_ID` | with `G` | Target guild for guild-scoped command registration. Omit when `ENVIRONMENT=P` unless you store it for other use. |
 | `MONGODB_URI` | yes | MongoDB connection string (e.g. local or [Atlas](https://www.mongodb.com/cloud/atlas)); used for server log channel configuration. |
 
 Template: [`.env.example`](../.env.example). Bun loads `.env` automatically (no `dotenv` package).

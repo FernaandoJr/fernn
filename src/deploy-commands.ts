@@ -5,13 +5,22 @@ import { config } from "./config.ts";
 
 const rest = new REST({ version: "10" }).setToken(config.token);
 
-const route = config.guildId
-  ? Routes.applicationGuildCommands(config.clientId, config.guildId)
-  : Routes.applicationCommands(config.clientId);
+if (config.guildId) {
+	const guildRoute = Routes.applicationGuildCommands(
+		config.clientId,
+		config.guildId,
+	);
+	console.log(`Clearing guild slash commands for guild ${config.guildId}...`);
+	await rest.put(guildRoute, { body: [] });
+}
 
-const scopeLabel = config.guildId
-  ? `guild ${config.guildId}`
-  : "global application";
+const route = config.deployGlobally
+	? Routes.applicationCommands(config.clientId)
+	: Routes.applicationGuildCommands(config.clientId, config.guildId!);
+
+const scopeLabel = config.deployGlobally
+	? "global application"
+	: `guild ${config.guildId}`;
 
 console.log(`Deploying ${commandData.length} command(s) to ${scopeLabel}...`);
 

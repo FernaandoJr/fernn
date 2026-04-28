@@ -11,7 +11,18 @@ const getRequiredEnv = (name: string): string => {
 const token = getRequiredEnv("DISCORD_TOKEN")
 const clientId = getRequiredEnv("DISCORD_CLIENT_ID")
 const mongoUri = getRequiredEnv("MONGODB_URI")
-const guildId = process.env.DISCORD_GUILD_ID
+const environment = getRequiredEnv("ENVIRONMENT").trim().toUpperCase()
+
+if (environment !== "P" && environment !== "G") {
+	throw new Error(
+		`Invalid ENVIRONMENT "${process.env.ENVIRONMENT}"; use P (global/production) or G (guild-scoped).`,
+	)
+}
+
+const deployGlobally = environment === "P"
+const guildId = deployGlobally
+	? process.env.DISCORD_GUILD_ID
+	: getRequiredEnv("DISCORD_GUILD_ID")
 
 const r2AccountId = getRequiredEnv("R2_ACCOUNT_ID")
 const r2AccessKeyId = getRequiredEnv("R2_ACCESS_KEY_ID")
@@ -26,7 +37,7 @@ export const config = {
 	clientId,
 	mongoUri,
 	guildId,
-	deployGlobally: !guildId,
+	deployGlobally,
 	r2: {
 		accountId: r2AccountId,
 		accessKeyId: r2AccessKeyId,

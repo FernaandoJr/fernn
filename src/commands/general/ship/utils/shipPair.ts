@@ -20,6 +20,13 @@ export function shipPercentFromPairKey(pairKey: string): number {
 
 export type ShipTierKey = "veryLow" | "low" | "mid" | "high"
 
+export const SHIP_TIER_MESSAGE_KEY: Record<ShipTierKey, string> = {
+	veryLow: "shipVeryLow",
+	low: "shipLow",
+	mid: "shipMid",
+	high: "shipHigh",
+}
+
 export function shipTierForPercent(p: number): ShipTierKey {
 	if (p <= 24) {
 		return "veryLow"

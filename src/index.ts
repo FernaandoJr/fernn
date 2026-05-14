@@ -90,7 +90,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
 	if (!command) {
 		await interaction.reply({
-			content: t("errors.commandUnavailable"),
+			content: t("errorCommandUnavailable"),
 			ephemeral: true,
 		})
 		return
@@ -103,7 +103,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 		logChatCommandFailed(interaction, error)
 
 		const reply = {
-			content: t("errors.commandExecutionFailed"),
+			content: t("errorCommandFailed"),
 			ephemeral: true,
 		}
 

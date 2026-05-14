@@ -34,7 +34,7 @@ export async function replyIfNotInGuild(
 
 	if (!interaction.inGuild()) {
 		await interaction.reply({
-			content: t("errors.moderation.guildOnly"),
+			content: t("errorGuildOnly"),
 			ephemeral: true,
 		})
 		return false
@@ -61,7 +61,7 @@ export async function ensureModerationTarget(
 
 	if (!opts.allowSelf && targetUser.id === interaction.user.id) {
 		await interaction.reply({
-			content: t("errors.moderation.cannotModerateSelf"),
+			content: t("errorCannotModerateSelf"),
 			ephemeral: true,
 		})
 		return false
@@ -69,7 +69,7 @@ export async function ensureModerationTarget(
 
 	if (!opts.allowSelf && targetUser.id === interaction.client.user.id) {
 		await interaction.reply({
-			content: t("errors.moderation.cannotModerateBot"),
+			content: t("errorCannotModerateBot"),
 			ephemeral: true,
 		})
 		return false
@@ -82,7 +82,7 @@ export async function ensureModerationTarget(
 
 	if (targetUser.id === guild.ownerId) {
 		await interaction.reply({
-			content: t("errors.moderation.cannotModerateOwner"),
+			content: t("errorCannotModerateOwner"),
 			ephemeral: true,
 		})
 		return false
@@ -90,7 +90,7 @@ export async function ensureModerationTarget(
 
 	if (!opts.memberOptional && !targetMember) {
 		await interaction.reply({
-			content: t("errors.moderation.memberNotInGuild"),
+			content: t("errorMemberNotInGuild"),
 			ephemeral: true,
 		})
 		return false
@@ -98,7 +98,7 @@ export async function ensureModerationTarget(
 
 	if (opts.checkKickable && targetMember && !targetMember.kickable) {
 		await interaction.reply({
-			content: t("errors.moderation.targetNotKickable"),
+			content: t("errorTargetNotKickable"),
 			ephemeral: true,
 		})
 		return false
@@ -106,7 +106,7 @@ export async function ensureModerationTarget(
 
 	if (opts.checkModeratable && targetMember && !targetMember.moderatable) {
 		await interaction.reply({
-			content: t("errors.moderation.targetNotModeratable"),
+			content: t("errorTargetNotModeratable"),
 			ephemeral: true,
 		})
 		return false
@@ -114,7 +114,7 @@ export async function ensureModerationTarget(
 
 	if (opts.checkBannable && targetMember && !targetMember.bannable) {
 		await interaction.reply({
-			content: t("errors.moderation.targetNotBannable"),
+			content: t("errorTargetNotBannable"),
 			ephemeral: true,
 		})
 		return false
@@ -122,7 +122,7 @@ export async function ensureModerationTarget(
 
 	if (opts.checkManageable && targetMember && !targetMember.manageable) {
 		await interaction.reply({
-			content: t("errors.moderation.targetNotNicknamable"),
+			content: t("errorTargetNotNicknamable"),
 			ephemeral: true,
 		})
 		return false

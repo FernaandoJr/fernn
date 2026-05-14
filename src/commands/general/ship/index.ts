@@ -12,15 +12,12 @@ import { createDefaultEmbed } from "../../../utils/defaultEmbed.ts"
 import { replyIfNotInGuild } from "../../moderation/guards.ts"
 import { renderShipBanner } from "./utils/renderShipBanner.ts"
 import {
+	SHIP_TIER_MESSAGE_KEY,
 	shipMessageIndex,
 	shipPercentFromPairKey,
 	shipTierForPercent,
 	sortedPairKey,
 } from "./utils/shipPair.ts"
-
-function isStringArray(value: unknown): value is string[] {
-	return Array.isArray(value) && value.every((x) => typeof x === "string")
-}
 
 export const shipCommand: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -53,7 +50,7 @@ export const shipCommand: SlashCommand = {
 
 		if (user1.id === user2.id) {
 			await interaction.reply({
-				content: t("errors.ship.sameUser"),
+				content: t("errorShipSameUser"),
 				ephemeral: true,
 			})
 			return
@@ -62,30 +59,26 @@ export const shipCommand: SlashCommand = {
 		const pairKey = sortedPairKey(user1.id, user2.id)
 		const percent = shipPercentFromPairKey(pairKey)
 		const tierKey = shipTierForPercent(percent)
-
-		const messagesRaw = t(`commands.ship.tiers.${tierKey}.messages`, {
+		const messages = t(SHIP_TIER_MESSAGE_KEY[tierKey], {
 			returnObjects: true,
-		})
-		const messages = isStringArray(messagesRaw) ? messagesRaw : []
+		}) as string[]
 		const idx = shipMessageIndex(pairKey, tierKey, messages.length)
-		const verdict = messages[idx] ?? t("commands.ship.fallbackVerdict")
+		const verdict = messages[idx] ?? t("shipFallbackVerdict")
 
-		const pairLabel = `${userMention(user1.id)} ${t(
-			"commands.ship.pairSeparator"
-		)} ${userMention(user2.id)}`
+		const pairLabel = `${userMention(user1.id)} ${t("shipPairSeparator")} ${userMention(user2.id)}`
 
 		const embed = createDefaultEmbed({
 			color: colors.primary,
-			title: t("commands.ship.title"),
-			description: t("commands.ship.description", { pair: pairLabel }),
+			title: t("shipTitle"),
+			description: t("shipDescription", { pair: pairLabel }),
 		}).addFields(
 			{
-				name: t("commands.ship.fields.score"),
+				name: t("shipFieldScore"),
 				value: `${percent}%`,
 				inline: true,
 			},
 			{
-				name: t("commands.ship.fields.verdict"),
+				name: t("shipFieldVerdict"),
 				value: verdict,
 				inline: false,
 			}

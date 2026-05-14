@@ -50,7 +50,7 @@ export const clearCommand: SlashCommand = {
 
 		if (!isGuildTextBulkDeletable(channel)) {
 			await interaction.reply({
-				content: t("errors.moderation.clearNotTextChannel"),
+				content: t("errorClearNotTextChannel"),
 				ephemeral: true,
 			})
 			return
@@ -61,7 +61,7 @@ export const clearCommand: SlashCommand = {
 			deleted = await channel.bulkDelete(amount, true)
 		} catch {
 			await interaction.reply({
-				content: t("errors.moderation.clearFailed"),
+				content: t("errorClearFailed"),
 				ephemeral: true,
 			})
 			return
@@ -69,14 +69,14 @@ export const clearCommand: SlashCommand = {
 
 		const embed = createDefaultEmbed({
 			color: colors.success,
-			title: t("commands.clear.title"),
-			description: t("commands.clear.description", {
+			title: t("clearTitle"),
+			description: t("clearDescription", {
 				count: deleted.size,
 				channel: channel.toString(),
 			}),
 		}).addFields({
-			name: t("commands.clear.fields.moderator"),
-			value: interaction.user.tag,
+			name: t("clearFieldModerator"),
+			value: interaction.user.username,
 		})
 
 		await interaction.reply({ embeds: [embed], ephemeral: true })

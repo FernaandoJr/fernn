@@ -32,8 +32,15 @@ function opt(
 	key: "voice" | "members" | "moderation" | "messages",
 	on: boolean
 ) {
+	const labelKey = {
+		voice: "serverlogPanelOptionVoice",
+		members: "serverlogPanelOptionMembers",
+		moderation: "serverlogPanelOptionModeration",
+		messages: "serverlogPanelOptionMessages",
+	} as const
+
 	return {
-		label: t(`commands.serverlog.panel.options.${key}`),
+		label: t(labelKey[key]),
 		value: key,
 		default: on,
 	}
@@ -48,7 +55,7 @@ export async function buildServerLogPanel(
 
 	const channelSelect = new ChannelSelectMenuBuilder()
 		.setCustomId(`${SERVERLOG_PANEL_PREFIX}channel`)
-		.setPlaceholder(t("commands.serverlog.panel.selectChannel"))
+		.setPlaceholder(t("serverlogPanelSelectChannel"))
 		.setChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement)
 		.setMinValues(1)
 		.setMaxValues(1)
@@ -59,7 +66,7 @@ export async function buildServerLogPanel(
 
 	const stringSelect = new StringSelectMenuBuilder()
 		.setCustomId(`${SERVERLOG_PANEL_PREFIX}categories`)
-		.setPlaceholder(t("commands.serverlog.panel.selectCategories"))
+		.setPlaceholder(t("serverlogPanelSelectCategories"))
 		.setMinValues(0)
 		.setMaxValues(4)
 		.addOptions(
@@ -83,7 +90,7 @@ export async function buildServerLogPanel(
 			new ActionRowBuilder<ButtonBuilder>().addComponents(
 				new ButtonBuilder()
 					.setCustomId(`${SERVERLOG_PANEL_PREFIX}disable`)
-					.setLabel(t("commands.serverlog.panel.disableButton"))
+					.setLabel(t("serverlogPanelDisableButton"))
 					.setStyle(ButtonStyle.Danger)
 			)
 		)
@@ -116,7 +123,7 @@ export async function handleServerLogPanelInteraction(
 	}
 	if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)) {
 		const t = getTranslator(interaction.locale)
-		await safeEphemeralReply(interaction, t("errors.serverlog.noPermission"))
+		await safeEphemeralReply(interaction, t("errorServerlogNoPermission"))
 		return
 	}
 
@@ -130,7 +137,7 @@ export async function handleServerLogPanelInteraction(
 		) {
 			await disableServerLogging(guild.id)
 			await interaction.update({
-				content: t("commands.serverlog.disable.success"),
+				content: t("serverlogDisableSuccess"),
 				embeds: [],
 				components: [],
 			})
@@ -163,7 +170,7 @@ export async function handleServerLogPanelInteraction(
 			return
 		}
 	} catch {
-		const err = getTranslator(interaction.locale)("errors.commandExecutionFailed")
+		const err = getTranslator(interaction.locale)("errorCommandFailed")
 		await safeEphemeralReply(interaction, err)
 	}
 }

@@ -31,10 +31,10 @@ export const uptimeCommand: SlashCommand = {
 
 		const embed = createDefaultEmbed({
 			color: colors.info,
-			title: t("commands.uptime.title"),
-			description: t("commands.uptime.description"),
+			title: t("uptimeTitle"),
+			description: t("uptimeDescription"),
 		}).addFields({
-			name: t("commands.uptime.fields.process"),
+			name: t("uptimeFieldProcess"),
 			value: formatUptimeSeconds(uptimeSec),
 			inline: false,
 		})

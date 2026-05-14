@@ -1,52 +1,39 @@
+import { Locale } from "discord.js";
 import i18next from "i18next";
 
 import enCommon from "./locales/en/common.json";
 import esCommon from "./locales/es/common.json";
 import ptBrCommon from "./locales/pt-BR/common.json";
 
-const defaultLocale = "en";
+const defaultLocale = Locale.EnglishUS;
 const defaultNamespace = "common";
 
 const resources = {
-  en: {
-    common: enCommon,
-  },
-  es: {
-    common: esCommon,
-  },
-  "pt-BR": {
-    common: ptBrCommon,
-  },
+  [Locale.EnglishUS]: { common: enCommon },
+  [Locale.SpanishES]: { common: esCommon },
+  [Locale.PortugueseBR]: { common: ptBrCommon },
 } as const;
 
-const supportedLngs = Object.keys(resources) as Array<keyof typeof resources>;
+const supportedLocales = new Set(Object.keys(resources));
 
-export const resolveLocale = (
-  locale?: string | null,
-): (typeof supportedLngs)[number] => {
-  if (!locale) return defaultLocale;
-  const normalized = locale.trim().toLowerCase();
-  const exact = supportedLngs.find((l) => l.toLowerCase() === normalized);
-  if (exact) return exact;
-  const lang = normalized.split("-")[0];
-  return supportedLngs.find((l) => l.toLowerCase().split("-")[0] === lang) ?? defaultLocale;
-};
+export const resolveLocale = (locale?: string | null): string =>
+  locale && supportedLocales.has(locale) ? locale : defaultLocale;
 
 let initPromise: Promise<void> | undefined;
 
 export const initializeI18n = (): Promise<void> => {
-  initPromise ??= i18next.init({
-    resources,
-    lng: defaultLocale,
-    fallbackLng: defaultLocale,
-    supportedLngs,
-    ns: [defaultNamespace],
-    defaultNS: defaultNamespace,
-    interpolation: {
-      escapeValue: false,
-    },
-    returnNull: false,
-  }).then(() => undefined);
+  initPromise ??= i18next
+    .init({
+      resources,
+      lng: defaultLocale,
+      fallbackLng: defaultLocale,
+      supportedLngs: [...supportedLocales],
+      ns: [defaultNamespace],
+      defaultNS: defaultNamespace,
+      interpolation: { escapeValue: false },
+      returnNull: false,
+    })
+    .then(() => undefined);
 
   return initPromise;
 };

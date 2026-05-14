@@ -13,16 +13,16 @@ export const pingCommand: SlashCommand = {
 		const t = getTranslator(interaction.locale)
 		const embed = createDefaultEmbed({
 			color: colors.info,
-			title: t("commands.ping.title"),
-			description: t("commands.ping.description"),
+			title: t("pingTitle"),
+			description: t("pingDescription"),
 		}).addFields(
 			{
-				name: t("commands.ping.fields.apiLatency"),
+				name: t("pingFieldApiLatency"),
 				value: `${Math.round(interaction.client.ws.ping)} ms`,
 				inline: true,
 			},
 			{
-				name: t("commands.ping.fields.command"),
+				name: t("pingFieldCommand"),
 				value: `/${interaction.commandName}`,
 				inline: true,
 			},

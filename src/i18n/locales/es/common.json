@@ -1,326 +1,211 @@
 {
-  "errors": {
-    "commandUnavailable": "Este comando no esta disponible.",
-    "commandExecutionFailed": "Algo salio mal al ejecutar ese comando.",
-    "moderation": {
-      "guildOnly": "Este comando solo se puede usar en un servidor.",
-      "memberNotInGuild": "Ese usuario no esta en este servidor.",
-      "cannotModerateSelf": "No puedes usar esto en ti mismo.",
-      "cannotModerateOwner": "No puedes moderar al dueno del servidor.",
-      "cannotModerateBot": "No puedes moderar a este bot.",
-      "targetNotBannable": "No puedo banear a este usuario. Revisa la jerarquia de roles y mis permisos.",
-      "targetNotKickable": "No puedo expulsar a este miembro. Revisa la jerarquia de roles y mis permisos.",
-      "targetNotModeratable": "No puedo silenciar por tiempo a este miembro. Revisa la jerarquia de roles y mis permisos.",
-      "targetNotNicknamable": "No puedo cambiar el apodo de este miembro. Revisa la jerarquia de roles y mis permisos.",
-      "clearNotTextChannel": "Este comando solo funciona en canales de texto del servidor.",
-      "clearFailed": "No se pudieron borrar mensajes en este canal."
-    },
-    "userInfo": {
-      "notMember": "Ese usuario no esta en este servidor."
-    },
-    "ship": {
-      "sameUser": "Elige dos usuarios distintos para el ship."
-    },
-    "serverlog": {
-      "invalidChannel": "Elige un canal de texto o de anuncios de este servidor.",
-      "noPermission": "Necesitas **Gestionar servidor** para configurar los registros."
-    },
-    "servericon": {
-      "guildOnly": "Este comando solo se puede usar en un servidor.",
-      "storageUnavailable": "No se pudo acceder al almacenamiento de imagenes. Intenta de nuevo.",
-      "invalidImage": "No se pudo procesar ese archivo. Usa PNG, JPEG, WebP o GIF.",
-      "imageTooLarge": "Ese archivo es demasiado grande.",
-      "maxImages": "Este servidor alcanzo el maximo de imagenes guardadas.",
-      "invalidId": "Ese id de imagen no es valido.",
-      "notFound": "No hay ninguna imagen con ese id.",
-      "botCannotManageGuild": "Necesito **Gestionar servidor** para cambiar el icono del servidor.",
-      "noPanelPermission": "Necesitas **Gestionar servidor** para usar este panel."
-    }
-  },
-  "commands": {
-    "ping": {
-      "title": "Pong!",
-      "description": "El bot esta en linea y respondiendo.",
-      "fields": {
-        "apiLatency": "Latencia de la API",
-        "command": "Comando"
-      }
-    },
-    "uptime": {
-      "title": "Tiempo activo",
-      "description": "Cuanto lleva en ejecucion este proceso del bot (desde el ultimo reinicio).",
-      "fields": {
-        "process": "Tiempo de proceso"
-      }
-    },
-    "ban": {
-      "title": "Usuario baneado",
-      "description": "{{target}} fue baneado de este servidor.",
-      "fields": {
-        "reason": "Motivo",
-        "moderator": "Moderador"
-      }
-    },
-    "kick": {
-      "title": "Miembro expulsado",
-      "description": "{{target}} fue expulsado de este servidor.",
-      "fields": {
-        "reason": "Motivo",
-        "moderator": "Moderador"
-      }
-    },
-    "mute": {
-      "title": "Miembro silenciado (timeout)",
-      "description": "Se aplico timeout a {{target}}.",
-      "noReasonProvided": "Sin motivo.",
-      "durationValue": "{{seconds}} s",
-      "fields": {
-        "duration": "Duracion",
-        "reason": "Motivo",
-        "moderator": "Moderador"
-      }
-    },
-    "nickname": {
-      "title": "Apodo actualizado",
-      "description": "Se actualizo el apodo del servidor de {{target}}.",
-      "noNickname": "Ninguno",
-      "noReasonProvided": "Sin motivo.",
-      "fields": {
-        "before": "Antes",
-        "after": "Despues",
-        "reason": "Motivo",
-        "moderator": "Moderador"
-      }
-    },
-    "clear": {
-      "title": "Mensajes borrados",
-      "description": "Se borraron {{count}} mensaje(s) en {{channel}}.",
-      "fields": {
-        "moderator": "Moderador"
-      }
-    },
-    "servericon": {
-      "panel": {
-        "title": "Biblioteca de icono del servidor",
-        "noLabel": "Sin etiqueta",
-        "selectInterval": "Intervalo de rotacion (minutos)",
-        "intervalMinutes": "{{minutes}} min",
-        "buttonToggleWhenOff": "Activar rotacion",
-        "buttonToggleWhenOn": "Desactivar rotacion",
-        "removePlaceholder": "Quitar una imagen…",
-        "buttonRefresh": "Actualizar",
-        "embed": {
-          "rotationOn": "Rotacion: **activada**",
-          "rotationOff": "Rotacion: **desactivada**",
-          "intervalLine": "**Intervalo:** {{minutes}} min",
-          "libraryLine": "**Imagenes guardadas:** {{count}} / {{max}}",
-          "imagesSection": "**Imagenes**",
-          "imageLine": "{{label}} — <@{{userId}}>",
-          "noImages": "_Ninguna por ahora._",
-          "hint": "Adjunta una imagen al usar `/server-icon` para anadirla a la biblioteca."
-        }
-      }
-    },
-    "userInfo": {
-      "noBadges": "Ninguno",
-      "noNickname": "Ninguno",
-      "noRoles": "Ninguno",
-      "unknown": "Desconocido",
-      "rolesMore": "{{count}} mas",
-      "fields": {
-        "badges": "Insignias",
-        "nickname": "Apodo",
-        "id": "ID",
-        "joined": "Entrada al servidor",
-        "created": "Cuenta creada",
-        "roles": "Roles ({{count}})"
-      }
-    },
-    "serverInfo": {
-      "channelSummary": "Texto {{text}}, voz {{voice}}, categorias {{category}}, foros {{forum}}, escenarios {{stage}}, anuncios {{announcement}}, medios {{media}}",
-      "boostSummary": "{{count}} boosts — {{tier}}",
-      "verification": {
-        "none": "Ninguna",
-        "low": "Baja",
-        "medium": "Media",
-        "high": "Alta",
-        "veryHigh": "Muy alta"
-      },
-      "explicitFilter": {
-        "disabled": "Desactivado",
-        "membersWithoutRoles": "Escanear miembros sin roles",
-        "allMembers": "Escanear todos los miembros"
-      },
-      "premiumTier": {
-        "none": "Sin nivel",
-        "tier1": "Nivel 1",
-        "tier2": "Nivel 2",
-        "tier3": "Nivel 3"
-      },
-      "fields": {
-        "id": "ID del servidor",
-        "owner": "Propietario",
-        "created": "Creado",
-        "members": "Miembros",
-        "channels": "Canales",
-        "boost": "Estado de boosts",
-        "verification": "Nivel de verificacion",
-        "explicitFilter": "Filtro de contenido explicito"
-      }
-    },
-    "serverlog": {
-      "set": {
-        "title": "Canal de registros configurado",
-        "description": "Los registros del servidor se enviaran a {{channel}}. Todas las categorias estan activadas por defecto."
-      },
-      "disable": {
-        "success": "El registro del servidor se desactivo en este servidor."
-      },
-      "panel": {
-        "selectChannel": "Elegir canal de registros",
-        "selectCategories": "Categorias (seleccion multiple)",
-        "disableButton": "Desactivar registros",
-        "options": {
-          "voice": "Actividad de voz",
-          "members": "Entradas, salidas y perfil en el servidor",
-          "moderation": "Moderacion (auditoria)",
-          "messages": "Mensajes borrados"
-        }
-      },
-      "status": {
-        "title": "Registro del servidor",
-        "description": "Canal de registros: {{channel}}",
-        "disabled": "El registro no esta configurado. Usa `/server-log`.",
-        "on": "Si",
-        "off": "No",
-        "fields": {
-          "voice": "Voz",
-          "members": "Miembros",
-          "moderation": "Moderacion",
-          "messages": "Mensajes"
-        }
-      },
-      "logs": {
-        "noReason": "Sin motivo",
-        "unknownAuthor": "Autor desconocido",
-        "voiceJoin": {
-          "title": "Voz — entro",
-          "description": "**{{user}}** entro a {{channel}}."
-        },
-        "voiceLeave": {
-          "title": "Voz — salio",
-          "description": "**{{user}}** salio de {{channel}}."
-        },
-        "voiceMove": {
-          "title": "Voz — movido",
-          "description": "**{{user}}** paso de {{from}} a {{to}}."
-        },
-        "memberJoin": {
-          "title": "Miembro entro",
-          "description": "**{{user}}** (`{{id}}`) entro al servidor."
-        },
-        "memberLeave": {
-          "title": "Miembro salio",
-          "description": "**{{user}}** (`{{id}}`) salio del servidor."
-        },
-        "memberUpdate": {
-          "title": "Miembro actualizado",
-          "description": "**{{user}}** (`{{id}}`)\n\n{{details}}",
-          "noNickname": "(sin apodo en el servidor)",
-          "nickname": "**Apodo** — {{before}} → {{after}}",
-          "rolesAdded": "**Cargos agregados** — {{list}}",
-          "rolesRemoved": "**Cargos quitados** — {{list}}",
-          "serverProfileAvatar": "**Avatar del perfil del servidor** actualizado"
-        },
-        "modKick": {
-          "title": "Miembro expulsado",
-          "description": "**{{target}}** fue expulsado por **{{moderator}}**.\n{{reason}}"
-        },
-        "modBan": {
-          "title": "Miembro baneado",
-          "description": "**{{target}}** fue baneado por **{{moderator}}**.\n{{reason}}"
-        },
-        "modUnban": {
-          "title": "Baneo revocado",
-          "description": "**{{target}}** fue desbaneado por **{{moderator}}**.\n{{reason}}"
-        },
-        "modTimeout": {
-          "title": "Timeout actualizado",
-          "description": "**{{target}}** — timeout hasta **{{until}}** por **{{moderator}}**.\n{{reason}}"
-        },
-        "messageDelete": {
-          "title": "Mensaje eliminado",
-          "description": "Canal: {{channel}}\nAutor: {{author}}\nID del mensaje: {{id}}"
-        },
-        "messageBulk": {
-          "title": "Mensajes eliminados en masa",
-          "description": "**{{count}}** mensaje(s) eliminados en {{channel}}."
-        }
-      }
-    },
-    "ship": {
-      "title": "Ship",
-      "description": "{{pair}}",
-      "pairSeparator": "×",
-      "fallbackVerdict": "Es complicado.",
-      "fields": {
-        "score": "Compatibilidad",
-        "verdict": "Veredicto"
-      },
-      "tiers": {
-        "veryLow": {
-          "messages": [
-            "Helado total. Prueba primero un grupo.",
-            "Las estrellas no estan alineadas.",
-            "Modo amistad — romance no detectado.",
-            "Este ship necesita un bote salvavidas.",
-            "Universos distintos, mismo Discord.",
-            "El medidor de compatibilidad pidio horas extra.",
-            "Geniales como amigos. Como ship, en debate.",
-            "Si esto fuera una peli, seguirias en el acto uno — de otra historia.",
-            "Senal baja. Prueba apagar y encender la amistad."
-          ]
-        },
-        "low": {
-          "messages": [
-            "Fuego lento — muy lento.",
-            "Hay algo ahi, quizas.",
-            "Quimica en espera de parches.",
-            "No es imposible, solo poco probable hoy.",
-            "Una chispa, no una llama.",
-            "Companeros de servidor, almas gemelas en otra linea temporal.",
-            "Podria gustarte — enfasis en podria.",
-            "El vibe es 'ya veremos' con puntos suspensivos.",
-            "Mejor que una moneda al aire. No mucho mas."
-          ]
-        },
-        "mid": {
-          "messages": [
-            "Energia de tal vez solida.",
-            "Merece un capitulo de fanfic.",
-            "El grupo lo shipearia.",
-            "Chispa suficiente para notarla.",
-            "Ambiguo con estilo — en el buen sentido.",
-            "Sin armadura de guion, pero el humor aguanta.",
-            "A medio camino entre meme y manifiesto.",
-            "Sin bulla, pero el nombre del ship ya esta en beta.",
-            "Tension de la que sobrevive un typo en el chat."
-          ]
-        },
-        "high": {
-          "messages": [
-            "Energia canon.",
-            "La linea temporal converge.",
-            "Material de pareja principal.",
-            "Hasta el algoritmo apoya esto.",
-            "Captura y enmarcala.",
-            "Si la quimica fuera Wi‑Fi, tendrias todas las barras.",
-            "El servidor lo shipea. Las estrellas coinciden. El bot solo lo hace oficial.",
-            "Arco final cargando.",
-            "Alguien escriba el AU — los numeros ya votaron."
-          ]
-        }
-      }
-    }
-  }
+  "errorCommandUnavailable": "Este comando no esta disponible.",
+  "errorCommandFailed": "Algo salio mal al ejecutar ese comando.",
+  "errorGuildOnly": "Este comando solo se puede usar en un servidor.",
+  "errorMemberNotInGuild": "Ese usuario no esta en este servidor.",
+  "errorCannotModerateSelf": "No puedes usar esto en ti mismo.",
+  "errorCannotModerateOwner": "No puedes moderar al dueno del servidor.",
+  "errorCannotModerateBot": "No puedes moderar a este bot.",
+  "errorTargetNotBannable": "No puedo banear a este usuario. Revisa la jerarquia de roles y mis permisos.",
+  "errorTargetNotKickable": "No puedo expulsar a este miembro. Revisa la jerarquia de roles y mis permisos.",
+  "errorTargetNotModeratable": "No puedo silenciar por tiempo a este miembro. Revisa la jerarquia de roles y mis permisos.",
+  "errorTargetNotNicknamable": "No puedo cambiar el apodo de este miembro. Revisa la jerarquia de roles y mis permisos.",
+  "errorClearNotTextChannel": "Este comando solo funciona en canales de texto del servidor.",
+  "errorClearFailed": "No se pudieron borrar mensajes en este canal.",
+  "errorUserNotMember": "Ese usuario no esta en este servidor.",
+  "errorShipSameUser": "Elige dos usuarios distintos para el ship.",
+  "errorServerlogInvalidChannel": "Elige un canal de texto o de anuncios de este servidor.",
+  "errorServerlogNoPermission": "Necesitas **Gestionar servidor** para configurar los registros.",
+  "errorServericonGuildOnly": "Este comando solo se puede usar en un servidor.",
+  "errorServericonStorageUnavailable": "No se pudo acceder al almacenamiento de imagenes. Intenta de nuevo.",
+  "errorServericonInvalidImage": "No se pudo procesar ese archivo. Usa PNG, JPEG, WebP o GIF.",
+  "errorServericonImageTooLarge": "Ese archivo es demasiado grande.",
+  "errorServericonMaxImages": "Este servidor alcanzo el maximo de imagenes guardadas.",
+  "errorServericonInvalidId": "Ese id de imagen no es valido.",
+  "errorServericonNotFound": "No hay ninguna imagen con ese id.",
+  "errorServericonBotCannotManage": "Necesito **Gestionar servidor** para cambiar el icono del servidor.",
+  "errorServericonNoPanelPermission": "Necesitas **Gestionar servidor** para usar este panel.",
+
+  "pingTitle": "Pong!",
+  "pingDescription": "El bot esta en linea y respondiendo.",
+  "pingFieldApiLatency": "Latencia de la API",
+  "pingFieldCommand": "Comando",
+
+  "uptimeTitle": "Tiempo activo",
+  "uptimeDescription": "Cuanto lleva en ejecucion este proceso del bot (desde el ultimo reinicio).",
+  "uptimeFieldProcess": "Tiempo de proceso",
+
+  "banTitle": "Usuario baneado",
+  "banDescription": "{{target}} fue baneado de este servidor.",
+  "banFieldReason": "Motivo",
+  "banFieldModerator": "Moderador",
+
+  "kickTitle": "Miembro expulsado",
+  "kickDescription": "{{target}} fue expulsado de este servidor.",
+  "kickFieldReason": "Motivo",
+  "kickFieldModerator": "Moderador",
+
+  "muteTitle": "Miembro silenciado (timeout)",
+  "muteDescription": "Se aplico timeout a {{target}}.",
+  "muteNoReason": "Sin motivo.",
+  "muteDuration": "{{seconds}} s",
+  "muteFieldDuration": "Duracion",
+  "muteFieldReason": "Motivo",
+  "muteFieldModerator": "Moderador",
+
+  "nicknameTitle": "Apodo actualizado",
+  "nicknameDescription": "Se actualizo el apodo del servidor de {{target}}.",
+  "nicknameNoNickname": "Ninguno",
+  "nicknameNoReason": "Sin motivo.",
+  "nicknameFieldBefore": "Antes",
+  "nicknameFieldAfter": "Despues",
+  "nicknameFieldReason": "Motivo",
+  "nicknameFieldModerator": "Moderador",
+
+  "clearTitle": "Mensajes borrados",
+  "clearDescription": "Se borraron {{count}} mensaje(s) en {{channel}}.",
+  "clearFieldModerator": "Moderador",
+
+  "servericonPanelTitle": "Biblioteca de icono del servidor",
+  "servericonPanelNoLabel": "Sin etiqueta",
+  "servericonPanelSelectInterval": "Intervalo de rotacion (minutos)",
+  "servericonPanelIntervalMinutes": "{{minutes}} min",
+  "servericonPanelToggleOff": "Activar rotacion",
+  "servericonPanelToggleOn": "Desactivar rotacion",
+  "servericonPanelRemovePlaceholder": "Quitar una imagen…",
+  "servericonPanelRefresh": "Actualizar",
+  "servericonPanelRotationOn": "Rotacion: **activada**",
+  "servericonPanelRotationOff": "Rotacion: **desactivada**",
+  "servericonPanelIntervalLine": "**Intervalo:** {{minutes}} min",
+  "servericonPanelLibraryLine": "**Imagenes guardadas:** {{count}} / {{max}}",
+  "servericonPanelImagesSection": "**Imagenes**",
+  "servericonPanelImageLine": "{{label}} — <@{{userId}}>",
+  "servericonPanelNoImages": "_Ninguna por ahora._",
+  "servericonPanelHint": "Adjunta una imagen al usar `/server-icon` para anadirla a la biblioteca.",
+
+  "userInfoNoBadges": "Ninguno",
+  "userInfoNoNickname": "Ninguno",
+  "userInfoNoRoles": "Ninguno",
+  "userInfoUnknown": "Desconocido",
+  "userInfoRolesMore": "{{count}} mas",
+  "userInfoFieldBadges": "Insignias",
+  "userInfoFieldNickname": "Apodo",
+  "userInfoFieldId": "ID",
+  "userInfoFieldJoined": "Entrada al servidor",
+  "userInfoFieldCreated": "Cuenta creada",
+  "userInfoFieldRoles": "Roles ({{count}})",
+
+  "serverInfoChannelSummary": "Texto {{text}}, voz {{voice}}, categorias {{category}}, foros {{forum}}, escenarios {{stage}}, anuncios {{announcement}}, medios {{media}}",
+  "serverInfoBoostSummary": "{{count}} boosts — {{tier}}",
+  "serverInfoVerificationNone": "Ninguna",
+  "serverInfoVerificationLow": "Baja",
+  "serverInfoVerificationMedium": "Media",
+  "serverInfoVerificationHigh": "Alta",
+  "serverInfoVerificationVeryHigh": "Muy alta",
+  "serverInfoFilterDisabled": "Desactivado",
+  "serverInfoFilterMembersWithoutRoles": "Escanear miembros sin roles",
+  "serverInfoFilterAllMembers": "Escanear todos los miembros",
+  "serverInfoBoostTierNone": "Sin nivel",
+  "serverInfoBoostTier1": "Nivel 1",
+  "serverInfoBoostTier2": "Nivel 2",
+  "serverInfoBoostTier3": "Nivel 3",
+  "serverInfoFieldId": "ID del servidor",
+  "serverInfoFieldOwner": "Propietario",
+  "serverInfoFieldCreated": "Creado",
+  "serverInfoFieldMembers": "Miembros",
+  "serverInfoFieldChannels": "Canales",
+  "serverInfoFieldBoost": "Estado de boosts",
+  "serverInfoFieldVerification": "Nivel de verificacion",
+  "serverInfoFieldExplicitFilter": "Filtro de contenido explicito",
+
+  "serverlogDisableSuccess": "El registro del servidor se desactivo en este servidor.",
+  "serverlogPanelSelectChannel": "Elegir canal de registros",
+  "serverlogPanelSelectCategories": "Categorias (seleccion multiple)",
+  "serverlogPanelDisableButton": "Desactivar registros",
+  "serverlogPanelOptionVoice": "Actividad de voz",
+  "serverlogPanelOptionMembers": "Entradas, salidas y perfil en el servidor",
+  "serverlogPanelOptionModeration": "Moderacion (auditoria)",
+  "serverlogPanelOptionMessages": "Mensajes borrados",
+  "serverlogNoReason": "Sin motivo",
+  "serverlogUnknownAuthor": "Autor desconocido",
+  "serverlogVoiceJoinTitle": "Voz — entro",
+  "serverlogVoiceJoinDescription": "**{{user}}** entro a {{channel}}.",
+  "serverlogVoiceLeaveTitle": "Voz — salio",
+  "serverlogVoiceLeaveDescription": "**{{user}}** salio de {{channel}}.",
+  "serverlogVoiceMoveTitle": "Voz — movido",
+  "serverlogVoiceMoveDescription": "**{{user}}** paso de {{from}} a {{to}}.",
+  "serverlogMemberJoinTitle": "Miembro entro",
+  "serverlogMemberJoinDescription": "**{{user}}** (`{{id}}`) entro al servidor.",
+  "serverlogMemberLeaveTitle": "Miembro salio",
+  "serverlogMemberLeaveDescription": "**{{user}}** (`{{id}}`) salio del servidor.",
+  "serverlogMemberUpdateTitle": "Miembro actualizado",
+  "serverlogMemberUpdateDescription": "**{{user}}** (`{{id}}`)\n\n{{details}}",
+  "serverlogMemberUpdateNoNickname": "(sin apodo en el servidor)",
+  "serverlogMemberUpdateNickname": "**Apodo** — {{before}} → {{after}}",
+  "serverlogMemberUpdateRolesAdded": "**Cargos agregados** — {{list}}",
+  "serverlogMemberUpdateRolesRemoved": "**Cargos quitados** — {{list}}",
+  "serverlogMemberUpdateAvatar": "**Avatar del perfil del servidor** actualizado",
+  "serverlogModKickTitle": "Miembro expulsado",
+  "serverlogModKickDescription": "**{{target}}** fue expulsado por **{{moderator}}**.\n{{reason}}",
+  "serverlogModBanTitle": "Miembro baneado",
+  "serverlogModBanDescription": "**{{target}}** fue baneado por **{{moderator}}**.\n{{reason}}",
+  "serverlogModUnbanTitle": "Baneo revocado",
+  "serverlogModUnbanDescription": "**{{target}}** fue desbaneado por **{{moderator}}**.\n{{reason}}",
+  "serverlogModTimeoutTitle": "Timeout actualizado",
+  "serverlogModTimeoutDescription": "**{{target}}** — timeout hasta **{{until}}** por **{{moderator}}**.\n{{reason}}",
+  "serverlogMessageDeleteTitle": "Mensaje eliminado",
+  "serverlogMessageDeleteDescription": "Canal: {{channel}}\nAutor: {{author}}\nID del mensaje: {{id}}",
+  "serverlogMessageBulkTitle": "Mensajes eliminados en masa",
+  "serverlogMessageBulkDescription": "**{{count}}** mensaje(s) eliminados en {{channel}}.",
+
+  "shipTitle": "Ship",
+  "shipDescription": "{{pair}}",
+  "shipPairSeparator": "×",
+  "shipFallbackVerdict": "Es complicado.",
+  "shipFieldScore": "Compatibilidad",
+  "shipFieldVerdict": "Veredicto",
+  "shipVeryLow": [
+    "Helado total. Prueba primero un grupo.",
+    "Las estrellas no estan alineadas.",
+    "Modo amistad — romance no detectado.",
+    "Este ship necesita un bote salvavidas.",
+    "Universos distintos, mismo Discord.",
+    "El medidor de compatibilidad pidio horas extra.",
+    "Geniales como amigos. Como ship, en debate.",
+    "Si esto fuera una peli, seguirias en el acto uno — de otra historia.",
+    "Senal baja. Prueba apagar y encender la amistad."
+  ],
+  "shipLow": [
+    "Fuego lento — muy lento.",
+    "Hay algo ahi, quizas.",
+    "Quimica en espera de parches.",
+    "No es imposible, solo poco probable hoy.",
+    "Una chispa, no una llama.",
+    "Companeros de servidor, almas gemelas en otra linea temporal.",
+    "Podria gustarte — enfasis en podria.",
+    "El vibe es 'ya veremos' con puntos suspensivos.",
+    "Mejor que una moneda al aire. No mucho mas."
+  ],
+  "shipMid": [
+    "Energia de tal vez solida.",
+    "Merece un capitulo de fanfic.",
+    "El grupo lo shipearia.",
+    "Chispa suficiente para notarla.",
+    "Ambiguo con estilo — en el buen sentido.",
+    "Sin armadura de guion, pero el humor aguanta.",
+    "A medio camino entre meme y manifiesto.",
+    "Sin bulla, pero el nombre del ship ya esta en beta.",
+    "Tension de la que sobrevive un typo en el chat."
+  ],
+  "shipHigh": [
+    "Energia canon.",
+    "La linea temporal converge.",
+    "Material de pareja principal.",
+    "Hasta el algoritmo apoya esto.",
+    "Captura y enmarcala.",
+    "Si la quimica fuera Wi‑Fi, tendrias todas las barras.",
+    "El servidor lo shipea. Las estrellas coinciden. El bot solo lo hace oficial.",
+    "Arco final cargando.",
+    "Alguien escriba el AU — los numeros ya votaron."
+  ]
 }

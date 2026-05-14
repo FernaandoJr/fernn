@@ -1,326 +1,211 @@
 {
-  "errors": {
-    "commandUnavailable": "This command is not available.",
-    "commandExecutionFailed": "Something went wrong while running that command.",
-    "moderation": {
-      "guildOnly": "This command can only be used in a server.",
-      "memberNotInGuild": "That user is not in this server.",
-      "cannotModerateSelf": "You cannot use this on yourself.",
-      "cannotModerateOwner": "You cannot moderate the server owner.",
-      "cannotModerateBot": "You cannot moderate this bot.",
-      "targetNotBannable": "I cannot ban this user. Check role hierarchy and my permissions.",
-      "targetNotKickable": "I cannot kick this member. Check role hierarchy and my permissions.",
-      "targetNotModeratable": "I cannot timeout this member. Check role hierarchy and my permissions.",
-      "targetNotNicknamable": "I cannot change this member's nickname. Check role hierarchy and my permissions.",
-      "clearNotTextChannel": "This command only works in server text channels.",
-      "clearFailed": "Could not delete messages in this channel."
-    },
-    "userInfo": {
-      "notMember": "That user is not in this server."
-    },
-    "ship": {
-      "sameUser": "Pick two different users to ship."
-    },
-    "serverlog": {
-      "invalidChannel": "Choose a text or announcement channel in this server.",
-      "noPermission": "You need **Manage Server** to configure logging."
-    },
-    "servericon": {
-      "guildOnly": "This command can only be used in a server.",
-      "storageUnavailable": "Could not reach image storage. Try again later.",
-      "invalidImage": "Could not process that file. Use a PNG, JPEG, WebP, or GIF.",
-      "imageTooLarge": "That file is too large.",
-      "maxImages": "This server has reached the maximum number of saved images.",
-      "invalidId": "That is not a valid image id.",
-      "notFound": "No image with that id was found.",
-      "botCannotManageGuild": "I need **Manage Server** to change the server icon.",
-      "noPanelPermission": "You need **Manage Server** to use this panel."
-    }
-  },
-  "commands": {
-    "ping": {
-      "title": "Pong!",
-      "description": "The bot is online and responding.",
-      "fields": {
-        "apiLatency": "API Latency",
-        "command": "Command"
-      }
-    },
-    "uptime": {
-      "title": "Uptime",
-      "description": "How long this bot process has been running (since last restart).",
-      "fields": {
-        "process": "Process uptime"
-      }
-    },
-    "ban": {
-      "title": "User banned",
-      "description": "{{target}} was banned from this server.",
-      "fields": {
-        "reason": "Reason",
-        "moderator": "Moderator"
-      }
-    },
-    "kick": {
-      "title": "Member kicked",
-      "description": "{{target}} was kicked from this server.",
-      "fields": {
-        "reason": "Reason",
-        "moderator": "Moderator"
-      }
-    },
-    "mute": {
-      "title": "Member timed out",
-      "description": "{{target}} has been timed out.",
-      "noReasonProvided": "No reason provided.",
-      "durationValue": "{{seconds}} s",
-      "fields": {
-        "duration": "Duration",
-        "reason": "Reason",
-        "moderator": "Moderator"
-      }
-    },
-    "nickname": {
-      "title": "Nickname updated",
-      "description": "{{target}}'s server nickname was updated.",
-      "noNickname": "None",
-      "noReasonProvided": "No reason provided.",
-      "fields": {
-        "before": "Before",
-        "after": "After",
-        "reason": "Reason",
-        "moderator": "Moderator"
-      }
-    },
-    "clear": {
-      "title": "Messages cleared",
-      "description": "Deleted {{count}} message(s) in {{channel}}.",
-      "fields": {
-        "moderator": "Moderator"
-      }
-    },
-    "servericon": {
-      "panel": {
-        "title": "Server icon library",
-        "noLabel": "No label",
-        "selectInterval": "Rotation interval (minutes)",
-        "intervalMinutes": "{{minutes}} min",
-        "buttonToggleWhenOff": "Turn rotation on",
-        "buttonToggleWhenOn": "Turn rotation off",
-        "removePlaceholder": "Remove an image…",
-        "buttonRefresh": "Refresh",
-        "embed": {
-          "rotationOn": "Rotation: **on**",
-          "rotationOff": "Rotation: **off**",
-          "intervalLine": "**Interval:** {{minutes}} min",
-          "libraryLine": "**Saved images:** {{count}} / {{max}}",
-          "imagesSection": "**Images**",
-          "imageLine": "{{label}} — <@{{userId}}>",
-          "noImages": "_None yet._",
-          "hint": "Attach an image when running `/server-icon` to add it to the library."
-        }
-      }
-    },
-    "userInfo": {
-      "noBadges": "None",
-      "noNickname": "None",
-      "noRoles": "None",
-      "unknown": "Unknown",
-      "rolesMore": "{{count}} more",
-      "fields": {
-        "badges": "Badges",
-        "nickname": "Nickname",
-        "id": "ID",
-        "joined": "Joined server",
-        "created": "Account created",
-        "roles": "Roles ({{count}})"
-      }
-    },
-    "serverInfo": {
-      "channelSummary": "Text {{text}}, voice {{voice}}, categories {{category}}, forums {{forum}}, stages {{stage}}, announcements {{announcement}}, media {{media}}",
-      "boostSummary": "{{count}} boosts — {{tier}}",
-      "verification": {
-        "none": "None",
-        "low": "Low",
-        "medium": "Medium",
-        "high": "High",
-        "veryHigh": "Very high"
-      },
-      "explicitFilter": {
-        "disabled": "Disabled",
-        "membersWithoutRoles": "Scan members without roles",
-        "allMembers": "Scan all members"
-      },
-      "premiumTier": {
-        "none": "No tier",
-        "tier1": "Tier 1",
-        "tier2": "Tier 2",
-        "tier3": "Tier 3"
-      },
-      "fields": {
-        "id": "Server ID",
-        "owner": "Owner",
-        "created": "Created",
-        "members": "Members",
-        "channels": "Channels",
-        "boost": "Boost status",
-        "verification": "Verification level",
-        "explicitFilter": "Explicit media filter"
-      }
-    },
-    "serverlog": {
-      "set": {
-        "title": "Logging channel set",
-        "description": "Server logs will be sent to {{channel}}. All event categories are enabled by default."
-      },
-      "disable": {
-        "success": "Server logging has been disabled for this server."
-      },
-      "panel": {
-        "selectChannel": "Choose log channel",
-        "selectCategories": "Categories (multi-select)",
-        "disableButton": "Disable logging",
-        "options": {
-          "voice": "Voice activity",
-          "members": "Joins, leaves & server profile",
-          "moderation": "Moderation (audit)",
-          "messages": "Message deletes"
-        }
-      },
-      "status": {
-        "title": "Server logging",
-        "description": "Log channel: {{channel}}",
-        "disabled": "Server logging is not configured. Use `/server-log`.",
-        "on": "On",
-        "off": "Off",
-        "fields": {
-          "voice": "Voice",
-          "members": "Members",
-          "moderation": "Moderation",
-          "messages": "Messages"
-        }
-      },
-      "logs": {
-        "noReason": "No reason provided",
-        "unknownAuthor": "Unknown author",
-        "voiceJoin": {
-          "title": "Voice — joined",
-          "description": "**{{user}}** joined {{channel}}."
-        },
-        "voiceLeave": {
-          "title": "Voice — left",
-          "description": "**{{user}}** left {{channel}}."
-        },
-        "voiceMove": {
-          "title": "Voice — moved",
-          "description": "**{{user}}** moved from {{from}} to {{to}}."
-        },
-        "memberJoin": {
-          "title": "Member joined",
-          "description": "**{{user}}** (`{{id}}`) joined the server."
-        },
-        "memberLeave": {
-          "title": "Member left",
-          "description": "**{{user}}** (`{{id}}`) left the server."
-        },
-        "memberUpdate": {
-          "title": "Member updated",
-          "description": "**{{user}}** (`{{id}}`)\n\n{{details}}",
-          "noNickname": "(no server nickname)",
-          "nickname": "**Nickname** — {{before}} → {{after}}",
-          "rolesAdded": "**Roles added** — {{list}}",
-          "rolesRemoved": "**Roles removed** — {{list}}",
-          "serverProfileAvatar": "**Server profile avatar** updated"
-        },
-        "modKick": {
-          "title": "Member kicked",
-          "description": "**{{target}}** was kicked by **{{moderator}}**.\n{{reason}}"
-        },
-        "modBan": {
-          "title": "Member banned",
-          "description": "**{{target}}** was banned by **{{moderator}}**.\n{{reason}}"
-        },
-        "modUnban": {
-          "title": "Ban removed",
-          "description": "**{{target}}** was unbanned by **{{moderator}}**.\n{{reason}}"
-        },
-        "modTimeout": {
-          "title": "Timeout updated",
-          "description": "**{{target}}** — timeout until **{{until}}** by **{{moderator}}**.\n{{reason}}"
-        },
-        "messageDelete": {
-          "title": "Message deleted",
-          "description": "Channel: {{channel}}\nAuthor: {{author}}\nMessage ID: {{id}}"
-        },
-        "messageBulk": {
-          "title": "Messages bulk deleted",
-          "description": "**{{count}}** message(s) removed in {{channel}}."
-        }
-      }
-    },
-    "ship": {
-      "title": "Ship",
-      "description": "{{pair}}",
-      "pairSeparator": "×",
-      "fallbackVerdict": "It's complicated.",
-      "fields": {
-        "score": "Compatibility",
-        "verdict": "Verdict"
-      },
-      "tiers": {
-        "veryLow": {
-          "messages": [
-            "Ice cold. Maybe try a group chat first.",
-            "The stars are not aligned.",
-            "Friendship mode — romance not detected.",
-            "This ship might need a life raft.",
-            "Different universes, same Discord.",
-            "The compatibility meter filed for overtime.",
-            "Cute as friends. As a ship? Debatable.",
-            "If this were a movie, you'd still be in act one — of someone else's story.",
-            "Low signal. Try turning friendship off and on again."
-          ]
-        },
-        "low": {
-          "messages": [
-            "Slow burn — very slow.",
-            "There's something there, maybe.",
-            "Chemistry pending further patches.",
-            "Not impossible, just unlikely today.",
-            "A flicker, not a flame.",
-            "Roommates in the same server, soulmates in another timeline.",
-            "Could grow on you — emphasis on could.",
-            "The vibe is 'we'll see' with extra ellipsis.",
-            "Better than a coin flip. Not by much."
-          ]
-        },
-        "mid": {
-          "messages": [
-            "Solid maybe energy.",
-            "Worth a fanfic chapter.",
-            "The group chat would ship it.",
-            "Enough spark to notice.",
-            "Comfortably ambiguous — in a fun way.",
-            "Plot armor not included, but the banter carries.",
-            "Halfway between meme and manifesto.",
-            "Not loud, but the ship name is already in beta.",
-            "The kind of tension that survives a typo in chat."
-          ]
-        },
-        "high": {
-          "messages": [
-            "Canon energy.",
-            "The timeline converges.",
-            "Main-pair material.",
-            "Even the algorithm is rooting for this.",
-            "Screenshot this and frame it.",
-            "If chemistry were Wi‑Fi, you'd be full bars.",
-            "The server ships it. The stars agree. The bot is just formalizing it.",
-            "Endgame arc loading.",
-            "Someone write the AU — the numbers already did."
-          ]
-        }
-      }
-    }
-  }
+  "errorCommandUnavailable": "This command is not available.",
+  "errorCommandFailed": "Something went wrong while running that command.",
+  "errorGuildOnly": "This command can only be used in a server.",
+  "errorMemberNotInGuild": "That user is not in this server.",
+  "errorCannotModerateSelf": "You cannot use this on yourself.",
+  "errorCannotModerateOwner": "You cannot moderate the server owner.",
+  "errorCannotModerateBot": "You cannot moderate this bot.",
+  "errorTargetNotBannable": "I cannot ban this user. Check role hierarchy and my permissions.",
+  "errorTargetNotKickable": "I cannot kick this member. Check role hierarchy and my permissions.",
+  "errorTargetNotModeratable": "I cannot timeout this member. Check role hierarchy and my permissions.",
+  "errorTargetNotNicknamable": "I cannot change this member's nickname. Check role hierarchy and my permissions.",
+  "errorClearNotTextChannel": "This command only works in server text channels.",
+  "errorClearFailed": "Could not delete messages in this channel.",
+  "errorUserNotMember": "That user is not in this server.",
+  "errorShipSameUser": "Pick two different users to ship.",
+  "errorServerlogInvalidChannel": "Choose a text or announcement channel in this server.",
+  "errorServerlogNoPermission": "You need **Manage Server** to configure logging.",
+  "errorServericonGuildOnly": "This command can only be used in a server.",
+  "errorServericonStorageUnavailable": "Could not reach image storage. Try again later.",
+  "errorServericonInvalidImage": "Could not process that file. Use a PNG, JPEG, WebP, or GIF.",
+  "errorServericonImageTooLarge": "That file is too large.",
+  "errorServericonMaxImages": "This server has reached the maximum number of saved images.",
+  "errorServericonInvalidId": "That is not a valid image id.",
+  "errorServericonNotFound": "No image with that id was found.",
+  "errorServericonBotCannotManage": "I need **Manage Server** to change the server icon.",
+  "errorServericonNoPanelPermission": "You need **Manage Server** to use this panel.",
+
+  "pingTitle": "Pong!",
+  "pingDescription": "The bot is online and responding.",
+  "pingFieldApiLatency": "API Latency",
+  "pingFieldCommand": "Command",
+
+  "uptimeTitle": "Uptime",
+  "uptimeDescription": "How long this bot process has been running (since last restart).",
+  "uptimeFieldProcess": "Process uptime",
+
+  "banTitle": "User banned",
+  "banDescription": "{{target}} was banned from this server.",
+  "banFieldReason": "Reason",
+  "banFieldModerator": "Moderator",
+
+  "kickTitle": "Member kicked",
+  "kickDescription": "{{target}} was kicked from this server.",
+  "kickFieldReason": "Reason",
+  "kickFieldModerator": "Moderator",
+
+  "muteTitle": "Member timed out",
+  "muteDescription": "{{target}} has been timed out.",
+  "muteNoReason": "No reason provided.",
+  "muteDuration": "{{seconds}} s",
+  "muteFieldDuration": "Duration",
+  "muteFieldReason": "Reason",
+  "muteFieldModerator": "Moderator",
+
+  "nicknameTitle": "Nickname updated",
+  "nicknameDescription": "{{target}}'s server nickname was updated.",
+  "nicknameNoNickname": "None",
+  "nicknameNoReason": "No reason provided.",
+  "nicknameFieldBefore": "Before",
+  "nicknameFieldAfter": "After",
+  "nicknameFieldReason": "Reason",
+  "nicknameFieldModerator": "Moderator",
+
+  "clearTitle": "Messages cleared",
+  "clearDescription": "Deleted {{count}} message(s) in {{channel}}.",
+  "clearFieldModerator": "Moderator",
+
+  "servericonPanelTitle": "Server icon library",
+  "servericonPanelNoLabel": "No label",
+  "servericonPanelSelectInterval": "Rotation interval (minutes)",
+  "servericonPanelIntervalMinutes": "{{minutes}} min",
+  "servericonPanelToggleOff": "Turn rotation on",
+  "servericonPanelToggleOn": "Turn rotation off",
+  "servericonPanelRemovePlaceholder": "Remove an image…",
+  "servericonPanelRefresh": "Refresh",
+  "servericonPanelRotationOn": "Rotation: **on**",
+  "servericonPanelRotationOff": "Rotation: **off**",
+  "servericonPanelIntervalLine": "**Interval:** {{minutes}} min",
+  "servericonPanelLibraryLine": "**Saved images:** {{count}} / {{max}}",
+  "servericonPanelImagesSection": "**Images**",
+  "servericonPanelImageLine": "{{label}} — <@{{userId}}>",
+  "servericonPanelNoImages": "_None yet._",
+  "servericonPanelHint": "Attach an image when running `/server-icon` to add it to the library.",
+
+  "userInfoNoBadges": "None",
+  "userInfoNoNickname": "None",
+  "userInfoNoRoles": "None",
+  "userInfoUnknown": "Unknown",
+  "userInfoRolesMore": "{{count}} more",
+  "userInfoFieldBadges": "Badges",
+  "userInfoFieldNickname": "Nickname",
+  "userInfoFieldId": "ID",
+  "userInfoFieldJoined": "Joined server",
+  "userInfoFieldCreated": "Account created",
+  "userInfoFieldRoles": "Roles ({{count}})",
+
+  "serverInfoChannelSummary": "Text {{text}}, voice {{voice}}, categories {{category}}, forums {{forum}}, stages {{stage}}, announcements {{announcement}}, media {{media}}",
+  "serverInfoBoostSummary": "{{count}} boosts — {{tier}}",
+  "serverInfoVerificationNone": "None",
+  "serverInfoVerificationLow": "Low",
+  "serverInfoVerificationMedium": "Medium",
+  "serverInfoVerificationHigh": "High",
+  "serverInfoVerificationVeryHigh": "Very high",
+  "serverInfoFilterDisabled": "Disabled",
+  "serverInfoFilterMembersWithoutRoles": "Scan members without roles",
+  "serverInfoFilterAllMembers": "Scan all members",
+  "serverInfoBoostTierNone": "No tier",
+  "serverInfoBoostTier1": "Tier 1",
+  "serverInfoBoostTier2": "Tier 2",
+  "serverInfoBoostTier3": "Tier 3",
+  "serverInfoFieldId": "Server ID",
+  "serverInfoFieldOwner": "Owner",
+  "serverInfoFieldCreated": "Created",
+  "serverInfoFieldMembers": "Members",
+  "serverInfoFieldChannels": "Channels",
+  "serverInfoFieldBoost": "Boost status",
+  "serverInfoFieldVerification": "Verification level",
+  "serverInfoFieldExplicitFilter": "Explicit media filter",
+
+  "serverlogDisableSuccess": "Server logging has been disabled for this server.",
+  "serverlogPanelSelectChannel": "Choose log channel",
+  "serverlogPanelSelectCategories": "Categories (multi-select)",
+  "serverlogPanelDisableButton": "Disable logging",
+  "serverlogPanelOptionVoice": "Voice activity",
+  "serverlogPanelOptionMembers": "Joins, leaves & server profile",
+  "serverlogPanelOptionModeration": "Moderation (audit)",
+  "serverlogPanelOptionMessages": "Message deletes",
+  "serverlogNoReason": "No reason provided",
+  "serverlogUnknownAuthor": "Unknown author",
+  "serverlogVoiceJoinTitle": "Voice — joined",
+  "serverlogVoiceJoinDescription": "**{{user}}** joined {{channel}}.",
+  "serverlogVoiceLeaveTitle": "Voice — left",
+  "serverlogVoiceLeaveDescription": "**{{user}}** left {{channel}}.",
+  "serverlogVoiceMoveTitle": "Voice — moved",
+  "serverlogVoiceMoveDescription": "**{{user}}** moved from {{from}} to {{to}}.",
+  "serverlogMemberJoinTitle": "Member joined",
+  "serverlogMemberJoinDescription": "**{{user}}** (`{{id}}`) joined the server.",
+  "serverlogMemberLeaveTitle": "Member left",
+  "serverlogMemberLeaveDescription": "**{{user}}** (`{{id}}`) left the server.",
+  "serverlogMemberUpdateTitle": "Member updated",
+  "serverlogMemberUpdateDescription": "**{{user}}** (`{{id}}`)\n\n{{details}}",
+  "serverlogMemberUpdateNoNickname": "(no server nickname)",
+  "serverlogMemberUpdateNickname": "**Nickname** — {{before}} → {{after}}",
+  "serverlogMemberUpdateRolesAdded": "**Roles added** — {{list}}",
+  "serverlogMemberUpdateRolesRemoved": "**Roles removed** — {{list}}",
+  "serverlogMemberUpdateAvatar": "**Server profile avatar** updated",
+  "serverlogModKickTitle": "Member kicked",
+  "serverlogModKickDescription": "**{{target}}** was kicked by **{{moderator}}**.\n{{reason}}",
+  "serverlogModBanTitle": "Member banned",
+  "serverlogModBanDescription": "**{{target}}** was banned by **{{moderator}}**.\n{{reason}}",
+  "serverlogModUnbanTitle": "Ban removed",
+  "serverlogModUnbanDescription": "**{{target}}** was unbanned by **{{moderator}}**.\n{{reason}}",
+  "serverlogModTimeoutTitle": "Timeout updated",
+  "serverlogModTimeoutDescription": "**{{target}}** — timeout until **{{until}}** by **{{moderator}}**.\n{{reason}}",
+  "serverlogMessageDeleteTitle": "Message deleted",
+  "serverlogMessageDeleteDescription": "Channel: {{channel}}\nAuthor: {{author}}\nMessage ID: {{id}}",
+  "serverlogMessageBulkTitle": "Messages bulk deleted",
+  "serverlogMessageBulkDescription": "**{{count}}** message(s) removed in {{channel}}.",
+
+  "shipTitle": "Ship",
+  "shipDescription": "{{pair}}",
+  "shipPairSeparator": "×",
+  "shipFallbackVerdict": "It's complicated.",
+  "shipFieldScore": "Compatibility",
+  "shipFieldVerdict": "Verdict",
+  "shipVeryLow": [
+    "Ice cold. Maybe try a group chat first.",
+    "The stars are not aligned.",
+    "Friendship mode — romance not detected.",
+    "This ship might need a life raft.",
+    "Different universes, same Discord.",
+    "The compatibility meter filed for overtime.",
+    "Cute as friends. As a ship? Debatable.",
+    "If this were a movie, you'd still be in act one — of someone else's story.",
+    "Low signal. Try turning friendship off and on again."
+  ],
+  "shipLow": [
+    "Slow burn — very slow.",
+    "There's something there, maybe.",
+    "Chemistry pending further patches.",
+    "Not impossible, just unlikely today.",
+    "A flicker, not a flame.",
+    "Roommates in the same server, soulmates in another timeline.",
+    "Could grow on you — emphasis on could.",
+    "The vibe is 'we'll see' with extra ellipsis.",
+    "Better than a coin flip. Not by much."
+  ],
+  "shipMid": [
+    "Solid maybe energy.",
+    "Worth a fanfic chapter.",
+    "The group chat would ship it.",
+    "Enough spark to notice.",
+    "Comfortably ambiguous — in a fun way.",
+    "Plot armor not included, but the banter carries.",
+    "Halfway between meme and manifesto.",
+    "Not loud, but the ship name is already in beta.",
+    "The kind of tension that survives a typo in chat."
+  ],
+  "shipHigh": [
+    "Canon energy.",
+    "The timeline converges.",
+    "Main-pair material.",
+    "Even the algorithm is rooting for this.",
+    "Screenshot this and frame it.",
+    "If chemistry were Wi‑Fi, you'd be full bars.",
+    "The server ships it. The stars agree. The bot is just formalizing it.",
+    "Endgame arc loading.",
+    "Someone write the AU — the numbers already did."
+  ]
 }

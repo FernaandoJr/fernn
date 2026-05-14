@@ -4,10 +4,8 @@ import { roleMention } from "discord.js"
 import { getTranslator } from "../../../../i18n/index.ts"
 import { truncateJoin } from "./truncateJoin.ts"
 
-/** Discord embed field value max length. */
 export const EMBED_FIELD_VALUE_MAX = 1024
 
-/** Sort: highest position first; roleCount excludes @everyone. */
 export function formatMemberRolesFieldValue(
 	member: GuildMember,
 	guild: Guild,
@@ -22,14 +20,14 @@ export function formatMemberRolesFieldValue(
 	const roleCount = roleMentions.length
 
 	if (roleCount === 0) {
-		return { value: t("commands.userInfo.noRoles"), roleCount: 0 }
+		return { value: t("userInfoNoRoles"), roleCount: 0 }
 	}
 
 	const value = truncateJoin(
 		roleMentions,
 		", ",
 		EMBED_FIELD_VALUE_MAX,
-		(hidden) => t("commands.userInfo.rolesMore", { count: hidden })
+		(hidden) => t("userInfoRolesMore", { count: hidden })
 	)
 
 	return { value, roleCount }

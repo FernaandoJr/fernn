@@ -52,8 +52,7 @@ export const muteCommand: SlashCommand = {
 		const targetUser = interaction.options.getUser("member", true)
 		const durationSeconds = interaction.options.getInteger("duration", true)
 		const reason =
-			interaction.options.getString("reason") ??
-			t("commands.mute.noReasonProvided")
+			interaction.options.getString("reason") ?? t("muteNoReason")
 		const targetMember = await resolveMember(
 			interaction,
 			"member",
@@ -73,19 +72,17 @@ export const muteCommand: SlashCommand = {
 
 		const embed = createDefaultEmbed({
 			color: colors.success,
-			title: t("commands.mute.title"),
-			description: t("commands.mute.description", { target: targetUser.tag }),
+			title: t("muteTitle"),
+			description: t("muteDescription", { target: targetUser.username }),
 		}).addFields(
 			{
-				name: t("commands.mute.fields.duration"),
-				value: t("commands.mute.durationValue", {
-					seconds: durationSeconds,
-				}),
+				name: t("muteFieldDuration"),
+				value: t("muteDuration", { seconds: durationSeconds }),
 			},
-			{ name: t("commands.mute.fields.reason"), value: reason },
+			{ name: t("muteFieldReason"), value: reason },
 			{
-				name: t("commands.mute.fields.moderator"),
-				value: interaction.user.tag,
+				name: t("muteFieldModerator"),
+				value: interaction.user.username,
 			},
 		)
 

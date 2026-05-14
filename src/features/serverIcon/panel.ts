@@ -57,17 +57,16 @@ export async function buildServerIconPanel(
 	const doc = raw ?? defaultDoc(guild.id)
 
 	const rotationLine = doc.enabled
-		? t("commands.servericon.panel.embed.rotationOn")
-		: t("commands.servericon.panel.embed.rotationOff")
+		? t("servericonPanelRotationOn")
+		: t("servericonPanelRotationOff")
 
 	const imageLines =
 		doc.images.length === 0
-			? t("commands.servericon.panel.embed.noImages")
+			? t("servericonPanelNoImages")
 			: doc.images
 					.map((img) => {
-						const label =
-							img.label ?? t("commands.servericon.panel.noLabel")
-						return t("commands.servericon.panel.embed.imageLine", {
+						const label = img.label ?? t("servericonPanelNoLabel")
+						return t("servericonPanelImageLine", {
 							label,
 							userId: img.addedByUserId,
 						})
@@ -77,23 +76,21 @@ export async function buildServerIconPanel(
 	const description = [
 		rotationLine,
 		"",
-		t("commands.servericon.panel.embed.intervalLine", {
-			minutes: doc.intervalMinutes,
-		}),
-		t("commands.servericon.panel.embed.libraryLine", {
+		t("servericonPanelIntervalLine", { minutes: doc.intervalMinutes }),
+		t("servericonPanelLibraryLine", {
 			count: doc.images.length,
 			max: SERVER_ICON_MAX_IMAGES,
 		}),
 		"",
-		t("commands.servericon.panel.embed.imagesSection"),
+		t("servericonPanelImagesSection"),
 		imageLines,
 		"",
-		t("commands.servericon.panel.embed.hint"),
+		t("servericonPanelHint"),
 	].join("\n")
 
 	const embed = createDefaultEmbed({
 		color: colors.info,
-		title: t("commands.servericon.panel.title"),
+		title: t("servericonPanelTitle"),
 		description,
 	})
 
@@ -101,7 +98,7 @@ export async function buildServerIconPanel(
 
 	const intervalSelect = new StringSelectMenuBuilder()
 		.setCustomId(`${SERVERICON_PANEL_PREFIX}interval`)
-		.setPlaceholder(t("commands.servericon.panel.selectInterval"))
+		.setPlaceholder(t("servericonPanelSelectInterval"))
 		.setMinValues(1)
 		.setMaxValues(1)
 
@@ -113,9 +110,7 @@ export async function buildServerIconPanel(
 			continue
 		}
 		intervalSelect.addOptions({
-			label: t("commands.servericon.panel.intervalMinutes", {
-				minutes: m,
-			}),
+			label: t("servericonPanelIntervalMinutes", { minutes: m }),
 			value: String(m),
 			default: doc.intervalMinutes === m,
 		})
@@ -130,12 +125,12 @@ export async function buildServerIconPanel(
 	if (doc.images.length > 0) {
 		const removeSelect = new StringSelectMenuBuilder()
 			.setCustomId(`${SERVERICON_PANEL_PREFIX}remove`)
-			.setPlaceholder(t("commands.servericon.panel.removePlaceholder"))
+			.setPlaceholder(t("servericonPanelRemovePlaceholder"))
 			.setMinValues(1)
 			.setMaxValues(1)
 
 		for (const [i, img] of doc.images.entries()) {
-			const label = img.label ?? t("commands.servericon.panel.noLabel")
+			const label = img.label ?? t("servericonPanelNoLabel")
 			const shortLabel =
 				label.length > 80 ? `${label.slice(0, 77)}...` : label
 			removeSelect.addOptions({
@@ -157,15 +152,15 @@ export async function buildServerIconPanel(
 				.setCustomId(`${SERVERICON_PANEL_PREFIX}toggle`)
 				.setLabel(
 					doc.enabled
-						? t("commands.servericon.panel.buttonToggleWhenOn")
-						: t("commands.servericon.panel.buttonToggleWhenOff")
+						? t("servericonPanelToggleOn")
+						: t("servericonPanelToggleOff")
 				)
 				.setStyle(
 					doc.enabled ? ButtonStyle.Secondary : ButtonStyle.Success
 				),
 			new ButtonBuilder()
 				.setCustomId(`${SERVERICON_PANEL_PREFIX}refresh`)
-				.setLabel(t("commands.servericon.panel.buttonRefresh"))
+				.setLabel(t("servericonPanelRefresh"))
 				.setStyle(ButtonStyle.Primary)
 		)
 	)
@@ -187,7 +182,7 @@ export async function handleServerIconPanelInteraction(
 	}
 	if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)) {
 		const t = getTranslator(interaction.locale)
-		await safeEphemeralReply(interaction, t("errors.servericon.noPanelPermission"))
+		await safeEphemeralReply(interaction, t("errorServericonNoPanelPermission"))
 		return
 	}
 
@@ -248,7 +243,7 @@ export async function handleServerIconPanelInteraction(
 			}
 		}
 	} catch {
-		const err = getTranslator(interaction.locale)("errors.commandExecutionFailed")
+		const err = getTranslator(interaction.locale)("errorCommandFailed")
 		await safeEphemeralReply(interaction, err)
 	}
 }

@@ -40,18 +40,12 @@ function verificationLabel(
 	level: GuildVerificationLevel
 ): string {
 	switch (level) {
-		case GuildVerificationLevel.None:
-			return t("commands.serverInfo.verification.none")
-		case GuildVerificationLevel.Low:
-			return t("commands.serverInfo.verification.low")
-		case GuildVerificationLevel.Medium:
-			return t("commands.serverInfo.verification.medium")
-		case GuildVerificationLevel.High:
-			return t("commands.serverInfo.verification.high")
-		case GuildVerificationLevel.VeryHigh:
-			return t("commands.serverInfo.verification.veryHigh")
-		default:
-			return t("commands.serverInfo.verification.none")
+		case GuildVerificationLevel.None: return t("serverInfoVerificationNone")
+		case GuildVerificationLevel.Low: return t("serverInfoVerificationLow")
+		case GuildVerificationLevel.Medium: return t("serverInfoVerificationMedium")
+		case GuildVerificationLevel.High: return t("serverInfoVerificationHigh")
+		case GuildVerificationLevel.VeryHigh: return t("serverInfoVerificationVeryHigh")
+		default: return t("serverInfoVerificationNone")
 	}
 }
 
@@ -60,14 +54,10 @@ function explicitFilterLabel(
 	level: GuildExplicitContentFilter
 ): string {
 	switch (level) {
-		case GuildExplicitContentFilter.Disabled:
-			return t("commands.serverInfo.explicitFilter.disabled")
-		case GuildExplicitContentFilter.MembersWithoutRoles:
-			return t("commands.serverInfo.explicitFilter.membersWithoutRoles")
-		case GuildExplicitContentFilter.AllMembers:
-			return t("commands.serverInfo.explicitFilter.allMembers")
-		default:
-			return t("commands.serverInfo.explicitFilter.disabled")
+		case GuildExplicitContentFilter.Disabled: return t("serverInfoFilterDisabled")
+		case GuildExplicitContentFilter.MembersWithoutRoles: return t("serverInfoFilterMembersWithoutRoles")
+		case GuildExplicitContentFilter.AllMembers: return t("serverInfoFilterAllMembers")
+		default: return t("serverInfoFilterDisabled")
 	}
 }
 
@@ -76,16 +66,11 @@ function premiumTierLabel(
 	tier: GuildPremiumTier
 ): string {
 	switch (tier) {
-		case GuildPremiumTier.None:
-			return t("commands.serverInfo.premiumTier.none")
-		case GuildPremiumTier.Tier1:
-			return t("commands.serverInfo.premiumTier.tier1")
-		case GuildPremiumTier.Tier2:
-			return t("commands.serverInfo.premiumTier.tier2")
-		case GuildPremiumTier.Tier3:
-			return t("commands.serverInfo.premiumTier.tier3")
-		default:
-			return t("commands.serverInfo.premiumTier.none")
+		case GuildPremiumTier.None: return t("serverInfoBoostTierNone")
+		case GuildPremiumTier.Tier1: return t("serverInfoBoostTier1")
+		case GuildPremiumTier.Tier2: return t("serverInfoBoostTier2")
+		case GuildPremiumTier.Tier3: return t("serverInfoBoostTier3")
+		default: return t("serverInfoBoostTierNone")
 	}
 }
 
@@ -115,7 +100,7 @@ export const serverInfoCommand: SlashCommand = {
 			TimestampStyles.RelativeTime
 		)})`
 
-		const channelsLine = t("commands.serverInfo.channelSummary", {
+		const channelsLine = t("serverInfoChannelSummary", {
 			text: counts.text,
 			voice: counts.voice,
 			category: counts.category,
@@ -125,7 +110,7 @@ export const serverInfoCommand: SlashCommand = {
 			media: counts.media,
 		})
 
-		const boostLine = t("commands.serverInfo.boostSummary", {
+		const boostLine = t("serverInfoBoostSummary", {
 			count: guild.premiumSubscriptionCount ?? 0,
 			tier: premiumTierLabel(t, guild.premiumTier),
 		})
@@ -138,42 +123,42 @@ export const serverInfoCommand: SlashCommand = {
 			.setThumbnail(guild.iconURL({ size: 256 }))
 			.addFields(
 				{
-					name: t("commands.serverInfo.fields.id"),
+					name: t("serverInfoFieldId"),
 					value: guild.id,
 					inline: true,
 				},
-			{
-				name: t("commands.serverInfo.fields.owner"),
-				value: userMention(guild.ownerId),
-				inline: true,
-			},
 				{
-					name: t("commands.serverInfo.fields.created"),
+					name: t("serverInfoFieldOwner"),
+					value: userMention(guild.ownerId),
+					inline: true,
+				},
+				{
+					name: t("serverInfoFieldCreated"),
 					value: createdText,
 					inline: false,
 				},
 				{
-					name: t("commands.serverInfo.fields.members"),
+					name: t("serverInfoFieldMembers"),
 					value: String(guild.memberCount),
 					inline: true,
 				},
 				{
-					name: t("commands.serverInfo.fields.channels"),
+					name: t("serverInfoFieldChannels"),
 					value: channelsLine,
 					inline: false,
 				},
 				{
-					name: t("commands.serverInfo.fields.boost"),
+					name: t("serverInfoFieldBoost"),
 					value: boostLine,
 					inline: false,
 				},
 				{
-					name: t("commands.serverInfo.fields.verification"),
+					name: t("serverInfoFieldVerification"),
 					value: verificationLabel(t, guild.verificationLevel),
 					inline: true,
 				},
 				{
-					name: t("commands.serverInfo.fields.explicitFilter"),
+					name: t("serverInfoFieldExplicitFilter"),
 					value: explicitFilterLabel(t, guild.explicitContentFilter),
 					inline: true,
 				}

@@ -60,13 +60,13 @@ export const kickCommand: SlashCommand = {
 
 		const embed = createDefaultEmbed({
 			color: colors.success,
-			title: t("commands.kick.title"),
-			description: t("commands.kick.description", { target: targetUser.tag }),
+			title: t("kickTitle"),
+			description: t("kickDescription", { target: targetUser.username }),
 		}).addFields(
-			{ name: t("commands.kick.fields.reason"), value: reason },
+			{ name: t("kickFieldReason"), value: reason },
 			{
-				name: t("commands.kick.fields.moderator"),
-				value: interaction.user.tag,
+				name: t("kickFieldModerator"),
+				value: interaction.user.username,
 			},
 		)
 

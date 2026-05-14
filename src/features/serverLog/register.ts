@@ -13,11 +13,6 @@ import { sendServerLogEmbed } from "./logChannel.ts"
 
 const LEAVE_AUDIT_WINDOW_MS = 10_000
 
-/**
- * Kicks/bans are logged from `guildAuditLogEntryCreate`. `guildMemberRemove`
- * also fires; when moderation logging is on we skip "member left" if a recent
- * kick/ban audit exists for that user.
- */
 async function shouldSkipLeaveDueToRecentModeration(
 	guild: Guild,
 	userId: string
@@ -59,19 +54,29 @@ async function sendModerationAuditEmbed(
 	entry: GuildAuditLogsEntry,
 	kind: "kick" | "ban" | "unban"
 ): Promise<void> {
-	const key =
-		kind === "kick" ? "modKick" : kind === "ban" ? "modBan" : "modUnban"
-	const base = `commands.serverlog.logs.${key}`
+	const titleKey =
+		kind === "kick"
+			? "serverlogModKickTitle"
+			: kind === "ban"
+				? "serverlogModBanTitle"
+				: "serverlogModUnbanTitle"
+	const descKey =
+		kind === "kick"
+			? "serverlogModKickDescription"
+			: kind === "ban"
+				? "serverlogModBanDescription"
+				: "serverlogModUnbanDescription"
+
 	await sendServerLogEmbed(
 		client,
 		guildId,
 		"moderation",
 		createLogEmbed({
-			title: t(`${base}.title`),
-			description: t(`${base}.description`, {
+			title: t(titleKey),
+			description: t(descKey, {
 				target: auditTargetName(entry),
 				moderator: entry.executor?.username ?? "?",
-				reason: entry.reason ?? t("commands.serverlog.logs.noReason"),
+				reason: entry.reason ?? t("serverlogNoReason"),
 			}),
 		})
 	)
@@ -98,8 +103,8 @@ export function registerServerLogListeners(client: Client): void {
 					guildId,
 					"voice",
 					createLogEmbed({
-						title: t("commands.serverlog.logs.voiceJoin.title"),
-						description: t("commands.serverlog.logs.voiceJoin.description", {
+						title: t("serverlogVoiceJoinTitle"),
+						description: t("serverlogVoiceJoinDescription", {
 							user: member.user.username,
 							channel: channel ? `#${channel.name}` : newId,
 						}),
@@ -115,8 +120,8 @@ export function registerServerLogListeners(client: Client): void {
 					guildId,
 					"voice",
 					createLogEmbed({
-						title: t("commands.serverlog.logs.voiceLeave.title"),
-						description: t("commands.serverlog.logs.voiceLeave.description", {
+						title: t("serverlogVoiceLeaveTitle"),
+						description: t("serverlogVoiceLeaveDescription", {
 							user: member.user.username,
 							channel: channel ? `#${channel.name}` : oldId,
 						}),
@@ -133,8 +138,8 @@ export function registerServerLogListeners(client: Client): void {
 					guildId,
 					"voice",
 					createLogEmbed({
-						title: t("commands.serverlog.logs.voiceMove.title"),
-						description: t("commands.serverlog.logs.voiceMove.description", {
+						title: t("serverlogVoiceMoveTitle"),
+						description: t("serverlogVoiceMoveDescription", {
 							user: member.user.username,
 							from: oldCh ? `#${oldCh.name}` : oldId,
 							to: newCh ? `#${newCh.name}` : newId,
@@ -154,8 +159,8 @@ export function registerServerLogListeners(client: Client): void {
 				guildId,
 				"members",
 				createLogEmbed({
-					title: t("commands.serverlog.logs.memberJoin.title"),
-					description: t("commands.serverlog.logs.memberJoin.description", {
+					title: t("serverlogMemberJoinTitle"),
+					description: t("serverlogMemberJoinDescription", {
 						user: member.user.username,
 						id: member.user.id,
 					}),
@@ -187,8 +192,8 @@ export function registerServerLogListeners(client: Client): void {
 				guildId,
 				"members",
 				createLogEmbed({
-					title: t("commands.serverlog.logs.memberLeave.title"),
-					description: t("commands.serverlog.logs.memberLeave.description", {
+					title: t("serverlogMemberLeaveTitle"),
+					description: t("serverlogMemberLeaveDescription", {
 						user: member.user.username,
 						id: member.user.id,
 					}),
@@ -230,9 +235,9 @@ export function registerServerLogListeners(client: Client): void {
 			const lines: string[] = []
 
 			if (nickChanged) {
-				const noneLabel = t("commands.serverlog.logs.memberUpdate.noNickname")
+				const noneLabel = t("serverlogMemberUpdateNoNickname")
 				lines.push(
-					t("commands.serverlog.logs.memberUpdate.nickname", {
+					t("serverlogMemberUpdateNickname", {
 						before: oldMember.nickname ?? noneLabel,
 						after: newMember.nickname ?? noneLabel,
 					})
@@ -241,23 +246,21 @@ export function registerServerLogListeners(client: Client): void {
 
 			if (added.size > 0) {
 				lines.push(
-					t("commands.serverlog.logs.memberUpdate.rolesAdded", {
+					t("serverlogMemberUpdateRolesAdded", {
 						list: added.map((r) => r.name).join(", "),
 					})
 				)
 			}
 			if (removed.size > 0) {
 				lines.push(
-					t("commands.serverlog.logs.memberUpdate.rolesRemoved", {
+					t("serverlogMemberUpdateRolesRemoved", {
 						list: removed.map((r) => r.name).join(", "),
 					})
 				)
 			}
 
 			if (serverProfileAvatarChanged) {
-				lines.push(
-					t("commands.serverlog.logs.memberUpdate.serverProfileAvatar")
-				)
+				lines.push(t("serverlogMemberUpdateAvatar"))
 			}
 
 			await sendServerLogEmbed(
@@ -265,8 +268,8 @@ export function registerServerLogListeners(client: Client): void {
 				guildId,
 				"members",
 				createLogEmbed({
-					title: t("commands.serverlog.logs.memberUpdate.title"),
-					description: t("commands.serverlog.logs.memberUpdate.description", {
+					title: t("serverlogMemberUpdateTitle"),
+					description: t("serverlogMemberUpdateDescription", {
 						user: newMember.user.username,
 						id: newMember.id,
 						details: lines.join("\n\n"),
@@ -312,12 +315,12 @@ export function registerServerLogListeners(client: Client): void {
 					guildId,
 					"moderation",
 					createLogEmbed({
-						title: t("commands.serverlog.logs.modTimeout.title"),
-						description: t("commands.serverlog.logs.modTimeout.description", {
+						title: t("serverlogModTimeoutTitle"),
+						description: t("serverlogModTimeoutDescription", {
 							target: name,
 							moderator: exec?.username ?? "?",
 							until: until || "—",
-							reason: entry.reason ?? t("commands.serverlog.logs.noReason"),
+							reason: entry.reason ?? t("serverlogNoReason"),
 						}),
 					})
 				)
@@ -335,14 +338,14 @@ export function registerServerLogListeners(client: Client): void {
 			const t = getTranslator(guild.preferredLocale)
 			const author = message.author
 				? `${message.author.username} (${message.author.id})`
-				: t("commands.serverlog.logs.unknownAuthor")
+				: t("serverlogUnknownAuthor")
 			await sendServerLogEmbed(
 				client,
 				guildId,
 				"messages",
 				createLogEmbed({
-					title: t("commands.serverlog.logs.messageDelete.title"),
-					description: t("commands.serverlog.logs.messageDelete.description", {
+					title: t("serverlogMessageDeleteTitle"),
+					description: t("serverlogMessageDeleteDescription", {
 						channel: message.channel.isTextBased()
 							? `${message.channel}`
 							: message.channelId,
@@ -367,8 +370,8 @@ export function registerServerLogListeners(client: Client): void {
 				guildId,
 				"messages",
 				createLogEmbed({
-					title: t("commands.serverlog.logs.messageBulk.title"),
-					description: t("commands.serverlog.logs.messageBulk.description", {
+					title: t("serverlogMessageBulkTitle"),
+					description: t("serverlogMessageBulkDescription", {
 						count: messages.size,
 						channel: `${channel}`,
 					}),

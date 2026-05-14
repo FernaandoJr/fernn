@@ -57,7 +57,7 @@ export const userInfoCommand: SlashCommand = {
 
 		if (!member) {
 			await interaction.reply({
-				content: t("errors.userInfo.notMember"),
+				content: t("errorUserNotMember"),
 				ephemeral: true,
 			})
 			return
@@ -75,7 +75,7 @@ export const userInfoCommand: SlashCommand = {
 						Math.floor(joinedTs / 1000),
 						TimestampStyles.RelativeTime
 				  )})`
-				: t("commands.userInfo.unknown")
+				: t("userInfoUnknown")
 
 		const createdTs = user.createdTimestamp
 		const createdText = `${time(
@@ -106,32 +106,32 @@ export const userInfoCommand: SlashCommand = {
 			.setThumbnail(member.displayAvatarURL({ size: 256 }))
 			.addFields(
 				{
-					name: t("commands.userInfo.fields.badges"),
+					name: t("userInfoFieldBadges"),
 					value: formatUserBadgeField(user.flags, interaction),
 					inline: true,
 				},
 				{
-					name: t("commands.userInfo.fields.nickname"),
-					value: member.nickname ?? t("commands.userInfo.noNickname"),
+					name: t("userInfoFieldNickname"),
+					value: member.nickname ?? t("userInfoNoNickname"),
 					inline: true,
 				},
 				{
-					name: t("commands.userInfo.fields.id"),
+					name: t("userInfoFieldId"),
 					value: user.id,
 					inline: false,
 				},
 				{
-					name: t("commands.userInfo.fields.joined"),
+					name: t("userInfoFieldJoined"),
 					value: joinedText,
 					inline: false,
 				},
 				{
-					name: t("commands.userInfo.fields.created"),
+					name: t("userInfoFieldCreated"),
 					value: createdText,
 					inline: false,
 				},
 				{
-					name: t("commands.userInfo.fields.roles", {
+					name: t("userInfoFieldRoles", {
 						count: roleCount,
 					}),
 					value: rolesValue,

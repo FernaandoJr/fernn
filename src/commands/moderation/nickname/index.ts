@@ -51,8 +51,7 @@ export const nicknameCommand: SlashCommand = {
 		const targetUser = interaction.options.getUser("member", true)
 		const rawNick = interaction.options.getString("nickname")
 		const reason =
-			interaction.options.getString("reason") ??
-			t("commands.nickname.noReasonProvided")
+			interaction.options.getString("reason") ?? t("nicknameNoReason")
 
 		const nextNick =
 			rawNick === null || rawNick.trim() === ""
@@ -75,26 +74,25 @@ export const nicknameCommand: SlashCommand = {
 		}
 
 		const beforeDisplay =
-			targetMember!.nickname ?? t("commands.nickname.noNickname")
+			targetMember!.nickname ?? t("nicknameNoNickname")
 
 		await targetMember!.setNickname(nextNick, reason)
 
-		const afterDisplay =
-			nextNick ?? t("commands.nickname.noNickname")
+		const afterDisplay = nextNick ?? t("nicknameNoNickname")
 
 		const embed = createDefaultEmbed({
 			color: colors.success,
-			title: t("commands.nickname.title"),
-			description: t("commands.nickname.description", {
-				target: targetUser.tag,
+			title: t("nicknameTitle"),
+			description: t("nicknameDescription", {
+				target: targetUser.username,
 			}),
 		}).addFields(
-			{ name: t("commands.nickname.fields.before"), value: beforeDisplay },
-			{ name: t("commands.nickname.fields.after"), value: afterDisplay },
-			{ name: t("commands.nickname.fields.reason"), value: reason },
+			{ name: t("nicknameFieldBefore"), value: beforeDisplay },
+			{ name: t("nicknameFieldAfter"), value: afterDisplay },
+			{ name: t("nicknameFieldReason"), value: reason },
 			{
-				name: t("commands.nickname.fields.moderator"),
-				value: interaction.user.tag,
+				name: t("nicknameFieldModerator"),
+				value: interaction.user.username,
 			},
 		)
 

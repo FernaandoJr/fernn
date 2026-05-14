@@ -43,7 +43,7 @@ export function formatUserBadgeField(
 	}
 
 	if (parts.length === 0) {
-		return t("commands.userInfo.noBadges")
+		return t("userInfoNoBadges")
 	}
 
 	return parts.join(" ")

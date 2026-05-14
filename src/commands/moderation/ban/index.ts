@@ -66,13 +66,13 @@ export const banCommand: SlashCommand = {
 
 		const embed = createDefaultEmbed({
 			color: colors.success,
-			title: t("commands.ban.title"),
-			description: t("commands.ban.description", { target: targetUser.tag }),
+			title: t("banTitle"),
+			description: t("banDescription", { target: targetUser.username }),
 		}).addFields(
-			{ name: t("commands.ban.fields.reason"), value: reason },
+			{ name: t("banFieldReason"), value: reason },
 			{
-				name: t("commands.ban.fields.moderator"),
-				value: interaction.user.tag,
+				name: t("banFieldModerator"),
+				value: interaction.user.username,
 			},
 		)
 

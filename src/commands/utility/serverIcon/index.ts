@@ -36,7 +36,7 @@ async function processServerIconAdd(
 			attachment.name ?? ""
 		)
 	) {
-		return { ok: false, message: t("errors.servericon.invalidImage") }
+		return { ok: false, message: t("errorServericonInvalidImage") }
 	}
 
 	let raw: Buffer
@@ -44,9 +44,9 @@ async function processServerIconAdd(
 		raw = await downloadImageFromUrl(attachment.url)
 	} catch (error) {
 		if (error instanceof Error && error.message === "IMAGE_TOO_LARGE") {
-			return { ok: false, message: t("errors.servericon.imageTooLarge") }
+			return { ok: false, message: t("errorServericonImageTooLarge") }
 		}
-		return { ok: false, message: t("errors.servericon.invalidImage") }
+		return { ok: false, message: t("errorServericonInvalidImage") }
 	}
 
 	const storageKind = resolveServerIconStorageKind(
@@ -59,7 +59,7 @@ async function processServerIconAdd(
 	try {
 		body = await normalizeServerIconForStorage(raw, storageKind)
 	} catch {
-		return { ok: false, message: t("errors.servericon.invalidImage") }
+		return { ok: false, message: t("errorServericonInvalidImage") }
 	}
 
 	const imageId = new mongoose.Types.ObjectId().toString()
@@ -68,7 +68,7 @@ async function processServerIconAdd(
 	try {
 		await r2PutImage(r2Key, body, contentType)
 	} catch {
-		return { ok: false, message: t("errors.servericon.storageUnavailable") }
+		return { ok: false, message: t("errorServericonStorageUnavailable") }
 	}
 
 	try {
@@ -85,7 +85,7 @@ async function processServerIconAdd(
 			/* best effort */
 		}
 		if (error instanceof Error && error.message === "SERVER_ICON_MAX_IMAGES") {
-			return { ok: false, message: t("errors.servericon.maxImages") }
+			return { ok: false, message: t("errorServericonMaxImages") }
 		}
 		throw error
 	}
@@ -114,7 +114,7 @@ export const serverIconCommand: SlashCommand = {
 		const guild = interaction.guild
 		if (!guild) {
 			await interaction.reply({
-				content: t("errors.servericon.guildOnly"),
+				content: t("errorServericonGuildOnly"),
 				ephemeral: true,
 			})
 			return
@@ -123,7 +123,7 @@ export const serverIconCommand: SlashCommand = {
 		const me = guild.members.me
 		if (!me?.permissions.has(PermissionFlagsBits.ManageGuild)) {
 			await interaction.reply({
-				content: t("errors.servericon.botCannotManageGuild"),
+				content: t("errorServericonBotCannotManage"),
 				ephemeral: true,
 			})
 			return

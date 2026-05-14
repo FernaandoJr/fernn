@@ -48,12 +48,10 @@ export const banCommand: SlashCommand = {
 		)
 
 		if (
-			!(await ensureModerationTarget(
-				interaction,
-				targetUser,
-				targetMember,
-				"ban"
-			))
+			!(await ensureModerationTarget(interaction, targetUser, targetMember, {
+				memberOptional: true,
+				checkBannable: true,
+			}))
 		) {
 			return
 		}

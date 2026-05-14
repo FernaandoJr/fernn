@@ -49,12 +49,9 @@ export const kickCommand: SlashCommand = {
 		)
 
 		if (
-			!(await ensureModerationTarget(
-				interaction,
-				targetUser,
-				targetMember,
-				"kick"
-			))
+			!(await ensureModerationTarget(interaction, targetUser, targetMember, {
+				checkKickable: true,
+			}))
 		) {
 			return
 		}

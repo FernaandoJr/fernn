@@ -20,38 +20,16 @@ const resources = {
 } as const;
 
 const supportedLngs = Object.keys(resources) as Array<keyof typeof resources>;
-const supportedLocaleSet = new Set<string>(supportedLngs);
-
-const normalizeLocale = (locale?: string | null): string | undefined => {
-  if (!locale) {
-    return undefined;
-  }
-
-  return locale.trim().toLowerCase();
-};
 
 export const resolveLocale = (
   locale?: string | null,
 ): (typeof supportedLngs)[number] => {
-  const normalizedLocale = normalizeLocale(locale);
-  const matchedLocale = supportedLngs.find(
-    (supportedLocale) => supportedLocale.toLowerCase() === normalizedLocale,
-  );
-
-  if (matchedLocale) {
-    return matchedLocale;
-  }
-
-  const languageOnlyLocale = normalizedLocale?.split("-")[0];
-  const matchedLanguage = supportedLngs.find(
-    (supportedLocale) => supportedLocale.toLowerCase().split("-")[0] === languageOnlyLocale,
-  );
-
-  if (matchedLanguage) {
-    return matchedLanguage;
-  }
-
-  return defaultLocale;
+  if (!locale) return defaultLocale;
+  const normalized = locale.trim().toLowerCase();
+  const exact = supportedLngs.find((l) => l.toLowerCase() === normalized);
+  if (exact) return exact;
+  const lang = normalized.split("-")[0];
+  return supportedLngs.find((l) => l.toLowerCase().split("-")[0] === lang) ?? defaultLocale;
 };
 
 let initPromise: Promise<void> | undefined;

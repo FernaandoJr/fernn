@@ -20,6 +20,7 @@ import {
 	type ServerLogEventFlags,
 } from "../../database/models/ServerLogSettings.ts"
 import { getTranslator } from "../../i18n/index.ts"
+import { safeEphemeralReply } from "../../utils/defaultEmbed.ts"
 import { clearLogPermissionWarningForGuild } from "./logChannel.ts"
 
 export const SERVERLOG_PANEL_PREFIX = "serverlog:" as const
@@ -115,15 +116,7 @@ export async function handleServerLogPanelInteraction(
 	}
 	if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)) {
 		const t = getTranslator(interaction.locale)
-		const payload = {
-			content: t("errors.serverlog.noPermission"),
-			ephemeral: true,
-		}
-		if (interaction.deferred || interaction.replied) {
-			await interaction.followUp(payload)
-		} else {
-			await interaction.reply(payload)
-		}
+		await safeEphemeralReply(interaction, t("errors.serverlog.noPermission"))
 		return
 	}
 
@@ -170,17 +163,7 @@ export async function handleServerLogPanelInteraction(
 			return
 		}
 	} catch {
-		const err = getTranslator(interaction.locale)(
-			"errors.commandExecutionFailed"
-		)
-		if (interaction.deferred || interaction.replied) {
-			await interaction
-				.followUp({ content: err, ephemeral: true })
-				.catch(() => {})
-		} else {
-			await interaction
-				.reply({ content: err, ephemeral: true })
-				.catch(() => {})
-		}
+		const err = getTranslator(interaction.locale)("errors.commandExecutionFailed")
+		await safeEphemeralReply(interaction, err)
 	}
 }

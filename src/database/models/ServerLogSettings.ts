@@ -101,20 +101,13 @@ export async function setServerLogChannel(
 	guildId: string,
 	channelId: string
 ): Promise<ServerLogSettingsDoc> {
-	const existing = await getServerLogSettings(guildId)
-	const events = existing
-		? mergeDefaultEvents(existing.events)
-		: defaultEvents()
 	const updated = await ServerLogSettingsModel.findOneAndUpdate(
 		{ guildId },
 		{
-			$set: {
-				channelId,
-				enabled: true,
-				events,
-			},
+			$set: { channelId, enabled: true },
+			$setOnInsert: { events: defaultEvents() },
 		},
-		{ new: true, upsert: true, setDefaultsOnInsert: true }
+		{ new: true, upsert: true }
 	)
 		.lean()
 		.exec()

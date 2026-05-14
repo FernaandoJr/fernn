@@ -1,25 +1,21 @@
 import chalk from "chalk"
 import type { ChatInputCommandInteraction } from "discord.js"
 
-export const getInteractionServerLabel = (
-	interaction: ChatInputCommandInteraction,
-): string =>
-	interaction.inGuild()
+function serverLabel(interaction: ChatInputCommandInteraction): string {
+	return interaction.inGuild()
 		? `${interaction.guild?.name ?? "Unknown guild"} (${interaction.guildId})`
 		: "DM"
+}
 
-export const getInteractionAuthorLabel = (
-	interaction: ChatInputCommandInteraction,
-): string => `${interaction.user.tag} (${interaction.user.id})`
+function authorLabel(interaction: ChatInputCommandInteraction): string {
+	return `${interaction.user.username} (${interaction.user.id})`
+}
 
 export const logChatCommandExecuted = (
 	interaction: ChatInputCommandInteraction,
 ): void => {
-	const serverLabel = getInteractionServerLabel(interaction)
-	const authorLabel = getInteractionAuthorLabel(interaction)
-
 	console.log(
-		`${chalk.green("Executed")} ${chalk.white(`/${interaction.commandName}`)} ${chalk.dim(`| server: ${serverLabel} | author: ${authorLabel}`)}`,
+		`${chalk.green("Executed")} ${chalk.white(`/${interaction.commandName}`)} ${chalk.dim(`| server: ${serverLabel(interaction)} | author: ${authorLabel(interaction)}`)}`,
 	)
 }
 
@@ -27,11 +23,8 @@ export const logChatCommandFailed = (
 	interaction: ChatInputCommandInteraction,
 	error: unknown,
 ): void => {
-	const serverLabel = getInteractionServerLabel(interaction)
-	const authorLabel = getInteractionAuthorLabel(interaction)
-
 	console.error(
-		`${chalk.redBright("Failed to execute")} ${chalk.white(`/${interaction.commandName}`)} ${chalk.dim(`| server: ${serverLabel} | author: ${authorLabel}`)}`,
+		`${chalk.redBright("Failed to execute")} ${chalk.white(`/${interaction.commandName}`)} ${chalk.dim(`| server: ${serverLabel(interaction)} | author: ${authorLabel(interaction)}`)}`,
 		error,
 	)
 }

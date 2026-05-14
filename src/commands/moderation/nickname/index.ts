@@ -66,12 +66,10 @@ export const nicknameCommand: SlashCommand = {
 		)
 
 		if (
-			!(await ensureModerationTarget(
-				interaction,
-				targetUser,
-				targetMember,
-				"nickname"
-			))
+			!(await ensureModerationTarget(interaction, targetUser, targetMember, {
+				allowSelf: true,
+				checkManageable: true,
+			}))
 		) {
 			return
 		}

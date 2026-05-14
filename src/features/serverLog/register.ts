@@ -25,26 +25,22 @@ async function shouldSkipLeaveDueToRecentModeration(
 	try {
 		const logs = await guild.fetchAuditLogs({ limit: 15 })
 		const now = Date.now()
-		for (const [, entry] of logs.entries) {
-			if (
+		return logs.entries.some(
+			(entry) =>
 				(entry.action === AuditLogEvent.MemberKick ||
 					entry.action === AuditLogEvent.MemberBanAdd) &&
 				entry.targetId === userId &&
 				now - entry.createdTimestamp < LEAVE_AUDIT_WINDOW_MS
-			) {
-				return true
-			}
-		}
+		)
 	} catch {
 		return false
 	}
-	return false
 }
 
 function auditTargetName(entry: GuildAuditLogsEntry): string {
 	const target = entry.target
-	if (target && "tag" in target && typeof target.tag === "string") {
-		return target.tag
+	if (target && "username" in target && typeof target.username === "string") {
+		return target.username
 	}
 	return entry.targetId ?? "?"
 }
@@ -74,7 +70,7 @@ async function sendModerationAuditEmbed(
 			title: t(`${base}.title`),
 			description: t(`${base}.description`, {
 				target: auditTargetName(entry),
-				moderator: entry.executor?.tag ?? "?",
+				moderator: entry.executor?.username ?? "?",
 				reason: entry.reason ?? t("commands.serverlog.logs.noReason"),
 			}),
 		})
@@ -83,287 +79,301 @@ async function sendModerationAuditEmbed(
 
 export function registerServerLogListeners(client: Client): void {
 	client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
-		const guild = newState.guild
-		const guildId = guild.id
-		const t = getTranslator(newState.guild.preferredLocale)
+		try {
+			const guild = newState.guild
+			const guildId = guild.id
+			const t = getTranslator(newState.guild.preferredLocale)
 
-		const oldId = oldState.channelId
-		const newId = newState.channelId
-		const member = newState.member
-		if (!member) {
-			return
-		}
+			const oldId = oldState.channelId
+			const newId = newState.channelId
+			const member = newState.member
+			if (!member) {
+				return
+			}
 
-		if (!oldId && newId) {
-			const channel = newState.channel
-			await sendServerLogEmbed(
-				client,
-				guildId,
-				"voice",
-				createLogEmbed({
-					title: t("commands.serverlog.logs.voiceJoin.title"),
-					description: t("commands.serverlog.logs.voiceJoin.description", {
-						user: member.user.tag,
-						channel: channel ? `#${channel.name}` : newId,
-					}),
-				})
-			)
-			return
-		}
+			if (!oldId && newId) {
+				const channel = newState.channel
+				await sendServerLogEmbed(
+					client,
+					guildId,
+					"voice",
+					createLogEmbed({
+						title: t("commands.serverlog.logs.voiceJoin.title"),
+						description: t("commands.serverlog.logs.voiceJoin.description", {
+							user: member.user.username,
+							channel: channel ? `#${channel.name}` : newId,
+						}),
+					})
+				)
+				return
+			}
 
-		if (oldId && !newId) {
-			const channel = oldState.channel
-			await sendServerLogEmbed(
-				client,
-				guildId,
-				"voice",
-				createLogEmbed({
-					title: t("commands.serverlog.logs.voiceLeave.title"),
-					description: t("commands.serverlog.logs.voiceLeave.description", {
-						user: member.user.tag,
-						channel: channel ? `#${channel.name}` : oldId,
-					}),
-				})
-			)
-			return
-		}
+			if (oldId && !newId) {
+				const channel = oldState.channel
+				await sendServerLogEmbed(
+					client,
+					guildId,
+					"voice",
+					createLogEmbed({
+						title: t("commands.serverlog.logs.voiceLeave.title"),
+						description: t("commands.serverlog.logs.voiceLeave.description", {
+							user: member.user.username,
+							channel: channel ? `#${channel.name}` : oldId,
+						}),
+					})
+				)
+				return
+			}
 
-		if (oldId && newId && oldId !== newId) {
-			const oldCh = oldState.channel
-			const newCh = newState.channel
-			await sendServerLogEmbed(
-				client,
-				guildId,
-				"voice",
-				createLogEmbed({
-					title: t("commands.serverlog.logs.voiceMove.title"),
-					description: t("commands.serverlog.logs.voiceMove.description", {
-						user: member.user.tag,
-						from: oldCh ? `#${oldCh.name}` : oldId,
-						to: newCh ? `#${newCh.name}` : newId,
-					}),
-				})
-			)
-		}
+			if (oldId && newId && oldId !== newId) {
+				const oldCh = oldState.channel
+				const newCh = newState.channel
+				await sendServerLogEmbed(
+					client,
+					guildId,
+					"voice",
+					createLogEmbed({
+						title: t("commands.serverlog.logs.voiceMove.title"),
+						description: t("commands.serverlog.logs.voiceMove.description", {
+							user: member.user.username,
+							from: oldCh ? `#${oldCh.name}` : oldId,
+							to: newCh ? `#${newCh.name}` : newId,
+						}),
+					})
+				)
+			}
+		} catch {}
 	})
 
 	client.on(Events.GuildMemberAdd, async (member) => {
-		const guildId = member.guild.id
-		const t = getTranslator(member.guild.preferredLocale)
-		await sendServerLogEmbed(
-			client,
-			guildId,
-			"members",
-			createLogEmbed({
-				title: t("commands.serverlog.logs.memberJoin.title"),
-				description: t("commands.serverlog.logs.memberJoin.description", {
-					user: member.user.tag,
-					id: member.user.id,
-				}),
-			})
-		)
-	})
-
-	client.on(Events.GuildMemberRemove, async (member) => {
-		const guild = member.guild
-		const guildId = guild.id
-		const settings = await getServerLogSettings(guildId)
-		if (!settings?.enabled || !settings.events.members) {
-			return
-		}
-		if (settings.events.moderation) {
-			const skip = await shouldSkipLeaveDueToRecentModeration(
-				guild,
-				member.user.id
-			)
-			if (skip) {
-				return
-			}
-		}
-		const t = getTranslator(guild.preferredLocale)
-		await sendServerLogEmbed(
-			client,
-			guildId,
-			"members",
-			createLogEmbed({
-				title: t("commands.serverlog.logs.memberLeave.title"),
-				description: t("commands.serverlog.logs.memberLeave.description", {
-					user: member.user.tag,
-					id: member.user.id,
-				}),
-			}),
-			settings
-		)
-	})
-
-	client.on(Events.GuildMemberUpdate, async (oldMember, newMember) => {
-		const guildId = newMember.guild.id
-		const settings = await getServerLogSettings(guildId)
-		if (!settings?.enabled || !settings.events.members) {
-			return
-		}
-
-		const everyoneId = newMember.guild.id
-		const added = newMember.roles.cache.filter(
-			(r) => r.id !== everyoneId && !oldMember.roles.cache.has(r.id)
-		)
-		const removed = oldMember.roles.cache.filter(
-			(r) => r.id !== everyoneId && !newMember.roles.cache.has(r.id)
-		)
-
-		const nickChanged = oldMember.nickname !== newMember.nickname
-		const serverProfileAvatarChanged = oldMember.avatar !== newMember.avatar
-
-		if (
-			!nickChanged &&
-			added.size === 0 &&
-			removed.size === 0 &&
-			!serverProfileAvatarChanged
-		) {
-			return
-		}
-
-		const t = getTranslator(newMember.guild.preferredLocale)
-		const lines: string[] = []
-
-		if (nickChanged) {
-			const noneLabel = t("commands.serverlog.logs.memberUpdate.noNickname")
-			lines.push(
-				t("commands.serverlog.logs.memberUpdate.nickname", {
-					before: oldMember.nickname ?? noneLabel,
-					after: newMember.nickname ?? noneLabel,
-				})
-			)
-		}
-
-		if (added.size > 0) {
-			lines.push(
-				t("commands.serverlog.logs.memberUpdate.rolesAdded", {
-					list: added.map((r) => r.name).join(", "),
-				})
-			)
-		}
-		if (removed.size > 0) {
-			lines.push(
-				t("commands.serverlog.logs.memberUpdate.rolesRemoved", {
-					list: removed.map((r) => r.name).join(", "),
-				})
-			)
-		}
-
-		if (serverProfileAvatarChanged) {
-			lines.push(
-				t("commands.serverlog.logs.memberUpdate.serverProfileAvatar")
-			)
-		}
-
-		await sendServerLogEmbed(
-			client,
-			guildId,
-			"members",
-			createLogEmbed({
-				title: t("commands.serverlog.logs.memberUpdate.title"),
-				description: t("commands.serverlog.logs.memberUpdate.description", {
-					user: newMember.user.tag,
-					id: newMember.id,
-					details: lines.join("\n\n"),
-				}),
-			}),
-			settings
-		)
-	})
-
-	client.on(Events.GuildAuditLogEntryCreate, async (entry, guild) => {
-		const guildId = guild.id
-		const t = getTranslator(guild.preferredLocale)
-
-		if (entry.action === AuditLogEvent.MemberKick) {
-			await sendModerationAuditEmbed(client, guildId, t, entry, "kick")
-			return
-		}
-
-		if (entry.action === AuditLogEvent.MemberBanAdd) {
-			await sendModerationAuditEmbed(client, guildId, t, entry, "ban")
-			return
-		}
-
-		if (entry.action === AuditLogEvent.MemberBanRemove) {
-			await sendModerationAuditEmbed(client, guildId, t, entry, "unban")
-			return
-		}
-
-		if (isTimeoutMemberUpdate(entry)) {
-			const exec = entry.executor
-			const name = auditTargetName(entry)
-			let until = ""
-			for (const change of entry.changes) {
-				if (change.key === "communication_disabled_until") {
-					const nv = change.new as string | null | undefined
-					until = nv ? new Date(nv).toISOString() : ""
-				}
-			}
+		try {
+			const guildId = member.guild.id
+			const t = getTranslator(member.guild.preferredLocale)
 			await sendServerLogEmbed(
 				client,
 				guildId,
-				"moderation",
+				"members",
 				createLogEmbed({
-					title: t("commands.serverlog.logs.modTimeout.title"),
-					description: t("commands.serverlog.logs.modTimeout.description", {
-						target: name,
-						moderator: exec?.tag ?? "?",
-						until: until || "—",
-						reason: entry.reason ?? t("commands.serverlog.logs.noReason"),
+					title: t("commands.serverlog.logs.memberJoin.title"),
+					description: t("commands.serverlog.logs.memberJoin.description", {
+						user: member.user.username,
+						id: member.user.id,
 					}),
 				})
 			)
-		}
+		} catch {}
+	})
+
+	client.on(Events.GuildMemberRemove, async (member) => {
+		try {
+			const guild = member.guild
+			const guildId = guild.id
+			const settings = await getServerLogSettings(guildId)
+			if (!settings?.enabled || !settings.events.members) {
+				return
+			}
+			if (settings.events.moderation) {
+				const skip = await shouldSkipLeaveDueToRecentModeration(
+					guild,
+					member.user.id
+				)
+				if (skip) {
+					return
+				}
+			}
+			const t = getTranslator(guild.preferredLocale)
+			await sendServerLogEmbed(
+				client,
+				guildId,
+				"members",
+				createLogEmbed({
+					title: t("commands.serverlog.logs.memberLeave.title"),
+					description: t("commands.serverlog.logs.memberLeave.description", {
+						user: member.user.username,
+						id: member.user.id,
+					}),
+				}),
+				settings
+			)
+		} catch {}
+	})
+
+	client.on(Events.GuildMemberUpdate, async (oldMember, newMember) => {
+		try {
+			const guildId = newMember.guild.id
+			const settings = await getServerLogSettings(guildId)
+			if (!settings?.enabled || !settings.events.members) {
+				return
+			}
+
+			const everyoneId = newMember.guild.id
+			const added = newMember.roles.cache.filter(
+				(r) => r.id !== everyoneId && !oldMember.roles.cache.has(r.id)
+			)
+			const removed = oldMember.roles.cache.filter(
+				(r) => r.id !== everyoneId && !newMember.roles.cache.has(r.id)
+			)
+
+			const nickChanged = oldMember.nickname !== newMember.nickname
+			const serverProfileAvatarChanged = oldMember.avatar !== newMember.avatar
+
+			if (
+				!nickChanged &&
+				added.size === 0 &&
+				removed.size === 0 &&
+				!serverProfileAvatarChanged
+			) {
+				return
+			}
+
+			const t = getTranslator(newMember.guild.preferredLocale)
+			const lines: string[] = []
+
+			if (nickChanged) {
+				const noneLabel = t("commands.serverlog.logs.memberUpdate.noNickname")
+				lines.push(
+					t("commands.serverlog.logs.memberUpdate.nickname", {
+						before: oldMember.nickname ?? noneLabel,
+						after: newMember.nickname ?? noneLabel,
+					})
+				)
+			}
+
+			if (added.size > 0) {
+				lines.push(
+					t("commands.serverlog.logs.memberUpdate.rolesAdded", {
+						list: added.map((r) => r.name).join(", "),
+					})
+				)
+			}
+			if (removed.size > 0) {
+				lines.push(
+					t("commands.serverlog.logs.memberUpdate.rolesRemoved", {
+						list: removed.map((r) => r.name).join(", "),
+					})
+				)
+			}
+
+			if (serverProfileAvatarChanged) {
+				lines.push(
+					t("commands.serverlog.logs.memberUpdate.serverProfileAvatar")
+				)
+			}
+
+			await sendServerLogEmbed(
+				client,
+				guildId,
+				"members",
+				createLogEmbed({
+					title: t("commands.serverlog.logs.memberUpdate.title"),
+					description: t("commands.serverlog.logs.memberUpdate.description", {
+						user: newMember.user.username,
+						id: newMember.id,
+						details: lines.join("\n\n"),
+					}),
+				}),
+				settings
+			)
+		} catch {}
+	})
+
+	client.on(Events.GuildAuditLogEntryCreate, async (entry, guild) => {
+		try {
+			const guildId = guild.id
+			const t = getTranslator(guild.preferredLocale)
+
+			if (entry.action === AuditLogEvent.MemberKick) {
+				await sendModerationAuditEmbed(client, guildId, t, entry, "kick")
+				return
+			}
+
+			if (entry.action === AuditLogEvent.MemberBanAdd) {
+				await sendModerationAuditEmbed(client, guildId, t, entry, "ban")
+				return
+			}
+
+			if (entry.action === AuditLogEvent.MemberBanRemove) {
+				await sendModerationAuditEmbed(client, guildId, t, entry, "unban")
+				return
+			}
+
+			if (isTimeoutMemberUpdate(entry)) {
+				const exec = entry.executor
+				const name = auditTargetName(entry)
+				let until = ""
+				for (const change of entry.changes) {
+					if (change.key === "communication_disabled_until") {
+						const nv = change.new as string | null | undefined
+						until = nv ? new Date(nv).toISOString() : ""
+					}
+				}
+				await sendServerLogEmbed(
+					client,
+					guildId,
+					"moderation",
+					createLogEmbed({
+						title: t("commands.serverlog.logs.modTimeout.title"),
+						description: t("commands.serverlog.logs.modTimeout.description", {
+							target: name,
+							moderator: exec?.username ?? "?",
+							until: until || "—",
+							reason: entry.reason ?? t("commands.serverlog.logs.noReason"),
+						}),
+					})
+				)
+			}
+		} catch {}
 	})
 
 	client.on(Events.MessageDelete, async (message) => {
-		const guild = message.guild
-		if (!guild) {
-			return
-		}
-		const guildId = guild.id
-		const t = getTranslator(guild.preferredLocale)
-		const author = message.author
-			? `${message.author.tag} (${message.author.id})`
-			: t("commands.serverlog.logs.unknownAuthor")
-		await sendServerLogEmbed(
-			client,
-			guildId,
-			"messages",
-			createLogEmbed({
-				title: t("commands.serverlog.logs.messageDelete.title"),
-				description: t("commands.serverlog.logs.messageDelete.description", {
-					channel: message.channel.isTextBased()
-						? `${message.channel}`
-						: message.channelId,
-					author,
-					id: message.id,
-				}),
-			})
-		)
+		try {
+			const guild = message.guild
+			if (!guild) {
+				return
+			}
+			const guildId = guild.id
+			const t = getTranslator(guild.preferredLocale)
+			const author = message.author
+				? `${message.author.username} (${message.author.id})`
+				: t("commands.serverlog.logs.unknownAuthor")
+			await sendServerLogEmbed(
+				client,
+				guildId,
+				"messages",
+				createLogEmbed({
+					title: t("commands.serverlog.logs.messageDelete.title"),
+					description: t("commands.serverlog.logs.messageDelete.description", {
+						channel: message.channel.isTextBased()
+							? `${message.channel}`
+							: message.channelId,
+						author,
+						id: message.id,
+					}),
+				})
+			)
+		} catch {}
 	})
 
 	client.on(Events.MessageBulkDelete, async (messages, channel) => {
-		if (!channel.isTextBased() || !("guild" in channel) || !channel.guild) {
-			return
-		}
-		const guild = channel.guild
-		const guildId = guild.id
-		const t = getTranslator(guild.preferredLocale)
-		await sendServerLogEmbed(
-			client,
-			guildId,
-			"messages",
-			createLogEmbed({
-				title: t("commands.serverlog.logs.messageBulk.title"),
-				description: t("commands.serverlog.logs.messageBulk.description", {
-					count: messages.size,
-					channel: `${channel}`,
-				}),
-			})
-		)
+		try {
+			if (!channel.isTextBased() || !("guild" in channel) || !channel.guild) {
+				return
+			}
+			const guild = channel.guild
+			const guildId = guild.id
+			const t = getTranslator(guild.preferredLocale)
+			await sendServerLogEmbed(
+				client,
+				guildId,
+				"messages",
+				createLogEmbed({
+					title: t("commands.serverlog.logs.messageBulk.title"),
+					description: t("commands.serverlog.logs.messageBulk.description", {
+						count: messages.size,
+						channel: `${channel}`,
+					}),
+				})
+			)
+		} catch {}
 	})
 }

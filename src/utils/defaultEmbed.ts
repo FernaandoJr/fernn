@@ -1,4 +1,4 @@
-import { EmbedBuilder, type ColorResolvable } from "discord.js"
+import { EmbedBuilder, type ColorResolvable, type MessageComponentInteraction } from "discord.js"
 
 import { colors } from "../constants/colors.ts"
 
@@ -32,4 +32,16 @@ export function createLogEmbed(options?: DefaultEmbedOptions): EmbedBuilder {
 		...options,
 		color: options?.color ?? colors.info,
 	})
+}
+
+export async function safeEphemeralReply(
+	interaction: MessageComponentInteraction,
+	content: string
+): Promise<void> {
+	const payload = { content, ephemeral: true } as const
+	if (interaction.deferred || interaction.replied) {
+		await interaction.followUp(payload).catch(() => {})
+	} else {
+		await interaction.reply(payload).catch(() => {})
+	}
 }

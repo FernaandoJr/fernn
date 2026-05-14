@@ -23,7 +23,7 @@ import {
 } from "../../database/models/ServerIconRotation.ts"
 import { getTranslator } from "../../i18n/index.ts"
 import { r2DeleteObject } from "../../storage/r2Client.ts"
-import { createDefaultEmbed } from "../../utils/defaultEmbed.ts"
+import { createDefaultEmbed, safeEphemeralReply } from "../../utils/defaultEmbed.ts"
 
 export const SERVERICON_PANEL_PREFIX = "servericon:" as const
 
@@ -186,16 +186,8 @@ export async function handleServerIconPanelInteraction(
 		return
 	}
 	if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)) {
-		const tr = getTranslator(interaction.locale)
-		const payload = {
-			content: tr("errors.servericon.noPanelPermission"),
-			ephemeral: true,
-		}
-		if (interaction.deferred || interaction.replied) {
-			await interaction.followUp(payload)
-		} else {
-			await interaction.reply(payload)
-		}
+		const t = getTranslator(interaction.locale)
+		await safeEphemeralReply(interaction, t("errors.servericon.noPanelPermission"))
 		return
 	}
 
@@ -256,17 +248,7 @@ export async function handleServerIconPanelInteraction(
 			}
 		}
 	} catch {
-		const err = getTranslator(interaction.locale)(
-			"errors.commandExecutionFailed"
-		)
-		if (interaction.deferred || interaction.replied) {
-			await interaction
-				.followUp({ content: err, ephemeral: true })
-				.catch(() => {})
-		} else {
-			await interaction
-				.reply({ content: err, ephemeral: true })
-				.catch(() => {})
-		}
+		const err = getTranslator(interaction.locale)("errors.commandExecutionFailed")
+		await safeEphemeralReply(interaction, err)
 	}
 }

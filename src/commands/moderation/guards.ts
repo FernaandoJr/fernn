@@ -3,7 +3,7 @@ import {
 	type ChatInputCommandInteraction,
 	type User,
 } from "discord.js"
-import { getTranslator } from "../../i18n"
+import { getTranslator } from "../../i18n/index.ts"
 
 export async function resolveMember(
 	interaction: ChatInputCommandInteraction,
@@ -42,15 +42,24 @@ export async function replyIfNotInGuild(
 	return true
 }
 
+type ModerationGuardOptions = {
+	allowSelf?: boolean
+	memberOptional?: boolean
+	checkKickable?: boolean
+	checkBannable?: boolean
+	checkModeratable?: boolean
+	checkManageable?: boolean
+}
+
 export async function ensureModerationTarget(
 	interaction: ChatInputCommandInteraction,
 	targetUser: User,
 	targetMember: GuildMember | null,
-	action: "ban" | "kick" | "mute" | "nickname"
+	opts: ModerationGuardOptions = {}
 ): Promise<boolean> {
 	const t = getTranslator(interaction.locale)
 
-	if (action !== "nickname" && targetUser.id === interaction.user.id) {
+	if (!opts.allowSelf && targetUser.id === interaction.user.id) {
 		await interaction.reply({
 			content: t("errors.moderation.cannotModerateSelf"),
 			ephemeral: true,
@@ -58,7 +67,7 @@ export async function ensureModerationTarget(
 		return false
 	}
 
-	if (action !== "nickname" && targetUser.id === interaction.client.user.id) {
+	if (!opts.allowSelf && targetUser.id === interaction.client.user.id) {
 		await interaction.reply({
 			content: t("errors.moderation.cannotModerateBot"),
 			ephemeral: true,
@@ -79,7 +88,7 @@ export async function ensureModerationTarget(
 		return false
 	}
 
-	if (action !== "ban" && !targetMember) {
+	if (!opts.memberOptional && !targetMember) {
 		await interaction.reply({
 			content: t("errors.moderation.memberNotInGuild"),
 			ephemeral: true,
@@ -87,7 +96,7 @@ export async function ensureModerationTarget(
 		return false
 	}
 
-	if (action === "kick" && targetMember && !targetMember.kickable) {
+	if (opts.checkKickable && targetMember && !targetMember.kickable) {
 		await interaction.reply({
 			content: t("errors.moderation.targetNotKickable"),
 			ephemeral: true,
@@ -95,7 +104,7 @@ export async function ensureModerationTarget(
 		return false
 	}
 
-	if (action === "mute" && targetMember && !targetMember.moderatable) {
+	if (opts.checkModeratable && targetMember && !targetMember.moderatable) {
 		await interaction.reply({
 			content: t("errors.moderation.targetNotModeratable"),
 			ephemeral: true,
@@ -103,7 +112,7 @@ export async function ensureModerationTarget(
 		return false
 	}
 
-	if (action === "ban" && targetMember && !targetMember.bannable) {
+	if (opts.checkBannable && targetMember && !targetMember.bannable) {
 		await interaction.reply({
 			content: t("errors.moderation.targetNotBannable"),
 			ephemeral: true,
@@ -111,7 +120,7 @@ export async function ensureModerationTarget(
 		return false
 	}
 
-	if (action === "nickname" && targetMember && !targetMember.manageable) {
+	if (opts.checkManageable && targetMember && !targetMember.manageable) {
 		await interaction.reply({
 			content: t("errors.moderation.targetNotNicknamable"),
 			ephemeral: true,

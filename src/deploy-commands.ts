@@ -3,7 +3,7 @@ import { REST, Routes } from "discord.js";
 import { commandData } from "./commands/index.ts";
 import { config } from "./config.ts";
 
-const rest = new REST({ version: "10" }).setToken(config.token);
+const rest = new REST().setToken(config.token);
 
 if (config.guildId) {
 	const guildRoute = Routes.applicationGuildCommands(

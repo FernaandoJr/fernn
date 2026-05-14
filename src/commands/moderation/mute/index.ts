@@ -61,12 +61,9 @@ export const muteCommand: SlashCommand = {
 		)
 
 		if (
-			!(await ensureModerationTarget(
-				interaction,
-				targetUser,
-				targetMember,
-				"mute"
-			))
+			!(await ensureModerationTarget(interaction, targetUser, targetMember, {
+				checkModeratable: true,
+			}))
 		) {
 			return
 		}

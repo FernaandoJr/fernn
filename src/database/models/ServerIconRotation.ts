@@ -63,6 +63,16 @@ export const ServerIconRotationModel =
 		ServerIconRotationSchema
 	)
 
+function mapImage(img: ServerIconImageEntry): ServerIconImageEntry {
+	return {
+		id: img.id,
+		r2Key: img.r2Key,
+		addedByUserId: img.addedByUserId,
+		label: img.label ?? null,
+		createdAt: img.createdAt,
+	}
+}
+
 function toPlain(doc: ServerIconRotationDocument): ServerIconRotationDoc {
 	return {
 		guildId: doc.guildId,
@@ -70,13 +80,7 @@ function toPlain(doc: ServerIconRotationDocument): ServerIconRotationDoc {
 		intervalMinutes: doc.intervalMinutes,
 		cursor: doc.cursor,
 		lastRotationAt: doc.lastRotationAt,
-		images: doc.images.map((img) => ({
-			id: img.id,
-			r2Key: img.r2Key,
-			addedByUserId: img.addedByUserId,
-			label: img.label ?? null,
-			createdAt: img.createdAt,
-		})),
+		images: doc.images.map(mapImage),
 	}
 }
 
@@ -93,13 +97,7 @@ export async function getServerIconRotation(
 		intervalMinutes: doc.intervalMinutes,
 		cursor: doc.cursor,
 		lastRotationAt: doc.lastRotationAt,
-		images: doc.images.map((img) => ({
-			id: img.id,
-			r2Key: img.r2Key,
-			addedByUserId: img.addedByUserId,
-			label: img.label ?? null,
-			createdAt: img.createdAt,
-		})),
+		images: doc.images.map(mapImage),
 	}
 }
 
@@ -129,13 +127,7 @@ export async function upsertServerIconRotation(
 		intervalMinutes: updated.intervalMinutes,
 		cursor: updated.cursor,
 		lastRotationAt: updated.lastRotationAt,
-		images: updated.images.map((img) => ({
-			id: img.id,
-			r2Key: img.r2Key,
-			addedByUserId: img.addedByUserId,
-			label: img.label ?? null,
-			createdAt: img.createdAt,
-		})),
+		images: updated.images.map(mapImage),
 	}
 }
 
@@ -218,12 +210,6 @@ export async function findEnabledServerIconRotations(): Promise<
 		intervalMinutes: doc.intervalMinutes,
 		cursor: doc.cursor,
 		lastRotationAt: doc.lastRotationAt,
-		images: doc.images.map((img) => ({
-			id: img.id,
-			r2Key: img.r2Key,
-			addedByUserId: img.addedByUserId,
-			label: img.label ?? null,
-			createdAt: img.createdAt,
-		})),
+		images: doc.images.map(mapImage),
 	}))
 }

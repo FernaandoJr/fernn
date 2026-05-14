@@ -18,43 +18,21 @@ import { createDefaultEmbed } from "../../../utils/defaultEmbed.ts"
 import { replyIfNotInGuild } from "../../moderation/guards.ts"
 
 function countGuildChannels(guild: Guild) {
-	let text = 0
-	let voice = 0
-	let category = 0
-	let forum = 0
-	let stage = 0
-	let announcement = 0
-	let media = 0
-
-	for (const ch of guild.channels.cache.values()) {
-		switch (ch.type) {
-			case ChannelType.GuildText:
-				text++
-				break
-			case ChannelType.GuildAnnouncement:
-				announcement++
-				break
-			case ChannelType.GuildVoice:
-				voice++
-				break
-			case ChannelType.GuildCategory:
-				category++
-				break
-			case ChannelType.GuildForum:
-				forum++
-				break
-			case ChannelType.GuildStageVoice:
-				stage++
-				break
-			case ChannelType.GuildMedia:
-				media++
-				break
-			default:
-				break
-		}
-	}
-
-	return { text, voice, category, forum, stage, announcement, media }
+	return guild.channels.cache.reduce(
+		(acc, ch) => {
+			switch (ch.type) {
+				case ChannelType.GuildText: acc.text++; break
+				case ChannelType.GuildAnnouncement: acc.announcement++; break
+				case ChannelType.GuildVoice: acc.voice++; break
+				case ChannelType.GuildCategory: acc.category++; break
+				case ChannelType.GuildForum: acc.forum++; break
+				case ChannelType.GuildStageVoice: acc.stage++; break
+				case ChannelType.GuildMedia: acc.media++; break
+			}
+			return acc
+		},
+		{ text: 0, voice: 0, category: 0, forum: 0, stage: 0, announcement: 0, media: 0 }
+	)
 }
 
 function verificationLabel(
@@ -126,7 +104,6 @@ export const serverInfoCommand: SlashCommand = {
 		const guild = interaction.guild!
 		await guild.fetch()
 
-		const owner = await guild.fetchOwner()
 		const counts = countGuildChannels(guild)
 
 		const createdTs = guild.createdTimestamp
@@ -165,11 +142,11 @@ export const serverInfoCommand: SlashCommand = {
 					value: guild.id,
 					inline: true,
 				},
-				{
-					name: t("commands.serverInfo.fields.owner"),
-					value: userMention(owner.id),
-					inline: true,
-				},
+			{
+				name: t("commands.serverInfo.fields.owner"),
+				value: userMention(guild.ownerId),
+				inline: true,
+			},
 				{
 					name: t("commands.serverInfo.fields.created"),
 					value: createdText,

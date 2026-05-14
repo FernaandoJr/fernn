@@ -7,8 +7,7 @@ import {
 	SERVER_ICON_TARGET_PIXEL_SIZE,
 } from "../../constants/serverIcon.ts"
 
-const IMAGE_FILENAME =
-	/\.(gif|png|jpe?g|webp)$/i
+const IMAGE_FILENAME = /\.(gif|png|jpe?g|webp)$/i
 
 export type ServerIconStorageKind = "png" | "gif" | "jpeg" | "webp"
 
@@ -92,9 +91,6 @@ export function resolveServerIconStorageKind(
 		if (lower.endsWith(suffix)) {
 			return kind
 		}
-	}
-	if (mime.startsWith("image/")) {
-		return "png"
 	}
 	return "png"
 }

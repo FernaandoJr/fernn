@@ -1,4 +1,5 @@
 import chalk from "chalk"
+import mongoose from "mongoose"
 import { Client, Events, GatewayIntentBits } from "discord.js"
 
 import { commandMap } from "./commands/index.ts"
@@ -31,12 +32,26 @@ const client = new Client({
 	],
 })
 
+let stopPresence: (() => void) | undefined
+let stopScheduler: (() => void) | undefined
+
+async function shutdown() {
+	stopPresence?.()
+	stopScheduler?.()
+	client.destroy()
+	await mongoose.disconnect()
+	process.exit(0)
+}
+
+process.once("SIGINT", shutdown)
+process.once("SIGTERM", shutdown)
+
 client.once(Events.ClientReady, (readyClient) => {
 	console.log(
-		`${chalk.cyan("Logged in as")} ${chalk.white(readyClient.user.tag)}`
+		`${chalk.cyan("Logged in as")} ${chalk.white(readyClient.user.username)}`
 	)
-	startPresenceCycle(readyClient)
-	startServerIconRotationScheduler(readyClient)
+	stopPresence = startPresenceCycle(readyClient)
+	stopScheduler = startServerIconRotationScheduler(readyClient)
 })
 
 client.on(Events.InteractionCreate, async (interaction) => {
@@ -44,7 +59,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 		(interaction.isStringSelectMenu() ||
 			interaction.isChannelSelectMenu() ||
 			interaction.isButton()) &&
-		interaction.customId?.startsWith(SERVERLOG_PANEL_PREFIX)
+		interaction.customId.startsWith(SERVERLOG_PANEL_PREFIX)
 	) {
 		try {
 			await handleServerLogPanelInteraction(interaction)
@@ -56,7 +71,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
 	if (
 		(interaction.isStringSelectMenu() || interaction.isButton()) &&
-		interaction.customId?.startsWith(SERVERICON_PANEL_PREFIX)
+		interaction.customId.startsWith(SERVERICON_PANEL_PREFIX)
 	) {
 		try {
 			await handleServerIconPanelInteraction(interaction)
